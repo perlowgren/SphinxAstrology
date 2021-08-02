@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nav_graph"
+        app:startDestination="@id/splashActivity">
+  <activity
+          android:id="@+id/splashActivity"
+          android:name="net.spirangle.sphinx.astro.SplashActivity"
+          android:label="SplashActivity">
+    <action
+            android:id="@+id/action_global_horoscopeActivity"
+            app:destination="@id/horoscopeActivity" />
+  </activity>
+  <activity
+          android:id="@+id/horoscopeActivity"
+          android:name="net.spirangle.sphinx.astro.HoroscopeActivity"
+          android:label="HoroscopeActivity">
+    <action
+            android:id="@+id/action_global_profile"
+            app:destination="@id/profilesActivity" />
+    <action
+            android:id="@+id/action_global_settings"
+            app:destination="@id/settingsActivity" />
+    <action
+            android:id="@+id/action_global_texts"
+            app:destination="@id/textActivity" />
+    <action
+            android:id="@+id/action_global_help"
+            app:destination="@id/helpActivity" />
+  </activity>
+  <activity
+          android:id="@+id/profilesActivity"
+          android:name="net.spirangle.sphinx.astro.ProfilesActivity"
+          android:label="ProfilesActivity">
+    <action
+            android:id="@+id/action_global_horoscope"
+            app:destination="@id/horoscopeActivity" />
+    <action
+            android:id="@+id/action_global_editProfile"
+            app:destination="@id/editProfileActivity" />
+  </activity>
+  <activity
+          android:id="@+id/editProfileActivity"
+          android:name="net.spirangle.sphinx.astro.EditProfileActivity"
+          android:label="EditProfileActivity">
+    <action
+            android:id="@+id/action_global_profile"
+            app:destination="@id/profilesActivity" />
+  </activity>
+  <activity
+          android:id="@+id/settingsActivity"
+          android:name="net.spirangle.sphinx.astro.SettingsActivity"
+          android:label="SettingsActivity" />
+  <activity
+          android:id="@+id/helpActivity"
+          android:name="net.spirangle.sphinx.astro.HelpActivity"
+          android:label="HelpActivity" />
+  <activity
+          android:id="@+id/textActivity"
+          android:name="net.spirangle.sphinx.astro.TextActivity"
+          android:label="TextActivity" />
+</navigation>

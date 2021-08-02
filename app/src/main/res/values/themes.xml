@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="SphinxTheme" parent="Theme.AppCompat.Light.NoActionBar">
+		<item name="android:windowFullscreen">false</item>
+		<item name="actionOverflowButtonStyle">@style/SphinxOverflowButton</item>
+		<item name="actionButtonStyle">@style/SphinxActionButton</item>
+
+		<item name="android:dropDownListViewStyle">@style/SphinxPopupMenuListView</item>
+
+		<item name="editTextBackground">@drawable/edit_text</item>
+		<item name="editTextStyle">@style/SphinxEditText</item>
+		<item name="spinnerStyle">@style/SphinxSpinner</item>
+		<item name="buttonStyle">@style/SphinxButton</item>
+		<item name="android:textViewStyle">@style/SphinxTextView</item>
+
+		<item name="android:textAppearance">@style/SphinxTextAppearance</item>
+		<item name="android:textAppearanceInverse">@style/SphinxTextAppearanceInverse</item>
+		<item name="android:textAppearanceLarge">@style/SphinxTextAppearanceLarge</item>
+		<item name="android:textAppearanceLargeInverse">@style/SphinxTextAppearanceLargeInverse</item>
+		<item name="android:textAppearanceMedium">@style/SphinxTextAppearanceMedium</item>
+		<item name="android:textAppearanceMediumInverse">@style/SphinxTextAppearanceMediumInverse</item>
+		<item name="android:textAppearanceSmall">@style/SphinxTextAppearanceSmall</item>
+		<item name="android:textAppearanceSmallInverse">@style/SphinxTextAppearanceSmallInverse</item>
+
+		<!--item name="android:alertDialogTheme">@style/SphinxTheme.Dialog.Alert</item>
+		<item name="android:alertDialogStyle">@style/SphinxAlertDialog</item-->
+
+		<item name="alertDialogTheme">@style/SphinxTheme.AlertDialog</item>
+		<item name="alertDialogStyle">@style/SphinxAlertDialog</item>
+		<item name="alertDialogCenterButtons">true</item>
+	</style>
+
+	<style name="SphinxTheme.Splash" parent="Theme.AppCompat.NoActionBar">
+		<item name="android:windowBackground">@drawable/splash</item>
+		<item name="android:windowFullscreen">false</item>
+	</style>
+
+	<style name="SphinxTheme.Toolbar">
+		<item name="searchViewStyle">@style/SphinxActionBarSearch</item>
+		<!--item name="android:searchViewSearchIcon">@drawable/ic_ab_search</item-->
+		<!--item name="android:editTextColor">@color/actionbar_primary_text</item-->
+		<item name="android:textColorHint">@color/actionbar_primary_hint</item>
+		<item name="editTextColor">@color/actionbar_primary_text</item>
+		<item name="spinnerStyle">@style/SphinxActionBarSpinner</item>
+	</style>
+
+	<style name="SphinxTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+		<item name="android:windowBackground">@drawable/abc_popup_background_mtrl_mult</item>
+		<item name="android:windowFullscreen">false</item>
+		<!--item name="android:windowTitleStyle">@style/MyAlertDialogTitle</item>
+		<item name="android:windowContentOverlay">@null</item-->
+		<!--item name="android:windowIsFloating">false</item-->
+
+		<!--item name="windowFixedWidthMajor">@dimen/sphinx_dialog_fixed_width_major</item>
+		<item name="windowFixedWidthMinor">@dimen/sphinx_dialog_fixed_width_minor</item-->
+		<item name="windowMinWidthMajor">@dimen/sphinx_dialog_min_width_major</item>
+		<item name="windowMinWidthMinor">@dimen/sphinx_dialog_min_width_minor</item>
+
+		<item name="editTextBackground">@drawable/edit_text</item>
+		<item name="editTextStyle">@style/SphinxEditText</item>
+		<item name="spinnerStyle">@style/SphinxSpinner</item>
+		<item name="buttonStyle">@style/SphinxButton</item>
+		<item name="android:textViewStyle">@style/SphinxTextView</item>
+
+		<!--item name="android:textAppearanceMedium">@style/MyAlertTextAppearance</item>
+		<item name="android:buttonBarStyle">@style/MyButtonBar</item>
+		<item name="android:buttonBarButtonStyle">@style/MyBorderlessButton</item-->
+	</style>
+
+	<style name="SphinxTheme.AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+		<item name="android:windowBackground">@drawable/abc_popup_background_mtrl_mult</item>
+		<item name="colorAccent">@color/text_default</item>
+		<item name="android:textColorPrimary">@color/text_default</item>
+		<item name="android:windowTitleStyle">@style/SphinxAlertDialog.Title</item>
+		<item name="buttonBarStyle">@style/SphinxAlertDialog.ButtonBar</item>
+		<item name="buttonBarButtonStyle">@style/SphinxAlertDialog.ButtonBar.Button</item>
+		<item name="buttonBarNegativeButtonStyle">@style/SphinxAlertDialog.ButtonBar.Button.Negative</item>
+		<item name="buttonBarPositiveButtonStyle">@style/SphinxAlertDialog.ButtonBar.Button.Positive</item>
+	</style>
+
+	<!--style name="SphinxTheme.Dialog.Alert" parent="Theme.AppCompat.Dialog.Alert">
+	</style-->
+</resources>
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
+>
+	<androidx.appcompat.widget.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:theme="@style/SphinxTheme.Toolbar"
+		style="@style/SphinxActionBar"
+	>
+	</androidx.appcompat.widget.Toolbar>
+
+	<ScrollView
+		android:id="@+id/text_scroll"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:scrollbars="vertical"
+	>
+		<TextView
+			android:id="@+id/text_help"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:text="@null"
+			android:singleLine="false"
+			style="@style/SphinxTextView.Help"
+		/>
+	</ScrollView>
+</LinearLayout>
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+>
+	<item
+		android:id="@+id/menu_edit"
+		android:icon="@drawable/ic_ab_edit"
+		android:title="@string/menu_edit_text"
+		android:orderInCategory="1"
+		android:visible="false"
+		app:showAsAction="ifRoom"
+	/>
+	<item
+		android:id="@+id/menu_new"
+		android:icon="@drawable/ic_ab_new"
+		android:title="@string/menu_new_text"
+		android:orderInCategory="2"
+		android:visible="true"
+		app:showAsAction="ifRoom"
+	/>
+	<item
+		android:id="@+id/menu_index"
+		android:icon="@drawable/ic_ab_index"
+		android:title="@string/menu_index"
+		android:orderInCategory="3"
+		android:visible="false"
+		app:showAsAction="ifRoom"
+	/>
+</menu>
+

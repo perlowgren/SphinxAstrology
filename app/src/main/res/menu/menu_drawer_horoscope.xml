@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"
+>
+	<group
+		android:id="@+id/drawer_profiles_group"
+		android:checkableBehavior="none"
+	>
+		<item
+			android:id="@+id/drawer_new"
+			android:icon="@drawable/ic_new_profile"
+			android:title="@string/menu_new_profile"
+		/>
+		<item
+			android:id="@+id/drawer_edit"
+			android:icon="@drawable/ic_edit"
+			android:title="@string/menu_edit_profile"
+		/>
+		<item
+			android:id="@+id/drawer_profiles"
+			android:icon="@drawable/ic_profiles"
+			android:title="@string/menu_profiles"
+		/>
+	</group>
+	<group
+		android:id="@+id/drawer_help_group"
+		android:checkableBehavior="none"
+	>
+		<item
+			android:id="@+id/drawer_help"
+			android:icon="@drawable/ic_help"
+			android:title="@string/menu_help"
+		/>
+		<item
+			android:id="@+id/drawer_settings"
+			android:icon="@drawable/ic_settings"
+			android:title="@string/menu_settings"
+		/>
+	</group>
+	<group
+		android:id="@+id/drawer_sign_group"
+		android:checkableBehavior="none"
+	>
+		<item
+			android:id="@+id/drawer_sign_in"
+			android:icon="@drawable/ic_google"
+			android:title="@string/menu_sign_in"
+		/>
+		<item
+			android:id="@+id/drawer_sign_out"
+			android:icon="@drawable/ic_google"
+			android:title="@string/menu_sign_out"
+		/>
+	</group>
+</menu>

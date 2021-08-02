@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="purple_200">#FFBB86FC</color>
+	<color name="purple_500">#FF6200EE</color>
+	<color name="purple_700">#FF3700B3</color>
+	<color name="teal_200">#FF03DAC5</color>
+	<color name="teal_700">#FF018786</color>
+	<color name="black">#FF000000</color>
+	<color name="white">#FFFFFFFF</color>
+
+	<color name="actionbar_background">#ff660066</color>
+	<color name="actionbar_primary_text">@color/orange_lightest</color>
+	<color name="actionbar_secondary_text">@color/orange_lightest</color>
+	<color name="actionbar_primary_hint">@color/orange_lightest_blend</color>
+
+	<color name="menu_item_divider">#fff0f0f0</color>
+
+	<color name="label_background">@color/grey_light</color>
+	<color name="panel_background">@color/orange_lightest</color>
+
+	<color name="graph_view_background">#ffffffff</color>
+
+	<color name="loading_background">#66000000</color>
+
+	<color name="foreground_material_dark">@android:color/white</color>
+	<color name="foreground_material_light">@android:color/black</color>
+
+	<color name="background_material_dark">@color/purple_dark</color>
+	<color name="background_material_light">@color/grey_lightest</color>
+	<color name="background_floating_material_dark">@color/purple_darker</color>
+	<color name="background_floating_material_light">@android:color/white</color>
+
+	<color name="primary_material_dark">@color/purple_darkest</color>
+	<color name="primary_material_light">@color/orange_light</color>
+	<color name="primary_dark_material_dark">@android:color/black</color>
+	<color name="primary_dark_material_light">@color/purple_medium_dark</color>
+
+	<!-- 20% white (foreground) -->
+	<color name="ripple_material_dark">#33ffffff</color>
+	<!-- 12% black (foreground) -->
+	<color name="ripple_material_light">#1f000000</color>
+
+	<color name="accent_material_light">@color/purple_medium_dark</color>
+	<color name="accent_material_dark">@color/purple_medium_light</color>
+
+	<color name="button_material_dark">#ff5a595b</color>
+	<color name="button_material_light">#ffd6d7d7</color>
+
+	<color name="switch_thumb_normal_material_dark">#ffbdbdbd</color>
+	<color name="switch_thumb_normal_material_light">#fff1f1f1</color>
+	<color name="switch_thumb_disabled_material_dark">#ff616161</color>
+	<color name="switch_thumb_disabled_material_light">#ffbdbdbd</color>
+
+	<color name="bright_foreground_material_dark">@android:color/white</color>
+	<color name="bright_foreground_material_light">@android:color/black</color>
+	<!-- White 50% -->
+	<color name="bright_foreground_disabled_material_dark">#80ffffff</color>
+	<!-- Black 50% -->
+	<color name="bright_foreground_disabled_material_light">#30000000</color>
+	<color name="bright_foreground_inverse_material_dark">@color/bright_foreground_material_light</color>
+	<color name="bright_foreground_inverse_material_light">@color/bright_foreground_material_dark</color>
+
+	<color name="dim_foreground_material_dark">#ffbebebe</color>
+	<color name="dim_foreground_material_light">#ff323232</color>
+	<color name="dim_foreground_disabled_material_dark">#80bebebe</color>
+	<color name="dim_foreground_disabled_material_light">#80323232</color>
+
+	<color name="hint_foreground_material_dark">@color/bright_foreground_disabled_material_dark</color>
+	<color name="hint_foreground_material_light">@color/bright_foreground_disabled_material_light</color>
+
+	<!-- TODO: This is 40% alpha on the default accent color. -->
+	<color name="highlighted_text_material_dark">#6680cbc4</color>
+	<!-- TODO: This is 40% alpha on the default accent color. -->
+	<color name="highlighted_text_material_light">#66009688</color>
+
+	<!-- Text & foreground colors -->
+	<eat-comment />
+
+	<!-- 87% black -->
+	<color name="primary_text_default_material_light">#ff000000</color>
+	<!-- 54% black -->
+	<color name="secondary_text_default_material_light">#cc000000</color>
+
+	<!-- 100% white -->
+	<color name="primary_text_default_material_dark">#ffffffff</color>
+	<!-- 70% white -->
+	<color name="secondary_text_default_material_dark">#ccffffff</color>
+
+	<item name="disabled_alpha_material_light" format="float" type="dimen">0.26</item>
+	<item name="disabled_alpha_material_dark" format="float" type="dimen">0.30</item>
+
+	<item name="highlight_alpha_material_light" format="float" type="dimen">0.12</item>
+	<item name="highlight_alpha_material_dark" format="float" type="dimen">0.20</item>
+	<item name="highlight_alpha_material_colored" format="float" type="dimen">0.26</item>
+
+	<!-- 26% of default values -->
+	<color name="primary_text_disabled_material_light">#39000000</color>
+	<color name="secondary_text_disabled_material_light">#24000000</color>
+
+	<!-- 30% of default values -->
+	<color name="primary_text_disabled_material_dark">#4Dffffff</color>
+	<color name="secondary_text_disabled_material_dark">#36ffffff</color>
+
+	<!-- Primary & accent colors -->
+	<eat-comment />
+
+	<color name="purple_darkest">#ff210021</color>
+	<color name="purple_dark">#ff300030</color>
+	<color name="purple_darker">#ff420042</color>
+	<color name="purple_medium_dark">#ff990099</color>
+	<color name="purple_medium_light">#ffcc00cc</color>
+	<color name="purple_lighter">#ffe000e0</color>
+	<color name="purple_light">#fff500f5</color>
+	<color name="purple_lightest">#ffff00ff</color>
+
+	<color name="orange_darkest">#ff211910</color>
+	<color name="orange_dark">#ff302010</color>
+	<color name="orange_darker">#ff423120</color>
+	<color name="orange_medium_dark">#ff755331</color>
+	<color name="orange_lighter">#ffe0b080</color>
+	<color name="orange_light">#fff5c493</color>
+	<color name="orange_lightest">#ffffcc99</color>
+	<color name="orange_lightest_blend">#99ffcc99</color>
+
+	<color name="grey_darkest">#ff111111</color>
+	<color name="grey_dark">#ff666666</color>
+	<color name="grey_light">#ffcccccc</color>
+	<color name="grey_lightest">#fffafafa</color>
+
+</resources>
+

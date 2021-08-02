@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<dimen name="edit_text_inset_horizontal">2dp</dimen>
+	<dimen name="edit_text_inset_top">3dp</dimen>
+	<dimen name="edit_text_inset_bottom">2dp</dimen>
+	<dimen name="edit_text_corner">2dp</dimen>
+	<dimen name="edit_text_padding">5dp</dimen>
+	<dimen name="edit_text_stroke_width">1dp</dimen>
+
+	<dimen name="control_inset">4dp</dimen>
+	<dimen name="control_padding">4dp</dimen>
+	<dimen name="control_corner">2dp</dimen>
+
+	<item type="dimen" name="sphinx_dialog_min_width_major">90%</item>
+	<item type="dimen" name="sphinx_dialog_min_width_minor">90%</item>
+	<item type="dimen" name="sphinx_dialog_fixed_width_major">90%</item>
+	<item type="dimen" name="sphinx_dialog_fixed_width_minor">90%</item>
+</resources>

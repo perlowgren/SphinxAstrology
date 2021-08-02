@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+>
+	<item
+		android:id="@+id/menu_new"
+		android:icon="@drawable/ic_ab_new_profile"
+		android:title="@string/menu_new_profile"
+		android:orderInCategory="1"
+		app:showAsAction="ifRoom"
+	/>
+	<item
+		android:id="@+id/menu_edit"
+		android:icon="@drawable/ic_ab_edit"
+		android:title="@string/menu_edit_profile"
+		android:orderInCategory="2"
+		app:showAsAction="ifRoom"
+	/>
+	<item
+		android:id="@+id/menu_profiles"
+		android:icon="@drawable/ic_ab_profiles"
+		android:title="@string/menu_profiles"
+		android:orderInCategory="3"
+		app:showAsAction="ifRoom"
+	/>
+	<group
+		android:id="@+id/menu_charts_group"
+		android:checkableBehavior="none"
+	>
+		<item
+			android:id="@+id/menu_natal_chart"
+			android:icon="@drawable/ic_natal"
+			android:title="@string/menu_natal_chart"
+			app:showAsAction="never"
+		/>
+		<item
+			android:id="@+id/menu_progression_chart"
+			android:icon="@drawable/ic_progression"
+			android:title="@string/menu_progression_chart"
+			app:showAsAction="never"
+		/>
+		<item
+			android:id="@+id/menu_transit_chart"
+			android:icon="@drawable/ic_progression"
+			android:title="@string/menu_transit_chart"
+			app:showAsAction="never"
+		/>
+		<item
+			android:id="@+id/menu_synastry_chart"
+			android:icon="@drawable/ic_synastry"
+			android:title="@string/menu_synastry_chart"
+			app:showAsAction="never"
+		/>
+		<item
+			android:id="@+id/menu_composite_chart"
+			android:icon="@drawable/ic_synastry"
+			android:title="@string/menu_composite_chart"
+			app:showAsAction="never"
+		/>
+	</group>
+</menu>
+
