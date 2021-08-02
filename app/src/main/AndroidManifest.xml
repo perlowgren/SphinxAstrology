@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="net.spirangle.sphinx">
+
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+  <uses-feature android:name="android.hardware.location.network" />
+  <uses-feature android:name="android.hardware.location.gps" />
+
+  <application
+          android:label="@string/app_name"
+          android:theme="@style/SphinxTheme"
+          android:icon="@mipmap/ic_launcher"
+          android:roundIcon="@mipmap/ic_launcher_round"
+          android:fullBackupContent="@xml/backup"
+          android:allowBackup="true"
+          android:supportsRtl="true">
+
+    <activity
+            android:name="net.spirangle.sphinx.astro.SplashActivity"
+            android:theme="@style/SphinxTheme.Splash"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
+    <activity
+            android:name="net.spirangle.sphinx.astro.HoroscopeActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            >
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+      </intent-filter>
+    </activity>
+
+    <activity
+            android:name="net.spirangle.sphinx.astro.ProfilesActivity"
+            android:label="@string/title_profiles"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            >
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <action android:name="android.intent.action.SEARCH" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </activity>
+
+    <activity
+            android:name="net.spirangle.sphinx.astro.EditProfileActivity"
+            android:label="@string/title_edit_profile"
+            android:permission="android.permission.INTERNET"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            >
+      <intent-filter>
+        <action android:name="android.intent.action.EDIT" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data
+                android:host="sphinx.spirangle.net"
+                android:pathPrefix="/"
+                android:scheme="https"
+                />
+      </intent-filter>
+    </activity>
+
+    <activity
+            android:name="net.spirangle.sphinx.astro.TextActivity"
+            android:label="@string/title_text"
+            android:permission="android.permission.INTERNET"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            >
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data
+                android:host="sphinx.spirangle.net"
+                android:pathPrefix="/"
+                android:scheme="https"
+                />
+      </intent-filter>
+    </activity>
+
+    <activity
+            android:name="net.spirangle.sphinx.astro.EditTextActivity"
+            android:label="@string/title_edit_text"
+            android:permission="android.permission.INTERNET"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            >
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <action android:name="android.intent.action.EDIT" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data
+                android:host="sphinx.spirangle.net"
+                android:pathPrefix="/"
+                android:scheme="https"
+                />
+      </intent-filter>
+    </activity>
+
+    <activity
+            android:name="net.spirangle.sphinx.astro.SettingsActivity"
+            android:label="@string/title_settings"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            >
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <action android:name="android.intent.action.EDIT" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </activity>
+
+    <activity
+            android:name="net.spirangle.sphinx.astro.HelpActivity"
+            android:label="@string/title_help"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            >
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </activity>
+
+    <receiver android:name="net.spirangle.sphinx.astro.SphinxWidgetProvider">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data
+              android:name="android.appwidget.provider"
+              android:resource="@xml/widget_astro_clock_info"
+              />
+    </receiver>
+
+    <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="<secret> TODO: Fix"
+            />
+  </application>
+
+</manifest>
