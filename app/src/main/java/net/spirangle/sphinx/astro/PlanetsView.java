@@ -1,5 +1,6 @@
 package net.spirangle.sphinx.astro;
 
+import static net.spirangle.sphinx.AstrologyProperties.*;
 import static net.spirangle.sphinx.SphinxProperties.APP;
 
 import android.content.Context;

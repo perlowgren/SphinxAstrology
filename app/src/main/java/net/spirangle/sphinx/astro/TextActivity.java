@@ -17,10 +17,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter.ViewBinder;
 
-import net.spirangle.sphinx.Base36;
-import net.spirangle.sphinx.CustomHtml;
-import net.spirangle.sphinx.Markdown;
-import net.spirangle.sphinx.Symbol;
+import net.spirangle.sphinx.*;
 
 
 public class TextActivity extends AstroActivity implements ViewBinder, OnItemClickListener, OnItemLongClickListener, OnItemSelectedListener {
