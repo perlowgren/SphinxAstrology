@@ -1,6 +1,6 @@
 package net.spirangle.sphinx;
 
-import static net.spirangle.sphinx.SphinxProperties.APP;
+import static net.spirangle.sphinx.config.SphinxProperties.APP;
 
 import android.os.Build;
 import android.text.Html;

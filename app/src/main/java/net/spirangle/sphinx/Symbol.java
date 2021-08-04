@@ -1,6 +1,8 @@
 package net.spirangle.sphinx;
 
-import static net.spirangle.sphinx.AstrologyProperties.*;
+import static net.spirangle.sphinx.config.AstrologyProperties.*;
+
+import net.spirangle.minerva.util.Base36;
 
 public class Symbol {
     private static final String TAG = "Symbol";

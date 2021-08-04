@@ -1,8 +1,8 @@
 package net.spirangle.sphinx.astro;
 
-import static net.spirangle.sphinx.AstrologyProperties.*;
-import static net.spirangle.sphinx.SphinxProperties.APP;
-import static net.spirangle.sphinx.SphinxProperties.URL_SPIRANGLE_API;
+import static net.spirangle.sphinx.config.AstrologyProperties.*;
+import static net.spirangle.sphinx.config.SphinxProperties.APP;
+import static net.spirangle.sphinx.config.SphinxProperties.URL_SPIRANGLE_API;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -23,7 +23,8 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter.ViewBinder;
 
 import net.spirangle.sphinx.*;
-import net.spirangle.sphinx.HttpClient.RequestListener;
+import net.spirangle.sphinx.util.HttpClient;
+import net.spirangle.sphinx.util.HttpClient.RequestListener;
 
 import org.json.JSONObject;
 

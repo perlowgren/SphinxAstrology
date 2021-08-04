@@ -1,6 +1,6 @@
 package net.spirangle.sphinx;
 
-import static net.spirangle.sphinx.SphinxProperties.*;
+import static net.spirangle.sphinx.config.SphinxProperties.*;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.core.content.ContextCompat;
+
+import net.spirangle.sphinx.util.HttpClient;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

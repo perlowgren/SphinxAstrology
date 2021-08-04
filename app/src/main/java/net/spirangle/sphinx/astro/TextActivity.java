@@ -1,6 +1,6 @@
 package net.spirangle.sphinx.astro;
 
-import static net.spirangle.sphinx.SphinxProperties.*;
+import static net.spirangle.sphinx.config.SphinxProperties.*;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -17,7 +17,11 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter.ViewBinder;
 
-import net.spirangle.sphinx.*;
+import net.spirangle.minerva.markdown.Markdown;
+import net.spirangle.minerva.util.Base36;
+import net.spirangle.sphinx.CustomHtml;
+import net.spirangle.sphinx.R;
+import net.spirangle.sphinx.Symbol;
 
 
 public class TextActivity extends AstroActivity implements ViewBinder, OnItemClickListener, OnItemLongClickListener, OnItemSelectedListener {

@@ -1,7 +1,7 @@
 package net.spirangle.sphinx.astro;
 
-import static net.spirangle.sphinx.AstrologyProperties.*;
-import static net.spirangle.sphinx.SphinxProperties.*;
+import static net.spirangle.sphinx.config.AstrologyProperties.*;
+import static net.spirangle.sphinx.config.SphinxProperties.*;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -17,7 +17,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 import net.spirangle.sphinx.*;
 import net.spirangle.sphinx.Horoscope.Calendar;
-import net.spirangle.sphinx.HttpClient.RequestListener;
+import net.spirangle.sphinx.util.HttpClient;
+import net.spirangle.sphinx.util.HttpClient.RequestListener;
 
 import org.json.JSONObject;
 

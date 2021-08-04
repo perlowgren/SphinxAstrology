@@ -1,5 +1,7 @@
-package net.spirangle.sphinx;
+package net.spirangle.sphinx.config;
 
+
+import net.spirangle.sphinx.BuildConfig;
 
 public class SphinxProperties {
     public static final String APP     = "sphinx";

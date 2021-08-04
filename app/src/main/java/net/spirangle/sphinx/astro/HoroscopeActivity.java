@@ -1,8 +1,8 @@
 package net.spirangle.sphinx.astro;
 
-import static net.spirangle.sphinx.AstrologyProperties.*;
-import static net.spirangle.sphinx.SphinxProperties.APP;
-import static net.spirangle.sphinx.SphinxProperties.EXTRA_RADIX1;
+import static net.spirangle.sphinx.config.AstrologyProperties.*;
+import static net.spirangle.sphinx.config.SphinxProperties.APP;
+import static net.spirangle.sphinx.config.SphinxProperties.EXTRA_RADIX1;
 
 import android.content.Intent;
 import android.database.Cursor;

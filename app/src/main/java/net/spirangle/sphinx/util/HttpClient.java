@@ -1,6 +1,6 @@
-package net.spirangle.sphinx;
+package net.spirangle.sphinx.util;
 
-import static net.spirangle.sphinx.SphinxProperties.APP;
+import static net.spirangle.sphinx.config.SphinxProperties.APP;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -8,6 +8,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
+
+import net.spirangle.sphinx.KeyValue;
 
 import java.io.*;
 import java.net.*;
@@ -32,24 +34,22 @@ public class HttpClient {
     private static final String POST = "POST";
     private static final String PUT = "PUT";
 
-    private static HttpClient instance = null;
-
     public interface RequestListener {
         void result(Map<String,List<String>> headers,String data,int status,long id,Object object);
     }
 
-    private final class Request extends AsyncTask<String,Void,String> {
-        private HttpClient client;
-        private RequestListener listener;
+    private static final class Request extends AsyncTask<String,Void,String> {
+        private final HttpClient client;
+        private final RequestListener listener;
         private List<KeyValue> headers = null;
         private Map<String,List<String>> responseHeaders = null;
-        private String url;
-        private long id;
-        private Object object;
+        private final String url;
+        private final long id;
+        private final Object object;
         private String query = null;
         private int status = -1;
-        private boolean write;
-        private boolean read;
+        private final boolean write;
+        private final boolean read;
 
         private Request(HttpClient client,RequestListener listener,
                         List<KeyValue> headers,
@@ -213,11 +213,10 @@ public class HttpClient {
     }
 
     public static HttpClient getInstance(Context context) {
-        if(instance==null) instance = new HttpClient(context.getApplicationContext());
-        return instance;
+        return new HttpClient(context.getApplicationContext());
     }
 
-    private Context context;
+    private final Context context;
     private CookieManager cookies;
     private List<KeyValue> headers = null;
     private List<KeyValue> params = null;

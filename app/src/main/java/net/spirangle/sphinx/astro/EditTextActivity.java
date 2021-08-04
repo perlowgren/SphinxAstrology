@@ -1,6 +1,6 @@
 package net.spirangle.sphinx.astro;
 
-import static net.spirangle.sphinx.SphinxProperties.*;
+import static net.spirangle.sphinx.config.SphinxProperties.*;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -15,8 +15,14 @@ import android.widget.*;
 
 import androidx.core.content.res.ResourcesCompat;
 
-import net.spirangle.sphinx.*;
-import net.spirangle.sphinx.HttpClient.RequestListener;
+import net.spirangle.minerva.markdown.Markdown;
+import net.spirangle.minerva.util.Base36;
+import net.spirangle.sphinx.CustomHtml;
+import net.spirangle.sphinx.Key;
+import net.spirangle.sphinx.R;
+import net.spirangle.sphinx.Symbol;
+import net.spirangle.sphinx.util.HttpClient;
+import net.spirangle.sphinx.util.HttpClient.RequestListener;
 
 import org.json.JSONObject;
 

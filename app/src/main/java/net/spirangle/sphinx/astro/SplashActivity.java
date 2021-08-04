@@ -1,6 +1,6 @@
 package net.spirangle.sphinx.astro;
 
-import static net.spirangle.sphinx.SphinxProperties.*;
+import static net.spirangle.sphinx.config.SphinxProperties.*;
 
 import android.content.Intent;
 import android.os.Bundle;

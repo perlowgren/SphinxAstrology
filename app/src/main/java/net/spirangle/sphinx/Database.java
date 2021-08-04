@@ -1,6 +1,6 @@
 package net.spirangle.sphinx;
 
-import static net.spirangle.sphinx.SphinxProperties.APP;
+import static net.spirangle.sphinx.config.SphinxProperties.APP;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import net.spirangle.minerva.util.Regex;
 
 import java.util.regex.Pattern;
 

@@ -1,6 +1,6 @@
 package net.spirangle.sphinx;
 
-import static net.spirangle.sphinx.SphinxProperties.*;
+import static net.spirangle.sphinx.config.SphinxProperties.*;
 
 import android.content.Context;
 import android.content.Intent;

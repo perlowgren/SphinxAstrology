@@ -1,4 +1,4 @@
-package net.spirangle.sphinx;
+package net.spirangle.sphinx.config;
 
 import static net.spirangle.sphinx.Symbol.Attribute.CONCEPT_SHIFT;
 

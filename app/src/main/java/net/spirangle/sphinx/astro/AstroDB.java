@@ -1,6 +1,6 @@
 package net.spirangle.sphinx.astro;
 
-import static net.spirangle.sphinx.SphinxProperties.*;
+import static net.spirangle.sphinx.config.SphinxProperties.*;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,8 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.util.Log;
 
+import net.spirangle.minerva.util.Base36;
 import net.spirangle.sphinx.*;
-import net.spirangle.sphinx.HttpClient.RequestListener;
+import net.spirangle.sphinx.util.HttpClient;
+import net.spirangle.sphinx.util.HttpClient.RequestListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

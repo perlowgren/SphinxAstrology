@@ -1,6 +1,6 @@
 package net.spirangle.sphinx.astro;
 
-import static net.spirangle.sphinx.SphinxProperties.*;
+import static net.spirangle.sphinx.config.SphinxProperties.*;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,8 +10,8 @@ import android.view.MenuItem;
 
 import net.spirangle.sphinx.BasicActivity;
 import net.spirangle.sphinx.Horoscope;
-import net.spirangle.sphinx.HttpClient;
 import net.spirangle.sphinx.R;
+import net.spirangle.sphinx.util.HttpClient;
 
 import org.json.JSONObject;
 

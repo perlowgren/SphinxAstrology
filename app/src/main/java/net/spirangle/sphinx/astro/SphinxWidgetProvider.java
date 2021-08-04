@@ -1,7 +1,7 @@
 package net.spirangle.sphinx.astro;
 
-import static net.spirangle.sphinx.AstrologyProperties.*;
-import static net.spirangle.sphinx.SphinxProperties.*;
+import static net.spirangle.sphinx.config.AstrologyProperties.*;
+import static net.spirangle.sphinx.config.SphinxProperties.*;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
