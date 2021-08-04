@@ -12,9 +12,8 @@ public class SphinxProperties {
     public static final double GMT_LON   = 0.0;
     public static final double GMT_LAT   = 51.0+(28.0/60.0)+(38.0/3600.0);
 
-    public static final String CLIENT_ID           = "<secret>"; //TODO
-    public static final String SERVER_CLIENT_ID    = "<secret>";
-    public static final String GOOGLE_MAPS_API_KEY = "<secret>";
+    public static final String SERVER_CLIENT_ID      = "50128090633-ip543e06k8uq7g203tmoonoeslsi25p6.apps.googleusercontent.com";
+    public static final String GOOGLE_MAPS_API_KEY   = BuildConfig.MAPS_API_KEY;
 
     public static final int ACTIVITY_HOROSCOPE    = 1;
     public static final int ACTIVITY_PROFILES     = 2;
