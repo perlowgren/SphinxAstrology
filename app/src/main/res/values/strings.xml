@@ -6,7 +6,7 @@
 	<string name="next">Next</string>
 	<string name="previous">Previous</string>
 
-	<string name="server_client_id">50128090633-ip543e06k8uq7g203tmoonoeslsi25p6.apps.googleusercontent.com</string>
+	<string name="server_client_id" translatable="false">50128090633-ip543e06k8uq7g203tmoonoeslsi25p6.apps.googleusercontent.com</string>
 
 	<string name="spirangle">Spirangle Studio</string>
 	<string name="spirangle_presents">Spirangle Presents</string>
@@ -69,25 +69,25 @@
 	<string name="menu_synastry_chart">Synastry</string>
 	<string name="menu_transit_chart">Transit</string>
 
-	<string name="icon_bold">&#xE238;</string>
-	<string name="icon_italic">&#xE23F;</string>
-	<string name="icon_underline">&#xE249;</string>
-	<string name="icon_strike">&#xE257;</string>
-	<string name="icon_code">&#xE86F;</string>
-	<string name="icon_link">&#xE250;</string>
-	<string name="icon_picture">&#xE410;</string>
-	<string name="icon_ol">&#xE242;</string>
-	<string name="icon_ul">&#xE241;</string>
-	<string name="icon_align_center">&#xE234;</string>
-	<string name="icon_align_justify">&#x235;</string>
-	<string name="icon_align_left">&#xE236;</string>
-	<string name="icon_align_right">&#xE237;</string>
-	<string name="icon_help">&#xE8FD;</string>
-	<string name="icon_globe">&#xE894;</string>
-	<string name="icon_publish">&#xE255;</string>
-	<string name="icon_comment">&#xE24C;</string>
-	<string name="icon_place">&#xE55F;</string>
-	<string name="icon_map">&#xE55B;</string>
+	<string name="icon_bold" translatable="false">&#xE238;</string>
+	<string name="icon_italic" translatable="false">&#xE23F;</string>
+	<string name="icon_underline" translatable="false">&#xE249;</string>
+	<string name="icon_strike" translatable="false">&#xE257;</string>
+	<string name="icon_code" translatable="false">&#xE86F;</string>
+	<string name="icon_link" translatable="false">&#xE250;</string>
+	<string name="icon_picture" translatable="false">&#xE410;</string>
+	<string name="icon_ol" translatable="false">&#xE242;</string>
+	<string name="icon_ul" translatable="false">&#xE241;</string>
+	<string name="icon_align_center" translatable="false">&#xE234;</string>
+	<string name="icon_align_justify" translatable="false">&#x235;</string>
+	<string name="icon_align_left" translatable="false">&#xE236;</string>
+	<string name="icon_align_right" translatable="false">&#xE237;</string>
+	<string name="icon_help" translatable="false">&#xE8FD;</string>
+	<string name="icon_globe" translatable="false">&#xE894;</string>
+	<string name="icon_publish" translatable="false">&#xE255;</string>
+	<string name="icon_comment" translatable="false">&#xE24C;</string>
+	<string name="icon_place" translatable="false">&#xE55F;</string>
+	<string name="icon_map" translatable="false">&#xE55B;</string>
 
 	<string name="msgbox_title_initial">Sphinx Astrology</string>
 	<string name="msgbox_initial"><![CDATA[
