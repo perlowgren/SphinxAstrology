@@ -8,8 +8,8 @@
 
 	<string name="server_client_id" translatable="false">50128090633-ip543e06k8uq7g203tmoonoeslsi25p6.apps.googleusercontent.com</string>
 
-	<string name="spirangle">Spirangle Studio</string>
-	<string name="spirangle_presents">Spirangle Presents</string>
+	<string name="spirangle_studio">Spirangle Studio</string>
+	<string name="presents">Presents</string>
 
 	<string name="title_app">Sphinx Astrology</string>
 	<string name="title_profiles">Profiles</string>
