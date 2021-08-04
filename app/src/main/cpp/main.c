@@ -170,12 +170,12 @@ JNIEXPORT void JNICALL Java_net_spirangle_sphinx_Horoscope_calculateJNI(JNIEnv *
         len     = (*env)->GetArrayLength(env,jd);
         darr    = (*env)->GetDoubleArrayElements(env,jd,0);
 
-        second  = (int)darr[0];
-        lon     = (int)darr[1];
+        second  = (double)darr[0];
+        lon     = (double)darr[1];
         lon     = -lon;
-        lat     = (int)darr[2];
-        tz      = (int)darr[3];
-        dst     = (int)darr[4];
+        lat     = (double)darr[2];
+        tz      = (double)darr[3];
+        dst     = (double)darr[4];
 
         (*env)->ReleaseDoubleArrayElements(env,jd,darr,0);
     }
