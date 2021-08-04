@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/nav_graph"
         app:startDestination="@id/splashActivity">
   <activity
           android:id="@+id/splashActivity"
-          android:name="net.spirangle.sphinx.astro.SplashActivity"
+          android:name="net.spirangle.sphinx.activities.SplashActivity"
           android:label="SplashActivity">
     <action
             android:id="@+id/action_global_horoscopeActivity"
@@ -14,7 +13,7 @@
   </activity>
   <activity
           android:id="@+id/horoscopeActivity"
-          android:name="net.spirangle.sphinx.astro.HoroscopeActivity"
+          android:name="net.spirangle.sphinx.activities.HoroscopeActivity"
           android:label="HoroscopeActivity">
     <action
             android:id="@+id/action_global_profile"
@@ -31,7 +30,7 @@
   </activity>
   <activity
           android:id="@+id/profilesActivity"
-          android:name="net.spirangle.sphinx.astro.ProfilesActivity"
+          android:name="net.spirangle.sphinx.activities.ProfilesActivity"
           android:label="ProfilesActivity">
     <action
             android:id="@+id/action_global_horoscope"
@@ -42,7 +41,7 @@
   </activity>
   <activity
           android:id="@+id/editProfileActivity"
-          android:name="net.spirangle.sphinx.astro.EditProfileActivity"
+          android:name="net.spirangle.sphinx.activities.EditProfileActivity"
           android:label="EditProfileActivity">
     <action
             android:id="@+id/action_global_profile"
@@ -50,14 +49,14 @@
   </activity>
   <activity
           android:id="@+id/settingsActivity"
-          android:name="net.spirangle.sphinx.astro.SettingsActivity"
+          android:name="net.spirangle.sphinx.activities.SettingsActivity"
           android:label="SettingsActivity" />
   <activity
           android:id="@+id/helpActivity"
-          android:name="net.spirangle.sphinx.astro.HelpActivity"
+          android:name="net.spirangle.sphinx.activities.HelpActivity"
           android:label="HelpActivity" />
   <activity
           android:id="@+id/textActivity"
-          android:name="net.spirangle.sphinx.astro.TextActivity"
+          android:name="net.spirangle.sphinx.activities.TextActivity"
           android:label="TextActivity" />
 </navigation>

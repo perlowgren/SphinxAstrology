@@ -1,8 +1,8 @@
 package net.spirangle.sphinx.config;
 
-import static net.spirangle.sphinx.Symbol.Attribute.CONCEPT_SHIFT;
+import static net.spirangle.sphinx.astro.Symbol.Attribute.CONCEPT_SHIFT;
 
-import net.spirangle.sphinx.Symbol.Concept;
+import net.spirangle.sphinx.astro.Symbol.Concept;
 
 public class AstrologyProperties {
     /* Values in the order of libastro.so (must correspond identically): */

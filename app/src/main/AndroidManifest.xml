@@ -20,7 +20,7 @@
           android:supportsRtl="true">
 
     <activity
-            android:name="net.spirangle.sphinx.astro.SplashActivity"
+            android:name="net.spirangle.sphinx.activities.SplashActivity"
             android:theme="@style/SphinxTheme.Splash"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait"
@@ -33,7 +33,7 @@
     </activity>
 
     <activity
-            android:name="net.spirangle.sphinx.astro.HoroscopeActivity"
+            android:name="net.spirangle.sphinx.activities.HoroscopeActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
             >
@@ -43,7 +43,7 @@
     </activity>
 
     <activity
-            android:name="net.spirangle.sphinx.astro.ProfilesActivity"
+            android:name="net.spirangle.sphinx.activities.ProfilesActivity"
             android:label="@string/title_profiles"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
@@ -56,7 +56,7 @@
     </activity>
 
     <activity
-            android:name="net.spirangle.sphinx.astro.EditProfileActivity"
+            android:name="net.spirangle.sphinx.activities.EditProfileActivity"
             android:label="@string/title_edit_profile"
             android:permission="android.permission.INTERNET"
             android:windowSoftInputMode="stateAlwaysHidden"
@@ -76,7 +76,7 @@
     </activity>
 
     <activity
-            android:name="net.spirangle.sphinx.astro.TextActivity"
+            android:name="net.spirangle.sphinx.activities.TextActivity"
             android:label="@string/title_text"
             android:permission="android.permission.INTERNET"
             android:screenOrientation="portrait"
@@ -95,7 +95,7 @@
     </activity>
 
     <activity
-            android:name="net.spirangle.sphinx.astro.EditTextActivity"
+            android:name="net.spirangle.sphinx.activities.EditTextActivity"
             android:label="@string/title_edit_text"
             android:permission="android.permission.INTERNET"
             android:windowSoftInputMode="stateAlwaysHidden"
@@ -116,7 +116,7 @@
     </activity>
 
     <activity
-            android:name="net.spirangle.sphinx.astro.SettingsActivity"
+            android:name="net.spirangle.sphinx.activities.SettingsActivity"
             android:label="@string/title_settings"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait"
@@ -130,7 +130,7 @@
     </activity>
 
     <activity
-            android:name="net.spirangle.sphinx.astro.HelpActivity"
+            android:name="net.spirangle.sphinx.activities.HelpActivity"
             android:label="@string/title_help"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
@@ -141,7 +141,7 @@
       </intent-filter>
     </activity>
 
-    <receiver android:name="net.spirangle.sphinx.astro.SphinxWidgetProvider">
+    <receiver android:name="net.spirangle.sphinx.widgets.SphinxWidgetProvider">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
       </intent-filter>

@@ -56,33 +56,33 @@
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 					>
-						<net.spirangle.sphinx.astro.WheelGraphView
+						<net.spirangle.sphinx.views.WheelGraphView
 							android:id="@+id/wheel_graph_view"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							style="@style/SphinxGraphView"
 						/>
-						<net.spirangle.sphinx.astro.PlanetsView
+						<net.spirangle.sphinx.views.PlanetsView
 							android:id="@+id/planets_view"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 						/>
-						<net.spirangle.sphinx.astro.AspectTableView
+						<net.spirangle.sphinx.views.AspectTableView
 							android:id="@+id/aspect_table_view"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 						/>
-						<net.spirangle.sphinx.astro.AspectListView
+						<net.spirangle.sphinx.views.AspectListView
 							android:id="@+id/aspect_list_view"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 						/>
-						<net.spirangle.sphinx.astro.AspectPatternsView
+						<net.spirangle.sphinx.views.AspectPatternsView
 							android:id="@+id/aspect_patterns_view"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 						/>
-						<net.spirangle.sphinx.astro.ArabicPartsView
+						<net.spirangle.sphinx.views.ArabicPartsView
 							android:id="@+id/arabic_parts_view"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
