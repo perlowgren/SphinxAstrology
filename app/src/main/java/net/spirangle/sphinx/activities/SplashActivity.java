@@ -40,35 +40,28 @@ public class SplashActivity extends AppCompatActivity implements DatabaseListene
         ll.addView(splashView);
 
         Intent i = getIntent();
-        Horoscope h = (Horoscope)i.getParcelableExtra(EXTRA_RADIX1);
+        Horoscope h = i.getParcelableExtra(EXTRA_RADIX1);
         int g = i.getIntExtra(EXTRA_GRAPH,-1);
 
         intent = new Intent(this,HoroscopeActivity.class);
         if(h!=null) intent.putExtra(EXTRA_RADIX1,h);
         if(g!=-1) intent.putExtra(EXTRA_GRAPH,g);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true) {
-                    try {
-                        Thread.sleep(50);
-                    } catch(Exception e) {}
-                    runOnUiThread(SplashActivity.this);
-                    if(installProgress>=1.0f) break;
-                }
-            }
+        new Thread(() -> {
+            do {
+                try {
+                    Thread.sleep(50);
+                } catch(Exception e) {}
+                runOnUiThread(SplashActivity.this);
+            } while(installProgress<1.0f);
         }).start();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Make certain the AstroDB is initiated as db instance:
-                AstroDB db = AstroDB.getInstance(SplashActivity.this,SplashActivity.this);
-                long id = db.queryId(Database.TableDatabase.table,null);
-                if(db.getProgress()>=1.0f)
-                    installProgress = 1.0f;
-            }
+        new Thread(() -> {
+            // Make certain the AstroDB is initiated as db instance:
+            AstroDB db = AstroDB.getInstance(SplashActivity.this,SplashActivity.this);
+            long id = db.queryId(Database.TableDatabase.table,null);
+            if(db.getProgress()>=1.0f)
+                installProgress = 1.0f;
         }).start();
     }
 

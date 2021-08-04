@@ -25,8 +25,8 @@ public abstract class Database extends SQLiteOpenHelper {
 
 //	private static final Pattern comments = Pattern.compile("\/\*.*?\*\/|--.*?$",Pattern.MULTILINE|Pattern.DOTALL);
 
-    public static interface DatabaseListener {
-        public void onDatabaseInstallProgress(String label,float progress);
+    public interface DatabaseListener {
+        void onDatabaseInstallProgress(String label,float progress);
     }
 
     public static class Table {
