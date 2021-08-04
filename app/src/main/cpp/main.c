@@ -74,7 +74,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm,void *reserved) {
     return JNI_VERSION_1_6; /* the required JNI version */
 }
 
-JNIEXPORT void JNICALL Java_net_spirangle_sphinx_Horoscope_calculateJNI(JNIEnv *env,jobject jthis,jintArray ji,jdoubleArray jd) {
+JNIEXPORT void JNICALL Java_net_spirangle_sphinx_astro_Horoscope_calculateJNI(JNIEnv *env,jobject jthis,jintArray ji,jdoubleArray jd) {
 //    const char *data;
 //    char lon_arg[33],lat_arg[33],dst_arg[33],deg[33];
     int i,j,x,y,n,r;
