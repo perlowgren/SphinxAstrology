@@ -1,0 +1,43 @@
+
+Order allow,deny
+Allow from all
+
+Header add "disablevcache" "true"
+
+RewriteEngine on
+
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
+
+#RewriteCond %{THE_REQUEST} \.php [NC]
+#RewriteRule \.php$ - [F,NC,L]
+
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [NC,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([a-z]+?)(/.*?)?$ $1.php?$2 [NC,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ - [L] 
+
+ErrorDocument 400 /api/v1/.error.php?400
+ErrorDocument 401 /api/v1/.error.php?401
+ErrorDocument 402 /api/v1/.error.php?402
+ErrorDocument 403 /api/v1/.error.php?403
+ErrorDocument 404 /api/v1/.error.php?404
+ErrorDocument 405 /api/v1/.error.php?405
+ErrorDocument 406 /api/v1/.error.php?406
+ErrorDocument 407 /api/v1/.error.php?407
+ErrorDocument 408 /api/v1/.error.php?408
+ErrorDocument 409 /api/v1/.error.php?409
+ErrorDocument 410 /api/v1/.error.php?410
+ErrorDocument 411 /api/v1/.error.php?411
+ErrorDocument 412 /api/v1/.error.php?412
+ErrorDocument 413 /api/v1/.error.php?413
+ErrorDocument 414 /api/v1/.error.php?414
+ErrorDocument 415 /api/v1/.error.php?415
+ErrorDocument 416 /api/v1/.error.php?416
+ErrorDocument 417 /api/v1/.error.php?417
+
