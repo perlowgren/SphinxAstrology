@@ -3,10 +3,11 @@
 /.data/
 /gradle/
 /local.properties
-/.idea/
+.idea/
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 /google-services.json
+/www/api/v1/.config.php
