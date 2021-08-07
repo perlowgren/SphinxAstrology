@@ -11,7 +11,7 @@ import android.widget.ScrollView;
 
 
 public abstract class TableView extends View implements GestureDetector.OnGestureListener {
-    private static final String TAG = "TableView";
+    private static final String TAG = TableView.class.getSimpleName();
 
     public class MapRectF extends RectF {
         public int index = 0;

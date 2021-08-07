@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AstroActivity extends BasicActivity {
-    private static final String TAG = "AstroActivity";
+    private static final String TAG = AstroActivity.class.getSimpleName();
 
     public AstroActivity() {
         super();

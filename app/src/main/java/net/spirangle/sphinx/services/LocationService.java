@@ -28,7 +28,7 @@ import java.util.Locale;
 
 
 public class LocationService implements LocationListener {
-    private static final String TAG = "LocationService";
+    private static final String TAG = LocationService.class.getSimpleName();
 
     public static final String GOOGLE_MAPS_API_TIME_ZONE_URL = "https://maps.googleapis.com/maps/api/timezone/json";
     public static final String GOOGLE_MAPS_API_GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
@@ -48,8 +48,6 @@ public class LocationService implements LocationListener {
         public String timeZoneId = null;
         public String timeZoneName = null;
     }
-
-    ;
 
     public interface AddressReceiver {
         void receive(List<Address> addresses,int status);

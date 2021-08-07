@@ -8,7 +8,7 @@ import net.spirangle.sphinx.R;
 
 
 public class SettingsActivity extends AstroActivity {
-    private static final String TAG = "SettingsActivity";
+    private static final String TAG = SettingsActivity.class.getSimpleName();
 
     public SettingsActivity() {
         create_flags = ACTIONBAR_TITLE|NAVIGATION_ICON_BACK;

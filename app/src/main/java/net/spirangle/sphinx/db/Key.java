@@ -10,7 +10,7 @@ import java.util.Random;
 
 
 public class Key {
-    private static final String TAG = "Key";
+    private static final String TAG = Key.class.getSimpleName();
 
     public static final int USER = 0;
     public static final int PROFILE = 2;

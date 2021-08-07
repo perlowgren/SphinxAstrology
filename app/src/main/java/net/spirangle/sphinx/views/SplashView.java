@@ -13,7 +13,7 @@ import net.spirangle.sphinx.R;
 
 
 public class SplashView extends View {
-    private static final String TAG = "SplashView";
+    private static final String TAG = SplashView.class.getSimpleName();
 
     private Paint paint = new Paint();
     private String spirangleStudio = null;

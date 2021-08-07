@@ -16,7 +16,7 @@ import net.spirangle.sphinx.astro.Symbol;
 
 
 public class AspectPatternsView extends HoroscopeView {
-    private static final String TAG = "AspectPatternsView";
+    private static final String TAG = AspectPatternsView.class.getSimpleName();
 
     public AspectPatternsView(Context context) { super(context); }
 

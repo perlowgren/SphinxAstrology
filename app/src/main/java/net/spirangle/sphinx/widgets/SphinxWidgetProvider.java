@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -27,7 +28,7 @@ import java.util.Calendar;
 
 
 public class SphinxWidgetProvider extends AppWidgetProvider {
-    private static final String TAG = "SphinxWidgetProvider";
+    private static final String TAG = SphinxWidgetProvider.class.getSimpleName();
 
     public static final double DTR = 0.017453292519943295769236907684886;
     public static final double RTD = 57.295779513082320876798154814105;
@@ -60,7 +61,10 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
     };
 
     protected static final int[] aspectColors = {
-        0xff00ff00,0xffcc0099,0xff00cc99,0xffcccc00,0xffcc0000,0xff99cc00,0xff00cc00,0xffcc9900,0xffff0000,0xff0000ff,0xffff0099,0xffff0099,0xffcc9900
+        0xff00ff00,0xffcc0099,0xff00cc99,0xffcccc00,
+        0xffcc0000,0xff99cc00,0xff00cc00,0xffcc9900,
+        0xffff0000,0xff0000ff,0xffff0099,0xffff0099,
+        0xffcc9900
     };
 
     private static boolean aspectShow[] = {
@@ -368,7 +372,6 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context,AppWidgetManager manager,int[] widgetIds) {
         int i, id;
-
         Horoscope h = new Horoscope();
         LocationService ls = LocationService.getInstance(context);
         if(ls.location!=null) {

@@ -15,7 +15,7 @@ import net.spirangle.sphinx.astro.Symbol;
 
 
 public class AspectTableView extends HoroscopeView {
-    private static final String TAG = "AspectTableView";
+    private static final String TAG = AspectTableView.class.getSimpleName();
 
     private static final int columns = 3;
     private static final float spacing = 5.0f;

@@ -37,7 +37,7 @@ import java.util.Locale;
 
 
 public class HoroscopeActivity extends AstroActivity implements SymbolListener {
-    private static final String TAG = "HoroscopeActivity";
+    private static final String TAG = HoroscopeActivity.class.getSimpleName();
 
     private static final String[] moonPhasesUnicode = {
         "&#x1F315;","&#x1F316;","&#x1F317;","&#x1F318;","&#x1F311;","&#x1F312;","&#x1F313;","&#x1F314;",

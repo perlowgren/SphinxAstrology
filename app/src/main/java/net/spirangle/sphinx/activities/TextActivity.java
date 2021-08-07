@@ -26,7 +26,7 @@ import net.spirangle.sphinx.text.CustomHtml;
 
 
 public class TextActivity extends AstroActivity implements ViewBinder, OnItemClickListener, OnItemLongClickListener, OnItemSelectedListener {
-    private static final String TAG = "TextActivity";
+    private static final String TAG = TextActivity.class.getSimpleName();
 
     private MenuItem menuEdit = null;
     private MenuItem menuNew = null;

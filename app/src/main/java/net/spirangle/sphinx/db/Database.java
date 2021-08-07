@@ -18,7 +18,7 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 public abstract class Database extends SQLiteOpenHelper {
-    private static final String TAG = "Database";
+    private static final String TAG = Database.class.getSimpleName();
 
     private static final Pattern split = Pattern.compile(";\n+");
     private static final Pattern newLines = Pattern.compile("\\\\n");

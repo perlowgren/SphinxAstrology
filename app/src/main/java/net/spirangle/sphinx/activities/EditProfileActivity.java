@@ -27,14 +27,11 @@ import net.spirangle.sphinx.services.LocationService;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 
-public class EditProfileActivity extends AstroActivity implements RequestListener {
-    private static final String TAG = "EditProfileActivity";
+public class EditProfileActivity extends AstroActivity {
+    private static final String TAG = EditProfileActivity.class.getSimpleName();
 
     private EditText editName;
     private EditText editDateTime;
@@ -46,7 +43,7 @@ public class EditProfileActivity extends AstroActivity implements RequestListene
     private CheckBox checkJulian;
     private CheckBox checkBCE;
 
-    private long id = -1l;
+    private long id = -1L;
     private Key key = null;
     private String name = null;
     private String dateTimeText = null;
@@ -78,7 +75,6 @@ public class EditProfileActivity extends AstroActivity implements RequestListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-
             editName = (EditText)findViewById(R.id.edit_name);
             editDateTime = (EditText)findViewById(R.id.edit_date_time);
             editLocation = (EditText)findViewById(R.id.edit_location);
@@ -172,26 +168,21 @@ public class EditProfileActivity extends AstroActivity implements RequestListene
 
                 }
             });
-
         } catch(Exception e) {
             Log.e(APP,TAG+".onCreate",e);
         }
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.menu_ok:
-                Horoscope h = saveProfile();
-                openHoroscope(h,0);
-                setResult(RESULT_OK,null);
-                finish();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if(item.getItemId()==R.id.menu_ok) {
+            Horoscope h = saveProfile();
+            openHoroscope(h,0);
+            setResult(RESULT_OK,null);
+            finish();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
 	/*@Override
@@ -207,24 +198,6 @@ public class EditProfileActivity extends AstroActivity implements RequestListene
 		drawerLayout.closeDrawer(Gravity.LEFT);
 		return true;
 	}*/
-
-    @Override
-    public void result(Map<String,List<String>> headers,String data,int status,long id,Object object) {
-//Log.d(APP,TAG+".result(data: "+data+", status: "+status+")");
-        if(status==200 || status==201 || status==204) {
-            shortToast(R.string.toast_profile_saved);
-        } else {
-            String m = null;
-            try {
-                JSONObject json = new JSONObject(data);
-                m = json.optString("message",null);
-            } catch(Exception e) {
-                Log.e(APP,TAG+".result",e);
-            }
-            if(m!=null) shortToast(getString(R.string.toast_save_failed)+": "+m);
-            else shortToast(R.string.toast_save_failed);
-        }
-    }
 
     public boolean loadProfile(long id) {
         if(id==-1l) return false;
@@ -256,15 +229,15 @@ public class EditProfileActivity extends AstroActivity implements RequestListene
         int ctype = (flags&0x0f);
         cur.close();
 
+        Locale l = Locale.getDefault();
         String dt;
         if((flags&Horoscope.TIME_UNKNOWN)==Horoscope.TIME_UNKNOWN) {
             timeUnknown = true;
-            dt = String.format("%1$d-%2$02d-%3$02d",year,mon,day);
+            dt = String.format(l,"%1$d-%2$02d-%3$02d",year,mon,day);
         } else {
             timeUnknown = false;
-            if(sec==0) dt = String.format("%1$d-%2$02d-%3$02d %4$02d:%5$02d",year,mon,day,hour,min);
-            else
-                dt = String.format("%1$d-%2$02d-%3$02d %4$02d:%5$02d:%6$02d",year,mon,day,hour,min,sec);
+            if(sec==0) dt = String.format(l,"%1$d-%2$02d-%3$02d %4$02d:%5$02d",year,mon,day,hour,min);
+            else dt = String.format(l,"%1$d-%2$02d-%3$02d %4$02d:%5$02d:%6$02d",year,mon,day,hour,min,sec);
         }
 
         String loc = ln+", "+cc;
@@ -441,7 +414,7 @@ public class EditProfileActivity extends AstroActivity implements RequestListene
         Log.d(APP,TAG+".findLocation(location: \""+loc+"\")");
         hideKeyboard();
         if(loc==null || loc.equals("")) {
-            List<Address> addresses = new ArrayList<Address>();
+            List<Address> addresses = new ArrayList<>();
             Address addr = new Address(Locale.getDefault());
             addr.setLocality(getString(R.string.label_greenwich));
             addr.setCountryName(getString(R.string.label_gb));
@@ -528,7 +501,7 @@ Log.e(APP,TAG+".findLocation",e);
         String loc = null;
         List<Address> addresses = new ArrayList<Address>();
         Address addr;
-        for(int i = 0; !cur.isAfterLast(); ++i) {
+        while(!cur.isAfterLast()) {
             if(loc==null) {
                 loc = cur.getString(0);
                 if(loc==null || loc.length()==0) loc = cur.getString(1);
@@ -545,9 +518,7 @@ Log.e(APP,TAG+".findLocation",e);
             cur.moveToNext();
         }
         cur.close();
-        if(addresses.size()>0 &&
-           setLocations(loc,addresses)) return true;
-        return false;
+        return addresses.size()>0 && setLocations(loc,addresses);
     }
 
     public boolean setLocations(String loc,List<Address> addresses) {
@@ -592,9 +563,9 @@ Log.e(APP,TAG+".findLocation",e);
             countryCode = address.getCountryCode();
             longitude = address.getLongitude();
             latitude = address.getLatitude();
+            if(tzName==null)
+                requestTimeZone(address.getLongitude(),address.getLatitude());
         }
-        if(tzName==null)
-            requestTimeZone(address.getLongitude(),address.getLatitude());
     }
 
     private void requestTimeZone(final double lon,final double lat) {
@@ -638,7 +609,7 @@ Log.e(APP,TAG+".findLocation",e);
     public boolean loadTimeZone(double lon,double lat,long time,boolean local) {
         Locale locale = Locale.getDefault();
         long n = AstroDB.timestamp();
-        long t = 7l*24l*3600l;
+        long t = 7L*24L*3600L;
         String ts = "timestamp"+(local? "+offset" : "");
         AstroDB db = AstroDB.getInstance();
         Cursor cur = db.query("SELECT name,offset,dst FROM TimeZone WHERE "+

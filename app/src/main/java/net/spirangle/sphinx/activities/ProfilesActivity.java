@@ -40,8 +40,8 @@ import java.util.Map;
 
 public class ProfilesActivity extends AstroActivity implements OnQueryTextListener, ViewBinder,
                                                                OnItemClickListener, OnItemLongClickListener,
-                                                               OnItemSelectedListener, RequestListener {
-    private static final String TAG = "ProfilesActivity";
+                                                               OnItemSelectedListener {
+    private static final String TAG = ProfilesActivity.class.getSimpleName();
 
     private ListView listProfiles = null;
     private MenuItem searchItem = null;
@@ -188,24 +188,6 @@ public class ProfilesActivity extends AstroActivity implements OnQueryTextListen
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         Log.d(APP,TAG+".onNothingSelected()");
-    }
-
-    @Override
-    public void result(Map<String,List<String>> headers,String data,int status,long id,Object object) {
-//Log.d(APP,TAG+".result(data: "+data+", status: "+status+")");
-        if(status==200 || status==201 || status==204) {
-            shortToast(R.string.toast_profile_deleted);
-        } else {
-            String m = null;
-            try {
-                JSONObject json = new JSONObject(data);
-                m = json.optString("message",null);
-            } catch(Exception e) {
-                Log.e(APP,TAG+".result",e);
-            }
-            if(m!=null) shortToast(getString(R.string.toast_delete_failed)+": "+m);
-            else shortToast(R.string.toast_delete_failed);
-        }
     }
 
     private static final String[] fromColumns = {

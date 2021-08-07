@@ -19,7 +19,7 @@ import net.spirangle.sphinx.astro.Symbol;
 
 
 public class WheelGraphView extends HoroscopeView {
-    private static final String TAG = "WheelGraphView";
+    private static final String TAG = WheelGraphView.class.getSimpleName();
 
     public static final int RING = 0;
     public static final int RULER = 1;
@@ -60,7 +60,8 @@ public class WheelGraphView extends HoroscopeView {
     private static final int[] contentAspectColors = {0xff000000};
 
     private static final String[] moonPhasesUnicode = {
-        "\uD83C\uDF15","\uD83C\uDF16","\uD83C\uDF17","\uD83C\uDF18","\uD83C\uDF11","\uD83C\uDF12","\uD83C\uDF13","\uD83C\uDF14",
+        "\uD83C\uDF15","\uD83C\uDF16","\uD83C\uDF17","\uD83C\uDF18",
+        "\uD83C\uDF11","\uD83C\uDF12","\uD83C\uDF13","\uD83C\uDF14",
     };
 
     public class WheelRectF extends MapRectF {
@@ -193,8 +194,6 @@ public class WheelGraphView extends HoroscopeView {
             set(x,y,x+sz,y+sz);
         }
     }
-
-    ;
 
     private static float planetSizes[] = {
         0.03f,
@@ -828,8 +827,8 @@ public class WheelGraphView extends HoroscopeView {
     private void positionPlanet(Horoscope h,long id,float xc,float yc,WheelRectF[] pl,int p,double a,float sz,float r,int endp,int iter) {
 //Log.d(APP,TAG+".positionPlanet(p: "+p+", pa: "+pa[p]+", endp: "+endp+", iter: "+iter+")");
         WheelRectF r1 = pl[p];
-        float sz2 = sz/2.0f;
-        float sz3 = sz/10.0f;
+        float sz2 = sz*0.5f;
+        float sz3 = sz*0.1f;
         double a1 = (double)r1.angle+a;
         r1.left = xc-(float)Math.cos(a1)*r-sz2+sz3;
         r1.top = yc-(float)Math.sin(a1)*r-sz2+sz3;

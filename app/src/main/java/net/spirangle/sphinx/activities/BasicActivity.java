@@ -48,7 +48,7 @@ import java.util.Locale;
 
 
 public abstract class BasicActivity extends AppCompatActivity implements OnNavigationItemSelectedListener, CustomHtmlListener {
-    private static final String TAG = "BasicActivity";
+    private static final String TAG = BasicActivity.class.getSimpleName();
 
     public static class User {
         public long id;     /* User id in local database table */
@@ -383,7 +383,7 @@ public abstract class BasicActivity extends AppCompatActivity implements OnNavig
         AlertDialog.Builder dbld = new AlertDialog.Builder(this);
         if(title!=null) dbld.setTitle(title);
         dbld.setMessage(CustomHtml.fromHtml(message,CustomHtml.ALL,20.0f,null));
-        dbld.setPositiveButton(getString(R.string.button_ok),null/*
+        dbld.setPositiveButton(getString(R.string.ok),null/*
 			new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int button) {
 					dialog.dismiss();

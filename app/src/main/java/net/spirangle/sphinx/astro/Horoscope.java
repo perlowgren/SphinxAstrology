@@ -14,32 +14,19 @@ import net.spirangle.sphinx.db.Key;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 
 public class Horoscope implements Parcelable {
-    private static final String TAG = "Horoscope";
+    private static final String TAG = Horoscope.class.getSimpleName();
 
     public static final int GREGORIAN_CALENDAR = 0;
     public static final int JULIAN_CALENDAR = 1;
 
     public static final int TIME_UNKNOWN = 0x00000100;
     public static final int BCE = 0x00000200;
-
-    private static final String JSON_FORMAT = "{"+
-                                              "\"categories\":\"%1$d:%2$d\","+
-                                              "\"name\":%3$s,"+
-                                              "\"time\":\"%4$s%5$d-%6$02d-%7$02d %8$02d:%9$02d:%10$02d%11$s\","+
-                                              "\"longitude\":%12$d,"+
-                                              "\"latitude\":%13$d,"+
-                                              "\"timeZone\":%14$d,"+
-                                              "\"dst\":%15$d,"+
-                                              "\"sun\":%16$d,"+
-                                              "\"moon\":%17$d,"+
-                                              "\"ascendant\":%18$d,"+
-                                              "\"picture\":\"%19$s\","+
-                                              "\"flags\":%20$d"+
-                                              "}";
 
     public static class Calendar {
         public int year;
@@ -61,7 +48,7 @@ public class Horoscope implements Parcelable {
         }
 
         public static long secondsFromUnixEpoch(int y,int m,int d,int h,int n,int s) {
-            return (long)daysFromUnixEpoch(y,m,d)*86400l+(long)(h*3600+n*60+s);
+            return (long)daysFromUnixEpoch(y,m,d)*86400L+(h*3600L+n*60L+s);
         }
 
         public Calendar(int y,int m,int d,int h,int n,double s,int t) {
@@ -85,10 +72,17 @@ public class Horoscope implements Parcelable {
         }
 
         @Override
-        public String toString() { return formatDateTime(); }
+        public String toString() {
+            return formatDateTime();
+        }
 
         public String formatDate() {
             return String.format(Locale.ENGLISH,"%d-%02d-%02d",year,month,day);
+        }
+
+        public String formatFormalDate() {
+            String monthName = Symbol.getMonthName(month);
+            return String.format(Locale.ENGLISH,"%d %s %d",day,monthName,year);
         }
 
         public String formatTime() {
@@ -477,6 +471,8 @@ public class Horoscope implements Parcelable {
     public String getName() { return name; }
 
     public String getDateString() { return time.formatDate(); }
+
+    public String getFormalDateString() { return time.formatFormalDate(); }
 
     public String getTimeString() { return time.formatTime(); }
 

@@ -8,7 +8,7 @@ import net.spirangle.sphinx.astro.Symbol;
 
 
 public class HoroscopeView extends TableView {
-    private static final String TAG = "HoroscopeView";
+    private static final String TAG = HoroscopeView.class.getSimpleName();
 
     protected static final int[] planetColors = {0xff0000ff,0xffffff00,0xffff99ff,0xffff6600,0xffffcc00,0xffff0000,0xffff9966,0xffffcc99,0xff9999ff,0xff99ccff,0xffff66ff};
     protected static final int[] elementColors = {0xffff9999,0xff99ff99,0xffffff99,0xff9999ff};

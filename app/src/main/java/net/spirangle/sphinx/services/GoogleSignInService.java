@@ -17,7 +17,7 @@ import net.spirangle.sphinx.activities.BasicActivity;
 import java.util.Objects;
 
 public class GoogleSignInService {
-    private static final String TAG = "GoogleSignInService";
+    private static final String TAG = GoogleSignInService.class.getSimpleName();
 
     public GoogleSignInClient client = null;
     public String id;

@@ -6,7 +6,7 @@ import android.util.Log;
 
 
 public class WheelGraphPlanet {
-    private static final String TAG = "WheelGraphPlanet";
+    private static final String TAG = WheelGraphPlanet.class.getSimpleName();
 
     public static final float PI = (float)(Math.PI);
     public static final float PI2 = (float)(Math.PI*2.0);

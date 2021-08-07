@@ -16,7 +16,7 @@ import net.spirangle.sphinx.activities.BasicActivity;
 
 
 public class CustomHtml {
-    private static final String TAG = "CustomHtml";
+    private static final String TAG = CustomHtml.class.getSimpleName();
 
     public static final int SYMBOLS = 0x0001;
     public static final int ICONS = 0x0002;

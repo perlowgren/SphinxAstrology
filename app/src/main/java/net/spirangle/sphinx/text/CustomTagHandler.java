@@ -14,7 +14,7 @@ import android.util.Log;
 import org.xml.sax.XMLReader;
 
 public class CustomTagHandler implements Html.TagHandler {
-    private static final String TAG = "CustomTagHandler";
+    private static final String TAG = CustomTagHandler.class.getSimpleName();
 
     private static final int UL = 0;
     private static final int OL = 1;

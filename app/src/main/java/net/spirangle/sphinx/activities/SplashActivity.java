@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 
+import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 
 import net.spirangle.sphinx.astro.Horoscope;
@@ -18,7 +19,7 @@ import net.spirangle.sphinx.views.SplashView;
 
 
 public class SplashActivity extends AppCompatActivity implements DatabaseListener, Runnable {
-    private static final String TAG = "SplashActivity";
+    private static final String TAG = SplashActivity.class.getSimpleName();
 
     private Intent intent = null;
     private SplashView splashView;
@@ -77,6 +78,7 @@ public class SplashActivity extends AppCompatActivity implements DatabaseListene
         installProgress = progress;
     }
 
+    @UiThread
     @Override
     public void run() {
         Log.d(APP,TAG+".run(label: "+installLabel+", progress: "+installProgress+")");

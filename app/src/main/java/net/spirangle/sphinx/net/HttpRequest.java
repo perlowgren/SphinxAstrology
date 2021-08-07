@@ -15,7 +15,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 
 final class HttpRequest extends AsyncTask<String,Void,String> {
-    private static final String TAG = "HttpRequest";
+    private static final String TAG = HttpRequest.class.getSimpleName();
 
     private final HttpClient client;
     private final RequestListener listener;

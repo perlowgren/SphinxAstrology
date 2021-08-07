@@ -17,7 +17,7 @@ import java.util.List;
 
 
 public class HttpClient {
-    private static final String TAG = "HttpClient";
+    private static final String TAG = HttpClient.class.getSimpleName();
 
     public static class KeyValue {
         public final String key;

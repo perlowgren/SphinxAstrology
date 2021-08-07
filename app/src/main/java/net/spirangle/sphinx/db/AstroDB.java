@@ -24,8 +24,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class AstroDB extends Database implements RequestListener {
-    private static final String TAG = "AstroDB";
+public class AstroDB extends Database {
+    private static final String TAG = AstroDB.class.getSimpleName();
 
     private static final Map<String,String> astroDBFiles = new LinkedHashMap<>();
     static {

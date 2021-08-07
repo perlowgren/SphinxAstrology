@@ -17,7 +17,7 @@ import net.spirangle.sphinx.astro.Symbol;
 
 
 public class PlanetsView extends HoroscopeView {
-    private static final String TAG = "PlanetsView";
+    private static final String TAG = PlanetsView.class.getSimpleName();
 
     private static final int[] houses = {0,1,2,9,10,11};
     private static final int[] houseIds = {ASTRO_ASCENDANT,ASTRO_2ND_HOUSE,ASTRO_3RD_HOUSE,ASTRO_MC,ASTRO_11TH_HOUSE,ASTRO_12TH_HOUSE};

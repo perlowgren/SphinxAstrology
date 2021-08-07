@@ -33,17 +33,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 
-public class EditTextActivity extends AstroActivity implements RequestListener {
-    private static final String TAG = "EditTextActivity";
-
-    private static final String JSON_FORMAT = "{"+
-                                              "\"type\":\"symbol\","+
-                                              "\"symbol\":\"%1$s\","+
-                                              "\"title\":%2$s,"+
-                                              "\"text\":%3$s,"+
-                                              "\"language\":\"%4$s\","+
-                                              "\"flags\":%5$d"+
-                                              "}";
+public class EditTextActivity extends AstroActivity {
+    private static final String TAG = EditTextActivity.class.getSimpleName();
 
     private MenuItem menuDelete = null;
     private TextView textTitle;
@@ -212,26 +203,6 @@ public class EditTextActivity extends AstroActivity implements RequestListener {
     @Override
     public void onLinkClick(View view,String url) {
         Log.d(APP,TAG+".onLinkClick(TextView: "+(view instanceof TextView? "true" : "false")+", url: "+url+")");
-    }
-
-    @Override
-    public void result(Map<String,List<String>> headers,String data,int status,long id,Object object) {
-//Log.d(APP,TAG+".result(data: "+data+", status: "+status+")");
-        if(status==200 || status==201 || status==204) {
-            shortToast(R.string.toast_text_saved);
-        } else {
-            String m = null;
-            try {
-                JSONObject json = new JSONObject(data);
-                m = json.optString("message",null);
-            } catch(Exception e) {
-                Log.e(APP,TAG+".result",e);
-            }
-            if(m!=null) shortToast(getString(R.string.toast_save_failed)+": "+m);
-            else shortToast(R.string.toast_save_failed);
-        }
-        setResult(RESULT_OK,null);
-        finish();
     }
 
     public boolean loadText(long id) {

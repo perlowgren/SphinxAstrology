@@ -16,7 +16,7 @@ import net.spirangle.sphinx.astro.Symbol;
 
 
 public class ArabicPartsView extends HoroscopeView {
-    private static final String TAG = "ArabicPartsView";
+    private static final String TAG = ArabicPartsView.class.getSimpleName();
 
     public ArabicPartsView(Context context) { super(context); }
 

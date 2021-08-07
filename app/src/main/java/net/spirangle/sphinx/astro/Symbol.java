@@ -5,7 +5,7 @@ import static net.spirangle.sphinx.config.AstrologyProperties.*;
 import net.spirangle.minerva.util.Base36;
 
 public class Symbol {
-    private static final String TAG = "Symbol";
+    private static final String TAG = Symbol.class.getSimpleName();
 
     public interface SymbolListener {
         void onSymbolAttributeSelected(int id);
@@ -329,7 +329,9 @@ public class Symbol {
         public static final int CONCEPT_SHIFT = 16;
         public static final int CONCEPT_MASK = 0xffff0000;
 
-        public static final int valueOf(int id) { return (id&0x0000ffff); }
+        public static int valueOf(int id) {
+            return (id&0x0000ffff);
+        }
 
         public final int id;
         public final int list;
@@ -343,7 +345,9 @@ public class Symbol {
             index = -1;
         }
 
-        public void update() { index = _N[list]+value; }
+        public void update() {
+            index = _N[list]+value;
+        }
     }
 
     public static final class AttributeSet {
@@ -798,67 +802,31 @@ public class Symbol {
         }
 
         private Concept(int s,int f,int m,int a) {
-            id = _counter++;
-            system = s;
-            fmt = f;
-            mod = m;
-            number = 1;
-            c1 = a;
-            c2 = -1;
-            c3 = -1;
-            c4 = -1;
-            c5 = -1;
-            attributes = _A[id];
+            this(s,f,m,a,-1,-1,-1,-1,1);
         }
 
         private Concept(int s,int f,int m,int a,int b) {
-            id = _counter++;
-            system = s;
-            fmt = f;
-            mod = m;
-            number = 2;
-            c1 = a;
-            c2 = b;
-            c3 = -1;
-            c4 = -1;
-            c5 = -1;
-            attributes = _A[id];
+            this(s,f,m,a,b,-1,-1,-1,2);
         }
 
         private Concept(int s,int f,int m,int a,int b,int c) {
-            id = _counter++;
-            system = s;
-            fmt = f;
-            mod = m;
-            number = 3;
-            c1 = a;
-            c2 = b;
-            c3 = c;
-            c4 = -1;
-            c5 = -1;
-            attributes = _A[id];
+            this(s,f,m,a,b,c,-1,-1,3);
         }
 
         private Concept(int s,int f,int m,int a,int b,int c,int d) {
-            id = _counter++;
-            system = s;
-            fmt = f;
-            mod = m;
-            number = 4;
-            c1 = a;
-            c2 = b;
-            c3 = c;
-            c4 = d;
-            c5 = -1;
-            attributes = _A[id];
+            this(s,f,m,a,b,c,d,-1,4);
         }
 
         private Concept(int s,int f,int m,int a,int b,int c,int d,int e) {
+            this(s,f,m,a,b,c,d,e,5);
+        }
+
+        private Concept(int s,int f,int m,int a,int b,int c,int d,int e,int n) {
             id = _counter++;
             system = s;
             fmt = f;
             mod = m;
-            number = 5;
+            number = n;
             c1 = a;
             c2 = b;
             c3 = c;
@@ -868,18 +836,11 @@ public class Symbol {
         }
 
         public void connect() {
-            switch(number) {
-                case 5:
-                    fifth = _C[c5];
-                case 4:
-                    fourth = _C[c4];
-                case 3:
-                    third = _C[c3];
-                case 2:
-                    second = _C[c2];
-                case 1:
-                    first = _C[c1];
-            }
+            if(number>=1) first = _C[c1];
+            if(number>=2) second = _C[c2];
+            if(number>=3) third = _C[c3];
+            if(number>=4) fourth = _C[c4];
+            if(number>=5) fifth = _C[c5];
         }
 
         public void update() {
@@ -1245,7 +1206,7 @@ public class Symbol {
     private static int[] _L;     // Length of each group
     private static String[] _F;  // Symbol ouput formats
 
-    public static final void setStringData(String[][] data,String[] formats) {
+    public static void setStringData(String[][] data,String[] formats) {
         int i, j, n;
         String[] d;
         Attribute a;
@@ -1275,12 +1236,12 @@ public class Symbol {
             _C[i].update();
     }
 
-    public static final Concept getConcept(int id) {
+    public static Concept getConcept(int id) {
         if(id<0 || id>=_C.length) return null;
         return _C[id];
     }
 
-    public static final long makeId(int concept,int s1) {
+    public static long makeId(int concept,int s1) {
         if(concept>=0 && concept<_C.length) {
             Concept c = _C[concept];
             if(c.number==1) return c.makeId(s1);
@@ -1288,7 +1249,7 @@ public class Symbol {
         return -1L;
     }
 
-    public static final long makeId(int concept,int s1,int s2) {
+    public static long makeId(int concept,int s1,int s2) {
         if(concept>=0 && concept<_C.length) {
             Concept c = _C[concept];
             if(c.number==2) return c.makeId(s1,s2);
@@ -1297,7 +1258,7 @@ public class Symbol {
         return -1L;
     }
 
-    public static final long makeId(int concept,int s1,int s2,int s3) {
+    public static long makeId(int concept,int s1,int s2,int s3) {
         if(concept>=0 && concept<_C.length) {
             Concept c = _C[concept];
             if(c.number==3) return c.makeId(s1,s2,s3);
@@ -1307,7 +1268,7 @@ public class Symbol {
         return -1L;
     }
 
-    public static final long makeId(int concept,int s1,int s2,int s3,int s4) {
+    public static long makeId(int concept,int s1,int s2,int s3,int s4) {
         if(concept>=0 && concept<_C.length) {
             Concept c = _C[concept];
             if(c.number==4) return c.makeId(s1,s2,s3,s4);
@@ -1318,7 +1279,7 @@ public class Symbol {
         return -1L;
     }
 
-    public static final long makeId(int concept,int s1,int s2,int s3,int s4,int s5) {
+    public static long makeId(int concept,int s1,int s2,int s3,int s4,int s5) {
         if(concept>=0 && concept<_C.length) {
             Concept c = _C[concept];
 //Log.d(APP,TAG+".makeId(concept: "+concept+", s1: "+s1+", s2: "+s2+", s3: "+s3+", s4: "+s4+", s5: "+s5+")");
@@ -1331,256 +1292,256 @@ public class Symbol {
         return -1L;
     }
 
-    public static final long parseId(String str) {
+    public static long parseId(String str) {
         int i = str.indexOf('#');
         if(i>=0) str = str.substring(i+1);
         return Long.parseLong(str,16);
     }
 
-	/*public static final int symbolToElement(int s) {
+	/*public static int symbolToElement(int s) {
 		if(s<0 || s>=symbolToElement.length) return -1;
 		return symbolToElement[s];
 	}*/
 
-    public static final long getSystem(int s) { return makeId(Concept.SYM_SYSTEM,s); }
+    public static long getSystem(int s) { return makeId(Concept.SYM_SYSTEM,s); }
 
-    public static final long getDirection(int d) { return makeId(Concept.SYM_DIRECTION,d); }
+    public static long getDirection(int d) { return makeId(Concept.SYM_DIRECTION,d); }
 
-    public static final long getCalendar(int c) { return makeId(Concept.SYM_CALENDAR,c); }
+    public static long getCalendar(int c) { return makeId(Concept.SYM_CALENDAR,c); }
 
-    public static final long getMonth(int m) { return makeId(Concept.SYM_MONTH,m); }
+    public static long getMonth(int m) { return makeId(Concept.SYM_MONTH,m); }
 
-    public static final long getElement(int e) { return makeId(Concept.SYM_ELEMENT,e); }
+    public static long getElement(int e) { return makeId(Concept.SYM_ELEMENT,e); }
 
-    public static final long getPlanet(int p) { return makeId(Concept.SYM_PLANET,p); }
+    public static long getPlanet(int p) { return makeId(Concept.SYM_PLANET,p); }
 
-    public static final long getZodiac(int z) { return makeId(Concept.SYM_ZODIAC,z); }
+    public static long getZodiac(int z) { return makeId(Concept.SYM_ZODIAC,z); }
 
-    public static final long astrologyElement(int e) { return makeId(Concept.ASTRO_ELEMENT,e); }
+    public static long astrologyElement(int e) { return makeId(Concept.ASTRO_ELEMENT,e); }
 
-    public static final long astrologyQuality(int q) { return makeId(Concept.ASTRO_QUALITY,q); }
+    public static long astrologyQuality(int q) { return makeId(Concept.ASTRO_QUALITY,q); }
 
-    public static final long astrologyEnergy(int e) { return makeId(Concept.ASTRO_ENERGY,e); }
+    public static long astrologyEnergy(int e) { return makeId(Concept.ASTRO_ENERGY,e); }
 
-    public static final long astrologyZodiac(int z) { return makeId(Concept.ASTRO_ZODIAC,z); }
+    public static long astrologyZodiac(int z) { return makeId(Concept.ASTRO_ZODIAC,z); }
 
-    public static final long astrologyPlanet(int p) { return makeId(Concept.ASTRO_PLANET,p); }
+    public static long astrologyPlanet(int p) { return makeId(Concept.ASTRO_PLANET,p); }
 
-    public static final long astrologyMinorPlanet(int m) { return makeId(Concept.ASTRO_MPLANET,m); }
+    public static long astrologyMinorPlanet(int m) { return makeId(Concept.ASTRO_MPLANET,m); }
 
-    public static final long astrologyFixedStar(int s) { return makeId(Concept.ASTRO_FSTAR,s); }
+    public static long astrologyFixedStar(int s) { return makeId(Concept.ASTRO_FSTAR,s); }
 
-    public static final long astrologyHouse(int h) { return makeId(Concept.ASTRO_HOUSE,h); }
+    public static long astrologyHouse(int h) { return makeId(Concept.ASTRO_HOUSE,h); }
 
-    public static final long astrologyAspect(int a) { return makeId(Concept.ASTRO_ASPECT,a); }
+    public static long astrologyAspect(int a) { return makeId(Concept.ASTRO_ASPECT,a); }
 
-    public static final long astrologyAspectPattern(int p) { return makeId(Concept.ASTRO_ASPPAT,p); }
+    public static long astrologyAspectPattern(int p) { return makeId(Concept.ASTRO_ASPPAT,p); }
 
-    public static final long astrologyShaping(int s) { return makeId(Concept.ASTRO_SHAPING,s); }
+    public static long astrologyShaping(int s) { return makeId(Concept.ASTRO_SHAPING,s); }
 
-    public static final long astrologyFactor(int f) { return makeId(Concept.ASTRO_FACTOR,f); }
+    public static long astrologyFactor(int f) { return makeId(Concept.ASTRO_FACTOR,f); }
 
-    public static final long astrologyHouseSystem(int h) { return makeId(Concept.ASTRO_HSYSTEM,h); }
+    public static long astrologyHouseSystem(int h) { return makeId(Concept.ASTRO_HSYSTEM,h); }
 
-    public static final long astrologyPlanetInZodiac(int p,int z) { return makeId(Concept.ASTRO_PLZ,z,p); }
+    public static long astrologyPlanetInZodiac(int p,int z) { return makeId(Concept.ASTRO_PLZ,z,p); }
 
-    public static final long astrologyMinorPlanetInZodiac(int m,int z) { return makeId(Concept.ASTRO_MPZ,z,m); }
+    public static long astrologyMinorPlanetInZodiac(int m,int z) { return makeId(Concept.ASTRO_MPZ,z,m); }
 
-    public static final long astrologyFixedStarInZodiac(int s,int z) { return makeId(Concept.ASTRO_FSZ,z,s); }
+    public static long astrologyFixedStarInZodiac(int s,int z) { return makeId(Concept.ASTRO_FSZ,z,s); }
 
-    public static final long astrologyPlanetInHouse(int p,int h) { return makeId(Concept.ASTRO_PLH,h,p); }
+    public static long astrologyPlanetInHouse(int p,int h) { return makeId(Concept.ASTRO_PLH,h,p); }
 
-    public static final long astrologyMinorPlanetInHouse(int m,int h) { return makeId(Concept.ASTRO_MPH,h,m); }
+    public static long astrologyMinorPlanetInHouse(int m,int h) { return makeId(Concept.ASTRO_MPH,h,m); }
 
-    public static final long astrologyFixedStarInHouse(int s,int h) { return makeId(Concept.ASTRO_FSH,h,s); }
+    public static long astrologyFixedStarInHouse(int s,int h) { return makeId(Concept.ASTRO_FSH,h,s); }
 
-    public static final long astrologyHouseInZodiac(int h,int z) { return makeId(Concept.ASTRO_HZ,z,h); }
+    public static long astrologyHouseInZodiac(int h,int z) { return makeId(Concept.ASTRO_HZ,z,h); }
 
-    public static final long astrologyPlanetToPlanetAspect(int p1,int p2,int a) { return makeId(Concept.ASTRO_PLPLASP,a,p1,p2); }
+    public static long astrologyPlanetToPlanetAspect(int p1,int p2,int a) { return makeId(Concept.ASTRO_PLPLASP,a,p1,p2); }
 
-    public static final long astrologyPlanetToMinorPlanetAspect(int p,int m,int a) { return makeId(Concept.ASTRO_PLMPASP,a,p,m); }
+    public static long astrologyPlanetToMinorPlanetAspect(int p,int m,int a) { return makeId(Concept.ASTRO_PLMPASP,a,p,m); }
 
-    public static final long astrologyPlanetToFixedStarAspect(int p,int s,int a) { return makeId(Concept.ASTRO_PLFSASP,a,p,s); }
+    public static long astrologyPlanetToFixedStarAspect(int p,int s,int a) { return makeId(Concept.ASTRO_PLFSASP,a,p,s); }
 
-    public static final long astrologyMinorPlanetToMinorPlanetAspect(int m1,int m2,int a) { return makeId(Concept.ASTRO_MPMPASP,a,m1,m2); }
+    public static long astrologyMinorPlanetToMinorPlanetAspect(int m1,int m2,int a) { return makeId(Concept.ASTRO_MPMPASP,a,m1,m2); }
 
-    public static final long astrologyFixedStarToFixedStarAspect(int s1,int s2,int a) { return makeId(Concept.ASTRO_FSFSASP,a,s1,s2); }
+    public static long astrologyFixedStarToFixedStarAspect(int s1,int s2,int a) { return makeId(Concept.ASTRO_FSFSASP,a,s1,s2); }
 
-    public static final long astrologyMinorPlanetToFixedStarAspect(int m,int s,int a) { return makeId(Concept.ASTRO_MPFSASP,a,m,s); }
+    public static long astrologyMinorPlanetToFixedStarAspect(int m,int s,int a) { return makeId(Concept.ASTRO_MPFSASP,a,m,s); }
 
-    public static final long astrologyPlanetToHouseAspect(int p,int h,int a) { return makeId(Concept.ASTRO_PLHASP,a,p,h); }
+    public static long astrologyPlanetToHouseAspect(int p,int h,int a) { return makeId(Concept.ASTRO_PLHASP,a,p,h); }
 
-    public static final long astrologyMinorPlanetToHouseAspect(int m,int h,int a) { return makeId(Concept.ASTRO_HMPASP,a,h,m); }
+    public static long astrologyMinorPlanetToHouseAspect(int m,int h,int a) { return makeId(Concept.ASTRO_HMPASP,a,h,m); }
 
-    public static final long astrologyFixedStarToHouseAspect(int s,int h,int a) { return makeId(Concept.ASTRO_HFSASP,a,h,s); }
+    public static long astrologyFixedStarToHouseAspect(int s,int h,int a) { return makeId(Concept.ASTRO_HFSASP,a,h,s); }
 
-    public static final long astrologyPlanetFactor(int p,int f) { return makeId(Concept.ASTRO_PLFAC,f,p); }
+    public static long astrologyPlanetFactor(int p,int f) { return makeId(Concept.ASTRO_PLFAC,f,p); }
 
-    public static final long astrologyHouseFactor(int h,int f) { return makeId(Concept.ASTRO_HFAC,f,h); }
+    public static long astrologyHouseFactor(int h,int f) { return makeId(Concept.ASTRO_HFAC,f,h); }
 
-    public static final long astrologyPlanetToPlanetFactor(int p1,int p2,int f) { return makeId(Concept.ASTRO_PLPLFAC,f,p1,p2); }
+    public static long astrologyPlanetToPlanetFactor(int p1,int p2,int f) { return makeId(Concept.ASTRO_PLPLFAC,f,p1,p2); }
 
-    public static final long astrologyPatternElement(int pt,int e) { return makeId(Concept.ASTRO_PATELE,pt,e); }
+    public static long astrologyPatternElement(int pt,int e) { return makeId(Concept.ASTRO_PATELE,pt,e); }
 
-    public static final long astrologyPatternQuality(int pt,int q) { return makeId(Concept.ASTRO_PATQUA,pt,q); }
+    public static long astrologyPatternQuality(int pt,int q) { return makeId(Concept.ASTRO_PATQUA,pt,q); }
 
-    public static final long astrologyPlanetInPattern(int p,int pt) { return makeId(Concept.ASTRO_PLPAT,pt,p); }
+    public static long astrologyPlanetInPattern(int p,int pt) { return makeId(Concept.ASTRO_PLPAT,pt,p); }
 
-    public static final long astrologyMinorPlanetInPattern(int m,int pt) { return makeId(Concept.ASTRO_MPPAT,pt,m); }
+    public static long astrologyMinorPlanetInPattern(int m,int pt) { return makeId(Concept.ASTRO_MPPAT,pt,m); }
 
-    public static final long astrologyFixedStarInPattern(int s,int pt) { return makeId(Concept.ASTRO_FSPAT,pt,s); }
+    public static long astrologyFixedStarInPattern(int s,int pt) { return makeId(Concept.ASTRO_FSPAT,pt,s); }
 
-    public static final long astrologyHouseInPattern(int h,int pt) { return makeId(Concept.ASTRO_HPAT,pt,h); }
+    public static long astrologyHouseInPattern(int h,int pt) { return makeId(Concept.ASTRO_HPAT,pt,h); }
 
-    public static final String[] getNames(int concept) {
+    public static String[] getNames(int concept) {
         if(concept>=0 && concept<_C.length)
             return _C[concept].getNames();
         return null;
     }
 
-    private static final String[] getNames(int concept,int step) {
+    private static String[] getNames(int concept,int step) {
         if(concept>=0 && concept<_C.length)
             return _C[concept].getNames(step);
         return null;
     }
 
-    public static final String[] getConceptNames() { return getNames(Concept.SYM_CONCEPT); }
+    public static String[] getConceptNames() { return getNames(Concept.SYM_CONCEPT); }
 
-    public static final String[] getSystemNames() { return getNames(Concept.SYM_SYSTEM); }
+    public static String[] getSystemNames() { return getNames(Concept.SYM_SYSTEM); }
 
-    public static final String[] getDirectionNames() { return getNames(Concept.SYM_DIRECTION); }
+    public static String[] getDirectionNames() { return getNames(Concept.SYM_DIRECTION); }
 
-    public static final String[] getCalendarNames() { return getNames(Concept.SYM_CALENDAR); }
+    public static String[] getCalendarNames() { return getNames(Concept.SYM_CALENDAR); }
 
-    public static final String[] getMonthNames() { return getNames(Concept.SYM_MONTH); }
+    public static String[] getMonthNames() { return getNames(Concept.SYM_MONTH); }
 
-    public static final String[] getElementNames() { return getNames(Concept.SYM_ELEMENT); }
+    public static String[] getElementNames() { return getNames(Concept.SYM_ELEMENT); }
 
-    public static final String[] getPlanetNames() { return getNames(Concept.SYM_PLANET); }
+    public static String[] getPlanetNames() { return getNames(Concept.SYM_PLANET); }
 
-    public static final String[] getZodiacNames() { return getNames(Concept.SYM_ZODIAC); }
+    public static String[] getZodiacNames() { return getNames(Concept.SYM_ZODIAC); }
 
-	/*public static final String[] astrologyCategoryNames()            { return getNames(_N[_ACA]  ,_L[_ACA],3); }
-	public static final String[] astrologyCategoryNamesPlur()        { return getNames(_N[_ACA]+1,_L[_ACA],3); }
-	public static final String[] astrologyCategoryNamesDefPlur()     { return getNames(_N[_ACA]+2,_L[_ACA],3); }*/
+	/*public static String[] astrologyCategoryNames()            { return getNames(_N[_ACA]  ,_L[_ACA],3); }
+	public static String[] astrologyCategoryNamesPlur()        { return getNames(_N[_ACA]+1,_L[_ACA],3); }
+	public static String[] astrologyCategoryNamesDefPlur()     { return getNames(_N[_ACA]+2,_L[_ACA],3); }*/
 
-    public static final String[] astrologyConceptNames() { return getNames(Concept.ASTRO_CONCEPT); }
+    public static String[] astrologyConceptNames() { return getNames(Concept.ASTRO_CONCEPT); }
 
-    public static final String[] astrologyElementNames() { return getNames(Concept.ASTRO_ELEMENT); }
+    public static String[] astrologyElementNames() { return getNames(Concept.ASTRO_ELEMENT); }
 
-    public static final String[] astrologyQualityNames() { return getNames(Concept.ASTRO_QUALITY); }
+    public static String[] astrologyQualityNames() { return getNames(Concept.ASTRO_QUALITY); }
 
-    public static final String[] astrologyEnergyNames() { return getNames(Concept.ASTRO_ENERGY); }
+    public static String[] astrologyEnergyNames() { return getNames(Concept.ASTRO_ENERGY); }
 
-    public static final String[] astrologyZodiacNames() { return getNames(Concept.ASTRO_ZODIAC); }
+    public static String[] astrologyZodiacNames() { return getNames(Concept.ASTRO_ZODIAC); }
 
-    public static final String[] astrologyPlanetNames() { return getNames(Concept.ASTRO_PLANET); }
+    public static String[] astrologyPlanetNames() { return getNames(Concept.ASTRO_PLANET); }
 
-    public static final String[] astrologyMinorPlanetNames() { return getNames(Concept.ASTRO_MPLANET); }
+    public static String[] astrologyMinorPlanetNames() { return getNames(Concept.ASTRO_MPLANET); }
 
-    public static final String[] astrologyFixedStarNames() { return getNames(Concept.ASTRO_FSTAR); }
+    public static String[] astrologyFixedStarNames() { return getNames(Concept.ASTRO_FSTAR); }
 
-    public static final String[] astrologyPointNames() { return getNames(Concept.ASTRO_POINT); }
+    public static String[] astrologyPointNames() { return getNames(Concept.ASTRO_POINT); }
 
-    public static final String[] astrologyArabicPartNames() { return getNames(Concept.ASTRO_LOT); }
+    public static String[] astrologyArabicPartNames() { return getNames(Concept.ASTRO_LOT); }
 
-    public static final String[] astrologyHouseNames() { return getNames(Concept.ASTRO_HOUSE); }
+    public static String[] astrologyHouseNames() { return getNames(Concept.ASTRO_HOUSE); }
 
-    public static final String[] astrologyHouseNamesShort() { return getNames(Concept.ASTRO_HOUSE,1); }
+    public static String[] astrologyHouseNamesShort() { return getNames(Concept.ASTRO_HOUSE,1); }
 
-    public static final String[] astrologyAspectNames() { return getNames(Concept.ASTRO_ASPECT); }
+    public static String[] astrologyAspectNames() { return getNames(Concept.ASTRO_ASPECT); }
 
-    public static final String[] astrologyAspectPatternNames() { return getNames(Concept.ASTRO_ASPPAT); }
+    public static String[] astrologyAspectPatternNames() { return getNames(Concept.ASTRO_ASPPAT); }
 
-    public static final String[] astrologyShapingNames() { return getNames(Concept.ASTRO_SHAPING); }
+    public static String[] astrologyShapingNames() { return getNames(Concept.ASTRO_SHAPING); }
 
-    public static final String[] astrologyFactorNames() { return getNames(Concept.ASTRO_FACTOR); }
+    public static String[] astrologyFactorNames() { return getNames(Concept.ASTRO_FACTOR); }
 
-    public static final String[] astrologyHouseSystemNames() { return getNames(Concept.ASTRO_HSYSTEM); }
+    public static String[] astrologyHouseSystemNames() { return getNames(Concept.ASTRO_HSYSTEM); }
 
-    public static final String[] astrologyChartTypeNames() { return getNames(Concept.ASTRO_CHART); }
+    public static String[] astrologyChartTypeNames() { return getNames(Concept.ASTRO_CHART); }
 
-	/*public static final String[] hebrewLetterNames()                 { return getNames(_N[_HEB],_L[_HEB]); }
+	/*public static String[] hebrewLetterNames()                 { return getNames(_N[_HEB],_L[_HEB]); }
 
-	public static final String[] tarotArcanaNames()                  { return getNames(_N[_TAR],_L[_TAR]); }
-	public static final String[] tarotMinorArcanaNames()             { return getNames(_N[_TMA]  ,_L[_TMA],2); }
-	public static final String[] tarotMinorArcanaNamesPlur()         { return getNames(_N[_TMA]+1,_L[_TMA],2); }*/
+	public static String[] tarotArcanaNames()                  { return getNames(_N[_TAR],_L[_TAR]); }
+	public static String[] tarotMinorArcanaNames()             { return getNames(_N[_TMA]  ,_L[_TMA],2); }
+	public static String[] tarotMinorArcanaNamesPlur()         { return getNames(_N[_TMA]+1,_L[_TMA],2); }*/
 
-    public static final String getName(int concept,int n) {
+    public static String getName(int concept,int n) {
         if(concept<0 || concept>=_C.length) return null;
         return _C[concept].getName(n);
     }
 
-    private static final String getName(int concept,int n,int step) {
+    private static String getName(int concept,int n,int step) {
         if(concept<0 || concept>=_C.length) return null;
         return _C[concept].getName(n,step);
     }
 
-    public static final String getName(int s) { return getName((s >> 16),s); }
+    public static String getName(int s) { return getName((s >> 16),s); }
 
-    public static final String getConceptName(int c) { return getName(Concept.SYM_CONCEPT,c); }
+    public static String getConceptName(int c) { return getName(Concept.SYM_CONCEPT,c); }
 
-    public static final String getSystemName(int s) { return getName(Concept.SYM_SYSTEM,s); }
+    public static String getSystemName(int s) { return getName(Concept.SYM_SYSTEM,s); }
 
-    public static final String getDirectionName(int d) { return getName(Concept.SYM_DIRECTION,d); }
+    public static String getDirectionName(int d) { return getName(Concept.SYM_DIRECTION,d); }
 
-    public static final String getCalendarName(int c) { return getName(Concept.SYM_CALENDAR,c); }
+    public static String getCalendarName(int c) { return getName(Concept.SYM_CALENDAR,c); }
 
-    public static final String getMonthName(int m) { return getName(Concept.SYM_MONTH,m); }
+    public static String getMonthName(int m) { return getName(Concept.SYM_MONTH,m-1); }
 
-    public static final String getElementName(int e) { return getName(Concept.SYM_ELEMENT,e); }
+    public static String getElementName(int e) { return getName(Concept.SYM_ELEMENT,e); }
 
-    public static final String getPlanetName(int p) { return getName(Concept.SYM_PLANET,p); }
+    public static String getPlanetName(int p) { return getName(Concept.SYM_PLANET,p); }
 
-    public static final String getZodiacName(int z) { return getName(Concept.SYM_ZODIAC,z); }
+    public static String getZodiacName(int z) { return getName(Concept.SYM_ZODIAC,z); }
 
-	/*public static final String astrologyCategoryName(int c)          { c=c*3;  return c>=0 && c<_L[_ACA]? _S[_N[_ACA]+c] : null; }
-	public static final String astrologyCategoryNamePlur(int c)      { c=c*3+1;return c>=0 && c<_L[_ACA]? _S[_N[_ACA]+c] : null; }
-	public static final String astrologyCategoryNameDefPlur(int c)   { c=c*3+2;return c>=0 && c<_L[_ACA]? _S[_N[_ACA]+c] : null; }*/
+	/*public static String astrologyCategoryName(int c)          { c=c*3;  return c>=0 && c<_L[_ACA]? _S[_N[_ACA]+c] : null; }
+	public static String astrologyCategoryNamePlur(int c)      { c=c*3+1;return c>=0 && c<_L[_ACA]? _S[_N[_ACA]+c] : null; }
+	public static String astrologyCategoryNameDefPlur(int c)   { c=c*3+2;return c>=0 && c<_L[_ACA]? _S[_N[_ACA]+c] : null; }*/
 
-    public static final String astrologyConceptName(int c) { return getName(Concept.ASTRO_CONCEPT,c); }
+    public static String astrologyConceptName(int c) { return getName(Concept.ASTRO_CONCEPT,c); }
 
-    public static final String astrologyElementName(int e) { return getName(Concept.ASTRO_ELEMENT,e); }
+    public static String astrologyElementName(int e) { return getName(Concept.ASTRO_ELEMENT,e); }
 
-    public static final String astrologyQualityName(int q) { return getName(Concept.ASTRO_QUALITY,q); }
+    public static String astrologyQualityName(int q) { return getName(Concept.ASTRO_QUALITY,q); }
 
-    public static final String astrologyEnergyName(int e) { return getName(Concept.ASTRO_ENERGY,e); }
+    public static String astrologyEnergyName(int e) { return getName(Concept.ASTRO_ENERGY,e); }
 
-    public static final String astrologyZodiacName(int z) { return getName(Concept.ASTRO_ZODIAC,z); }
+    public static String astrologyZodiacName(int z) { return getName(Concept.ASTRO_ZODIAC,z); }
 
-    public static final String astrologyPlanetName(int p) { return getName(Concept.ASTRO_PLANET,p); }
+    public static String astrologyPlanetName(int p) { return getName(Concept.ASTRO_PLANET,p); }
 
-    public static final String astrologyMinorPlanetName(int m) { return getName(Concept.ASTRO_MPLANET,m); }
+    public static String astrologyMinorPlanetName(int m) { return getName(Concept.ASTRO_MPLANET,m); }
 
-    public static final String astrologyFixedStarName(int s) { return getName(Concept.ASTRO_FSTAR,s); }
+    public static String astrologyFixedStarName(int s) { return getName(Concept.ASTRO_FSTAR,s); }
 
-    public static final String astrologyPointName(int p) { return getName(Concept.ASTRO_POINT,p); }
+    public static String astrologyPointName(int p) { return getName(Concept.ASTRO_POINT,p); }
 
-    public static final String astrologyArabicPartName(int a) { return getName(Concept.ASTRO_LOT,a); }
+    public static String astrologyArabicPartName(int a) { return getName(Concept.ASTRO_LOT,a); }
 
-    public static final String astrologyHouseName(int h) { return getName(Concept.ASTRO_HOUSE,h); }
+    public static String astrologyHouseName(int h) { return getName(Concept.ASTRO_HOUSE,h); }
 
-    public static final String astrologyHouseNameShort(int h) { return getName(Concept.ASTRO_HOUSE,h,1); }
+    public static String astrologyHouseNameShort(int h) { return getName(Concept.ASTRO_HOUSE,h,1); }
 
-    public static final String astrologyAspectName(int a) { return getName(Concept.ASTRO_ASPECT,a); }
+    public static String astrologyAspectName(int a) { return getName(Concept.ASTRO_ASPECT,a); }
 
-    public static final String astrologyAspectPatternName(int p) { return getName(Concept.ASTRO_ASPPAT,p); }
+    public static String astrologyAspectPatternName(int p) { return getName(Concept.ASTRO_ASPPAT,p); }
 
-    public static final String astrologyShapingName(int s) { return getName(Concept.ASTRO_SHAPING,s); }
+    public static String astrologyShapingName(int s) { return getName(Concept.ASTRO_SHAPING,s); }
 
-    public static final String astrologyFactorName(int f) { return getName(Concept.ASTRO_FACTOR,f); }
+    public static String astrologyFactorName(int f) { return getName(Concept.ASTRO_FACTOR,f); }
 
-    public static final String astrologyHouseSystemName(int h) { return getName(Concept.ASTRO_HSYSTEM,h); }
+    public static String astrologyHouseSystemName(int h) { return getName(Concept.ASTRO_HSYSTEM,h); }
 
-    public static final String astrologyChartTypeName(int c) { return getName(Concept.ASTRO_CHART,c); }
+    public static String astrologyChartTypeName(int c) { return getName(Concept.ASTRO_CHART,c); }
 
-	/*public static final String hebrewLetterName(int h)               { return h>=0 && h<_L[_HEB]? _S[_N[_HEB]+h] : null; }
+	/*public static String hebrewLetterName(int h)               { return h>=0 && h<_L[_HEB]? _S[_N[_HEB]+h] : null; }
 
-	public static final String tarotArcanaName(int a)                { return a>=0 && a<_L[_TAR]? _S[_N[_TAR]+a] : null; }
-	public static final String tarotMinorArcanaName(int m)           { m=m*2;  return m>=0 && m<_L[_TMA]? _S[_N[_TMA]+m] : null; }
-	public static final String tarotMinorArcanaNamePlur(int m)       { m=m*2+1;return m>=0 && m<_L[_TMA]? _S[_N[_TMA]+m] : null; }*/
+	public static String tarotArcanaName(int a)                { return a>=0 && a<_L[_TAR]? _S[_N[_TAR]+a] : null; }
+	public static String tarotMinorArcanaName(int m)           { m=m*2;  return m>=0 && m<_L[_TMA]? _S[_N[_TMA]+m] : null; }
+	public static String tarotMinorArcanaNamePlur(int m)       { m=m*2+1;return m>=0 && m<_L[_TMA]? _S[_N[_TMA]+m] : null; }*/
 
-    public static final String getTitle(long id) {
+    public static String getTitle(long id) {
         Symbol s = new Symbol(id);
         return s.getTitle();
     }
@@ -1675,18 +1636,11 @@ public class Symbol {
         if(title==null && concept!=null) {
             String s1, s2, s3, s4, s5;
             s1 = s2 = s3 = s4 = s5 = "";
-            switch(concept.number) {
-                case 5:
-                    s5 = concept.fifth.getName(fifth);
-                case 4:
-                    s4 = concept.fourth.getName(fourth);
-                case 3:
-                    s3 = concept.third.getName(third);
-                case 2:
-                    s2 = concept.second.getName(second);
-                case 1:
-                    s1 = concept.first.getName(first);
-            }
+            if(concept.number>=1) s1 = concept.first.getName(first);
+            if(concept.number>=2) s2 = concept.second.getName(second);
+            if(concept.number>=3) s3 = concept.third.getName(third);
+            if(concept.number>=4) s4 = concept.fourth.getName(fourth);
+            if(concept.number>=5) s5 = concept.fifth.getName(fifth);
             switch(concept.number) {
                 case 1:
                     title = String.format(concept.format,s1);

@@ -19,7 +19,7 @@ import java.util.Map;
 
 
 public class HelpActivity extends AstroActivity {
-    private static final String TAG = "HelpActivity";
+    private static final String TAG = HelpActivity.class.getSimpleName();
 
     private static final Map<String,Integer> index;
 
