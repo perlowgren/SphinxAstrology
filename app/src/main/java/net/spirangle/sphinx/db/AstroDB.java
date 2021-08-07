@@ -8,17 +8,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.util.Log;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+
 import net.spirangle.minerva.util.Base36;
 import net.spirangle.sphinx.activities.BasicActivity;
 import net.spirangle.sphinx.astro.Horoscope;
-import net.spirangle.sphinx.net.HttpClient;
-import net.spirangle.sphinx.net.RequestListener;
+import net.spirangle.sphinx.services.VolleyService;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -125,36 +127,33 @@ public class AstroDB extends Database {
         importSQL(db,astroDBFiles);
     }
 
-    @Override
-    public void result(Map<String,List<String>> headers,String data,int status,long id,Object object) {
-        if(status>=200 && status<=299 && data!=null && data.length()>0) {
-            try {
-                JSONObject json = new JSONObject(data);
-                String s = json.optString("status");
-                if(s.equals("OK")) {
-                    int count = Integer.parseInt(headers.get("X-Total-Count").get(0));
-                    int from = json.optInt("from");
-                    int offset = json.optInt("offset");
-                    JSONArray arr;
-                    arr = (JSONArray)json.opt("profiles");
-                    if(arr!=null) {
-                        for(int i = 0; i<arr.length(); ++i)
-                            insertProfile(arr.getJSONObject(i));
-                        if(count>offset+arr.length())
-                            downloadProfiles(from,offset,0);
-                    }
-                    arr = (JSONArray)json.opt("texts");
-                    if(arr!=null) {
-                        for(int i = 0; i<arr.length(); ++i)
-                            insertText(arr.getJSONObject(i));
-                        if(count>offset+arr.length())
-                            downloadTexts(from,offset,0);
-                    }
-                    updateDatabase(0,0);
+    public void handleResponse(JSONObject json) {
+        try {
+            String s = json.optString("status");
+            if(s.equals("OK")) {
+//                    int count = Integer.parseInt(headers.get("X-Total-Count").get(0));
+                int total = json.optInt("total");
+                int from = json.optInt("from");
+                int offset = json.optInt("offset");
+                JSONArray arr;
+                arr = (JSONArray)json.opt("profiles");
+                if(arr!=null) {
+                    for(int i = 0; i<arr.length(); ++i)
+                        insertProfile(arr.getJSONObject(i));
+                    if(total>offset+arr.length())
+                        downloadProfiles(from,offset,0);
                 }
-            } catch(Exception e) {
-                Log.e(APP,TAG+".spirangleSignIn",e);
+                arr = (JSONArray)json.opt("texts");
+                if(arr!=null) {
+                    for(int i = 0; i<arr.length(); ++i)
+                        insertText(arr.getJSONObject(i));
+                    if(total>offset+arr.length())
+                        downloadTexts(from,offset,0);
+                }
+                updateDatabase(0,0);
             }
+        } catch(Exception e) {
+            Log.e(APP,TAG+".spirangleSignIn",e);
         }
 //		shortToast(R.string.toast_signin_failed);
     }
@@ -163,18 +162,36 @@ public class AstroDB extends Database {
         Key key = BasicActivity.user.key;
         String tokenId = BasicActivity.google.tokenId;
         if(key==null || tokenId==null) return;
-        HttpClient http = HttpClient.getInstance(context);
-        http.authorizationGoogle(tokenId).contentTypeJSON()
-            .get(URL_SPIRANGLE_API+"/users/"+key+"/profiles?from="+from+"&offset="+offset+"&limit="+limit,this);
+        String url = URL_SPIRANGLE_API+"/users/"+key+"/profiles?from="+from+"&offset="+offset+"&limit="+limit;
+        RequestQueue requestQueue = VolleyService.getRequestQueue();
+        requestQueue.add(new JsonObjectRequest(url,null,this::handleResponse,error -> {
+            Log.e(APP,TAG+".downloadProfiles",error);
+        }) {
+            @Override
+            public Map<String,String> getHeaders() {
+                Map<String,String> headers = new HashMap<>();
+                headers.put("Authorization","Google "+tokenId);
+                return headers;
+            }
+        });
     }
 
     public void downloadTexts(long from,int offset,int limit) {
         Key key = BasicActivity.user.key;
         String tokenId = BasicActivity.google.tokenId;
         if(key==null || tokenId==null) return;
-        HttpClient http = HttpClient.getInstance(context);
-        http.authorizationGoogle(tokenId).contentTypeJSON()
-            .get(URL_SPIRANGLE_API+"/users/"+key+"/texts?from="+from+"&offset="+offset+"&limit="+limit,this);
+        String url = URL_SPIRANGLE_API+"/users/"+key+"/texts?from="+from+"&offset="+offset+"&limit="+limit;
+        RequestQueue requestQueue = VolleyService.getRequestQueue();
+        requestQueue.add(new JsonObjectRequest(url,null,this::handleResponse,error -> {
+            Log.e(APP,TAG+".downloadTexts",error);
+        }) {
+            @Override
+            public Map<String,String> getHeaders() {
+                Map<String,String> headers = new HashMap<>();
+                headers.put("Authorization","Google "+tokenId);
+                return headers;
+            }
+        });
     }
 
     public long insertProfile(long uid,long c1,long c2,Horoscope h) {

@@ -1,5 +1,7 @@
 package net.spirangle.sphinx.activities;
 
+import static com.android.volley.Request.Method.POST;
+import static com.android.volley.Request.Method.PUT;
 import static net.spirangle.sphinx.config.AstrologyProperties.*;
 import static net.spirangle.sphinx.config.SphinxProperties.*;
 
@@ -15,15 +17,17 @@ import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+
 import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.astro.Coordinate;
 import net.spirangle.sphinx.astro.Horoscope;
 import net.spirangle.sphinx.astro.Horoscope.Calendar;
 import net.spirangle.sphinx.db.AstroDB;
 import net.spirangle.sphinx.db.Key;
-import net.spirangle.sphinx.net.HttpClient;
-import net.spirangle.sphinx.net.RequestListener;
 import net.spirangle.sphinx.services.LocationService;
+import net.spirangle.sphinx.services.VolleyService;
 
 import org.json.JSONObject;
 
@@ -308,19 +312,50 @@ public class EditProfileActivity extends AstroActivity {
         h.calculate(planets,0);
 
         String url = URL_SPIRANGLE_API+"/users/"+user.key+"/profiles/"+key;
-        String json = h.writeToJSON(cat1,cat2);
+        JSONObject json = h.getJSONObject(cat1,cat2);
 
         AstroDB db = AstroDB.getInstance();
-        HttpClient http = HttpClient.getInstance(this);
+        RequestQueue requestQueue = VolleyService.getRequestQueue();
+        int method;
         if(h.getId()==-1) {
             db.insertProfile(user.id,cat1,cat2,h);
-            http.authorizationGoogle(google.tokenId).contentTypeJSON().post(url,json,0,h,this);
+            method = POST;
         } else {
             db.updateProfile(cat1,cat2,h);
-            http.authorizationGoogle(google.tokenId).contentTypeJSON().put(url,json,1,h,this);
+            method = PUT;
         }
+        requestQueue.add(new JsonObjectRequest(method,url,json,response -> {
+            shortToast(R.string.toast_profile_saved);
+        },error -> {
+            Log.e(APP,TAG+".saveProfile",error);
+            shortToast(R.string.toast_save_failed);
+        }) {
+            @Override
+            public Map<String,String> getHeaders() {
+                Map<String,String> headers = new HashMap<>();
+                headers.put("Authorization","Google "+google.tokenId);
+                return headers;
+            }
+        });
         return h;
     }
+
+    /*public void result(Map<String,List<String>> headers,String data,int status,long id,Object object) {
+//Log.d(APP,TAG+".result(data: "+data+", status: "+status+")");
+        if(status==200 || status==201 || status==204) {
+            shortToast(R.string.toast_profile_saved);
+        } else {
+            String m = null;
+            try {
+                JSONObject json = new JSONObject(data);
+                m = json.optString("message",null);
+            } catch(Exception e) {
+                Log.e(APP,TAG+".result",e);
+            }
+            if(m!=null) shortToast(getString(R.string.toast_save_failed)+": "+m);
+            else shortToast(R.string.toast_save_failed);
+        }
+    }*/
 
     private void readDateTime() {
         readDateTime(editDateTime.getText().toString().trim());
@@ -390,18 +425,11 @@ public class EditProfileActivity extends AstroActivity {
         Log.d(APP,TAG+".findLocation(lon: "+lon+", lat: "+lat+")");
         hideKeyboard();
         showLoading();
-        LocationService ls = LocationService.getInstance(this);
-        ls.getFromLocation(lon,lat,10,null,
-                           new LocationService.AddressReceiver() {
-                               @Override
-                               public void receive(List<Address> addresses,int status) {
-                                   if(addresses!=null &&
-                                      saveLocations(null,addresses) &&
-                                      setLocations(null,addresses)) return;
-                                   findLocation("");
-                                   hideLoading();
-                               }
-                           });
+        LocationService.getInstance().getFromLocation(lon,lat,10,null,addresses -> {
+            if(addresses!=null && saveLocations(null,addresses) && setLocations(null,addresses)) return;
+            findLocation("");
+            hideLoading();
+        });
     }
 
     public void findLocation(View view) {
@@ -430,18 +458,11 @@ public class EditProfileActivity extends AstroActivity {
         } else {
             if(loadLocations(loc)) return;
             showLoading();
-            LocationService ls = LocationService.getInstance(this);
-            ls.getFromLocationName(loc,10,null,
-                                   new LocationService.AddressReceiver() {
-                                       @Override
-                                       public void receive(List<Address> addresses,int status) {
-                                           if(addresses!=null &&
-                                              saveLocations(loc,addresses) &&
-                                              setLocations(loc,addresses)) return;
-                                           findLocation("");
-                                           hideLoading();
-                                       }
-                                   });
+            LocationService.getInstance().getFromLocationName(loc,10,null,addresses -> {
+                if(addresses!=null && saveLocations(loc,addresses) && setLocations(loc,addresses)) return;
+                findLocation("");
+                hideLoading();
+            });
 
 /*			try {
 				Geocoder geocoder = new Geocoder(getApplicationContext(),Locale.getDefault());
@@ -574,36 +595,20 @@ Log.e(APP,TAG+".findLocation",e);
         Log.d(APP,TAG+".requestTimeZone(time: "+time+")");
         if(loadTimeZone(lon,lat,time,true)) return;
         showLoading();
-        final LocationService ls = LocationService.getInstance(this);
-        ls.getTimeZone(lon,lat,time,null,
-                       new LocationService.TimeZoneReceiver() {
-                           @Override
-                           public void receive(LocationService.TimeZone timeZone,int status) {
-                               final long utc = time-timeZone.rawOffset;
-                               Log.d(APP,TAG+".requestTimeZone(utc: "+utc+")");
-                               ls.getTimeZone(lon,lat,utc,null,
-                                              new LocationService.TimeZoneReceiver() {
-                                                  @Override
-                                                  public void receive(LocationService.TimeZone timeZone,int status) {
-                                                      double tzOffset = (double)timeZone.rawOffset/3600.0;
-                                                      double dst = (double)timeZone.dstOffset/3600.0;
-                                                      String lang = Locale.getDefault().getLanguage();
-                                                      AstroDB db = AstroDB.getInstance();
-                                                      db.insertTimeZone(timeZone.timeZoneName,lon,lat,utc,tzOffset,dst,lang,0);
-                                                      setTimeZone(timeZone.timeZoneName,tzOffset);
-                                                      setDST(dst);
-                                                      hideLoading();
-                                                  }
-                                              });
-/*					double dst       = (double)timeZone.dstOffset/3600.0;
-					String lang      = Locale.getDefault().getLanguage();
-					AstroDB db = AstroDB.getInstance();
-					db.insertTimeZone(timeZone.timeZoneName,lon,lat,time,tzOffset,dst,lang,0);
-					setTimeZone(timeZone.timeZoneName,tzOffset);
-					setDST(dst);
-					hideLoading();*/
-                           }
-                       });
+        LocationService.getInstance().getTimeZone(lon,lat,time,null,timeZone -> {
+            final long utc = time-timeZone.rawOffset;
+            Log.d(APP,TAG+".requestTimeZone(utc: "+utc+")");
+            LocationService.getInstance().getTimeZone(lon,lat,utc,null,timeZoneUtc -> {
+                double tzOffset = (double)timeZoneUtc.rawOffset/3600.0;
+                double dst = (double)timeZoneUtc.dstOffset/3600.0;
+                String lang = Locale.getDefault().getLanguage();
+                AstroDB db = AstroDB.getInstance();
+                db.insertTimeZone(timeZoneUtc.timeZoneName,lon,lat,utc,tzOffset,dst,lang,0);
+                setTimeZone(timeZoneUtc.timeZoneName,tzOffset);
+                setDST(dst);
+                hideLoading();
+            });
+        });
     }
 
     public boolean loadTimeZone(double lon,double lat,long time,boolean local) {

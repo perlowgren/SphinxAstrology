@@ -373,11 +373,11 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context,AppWidgetManager manager,int[] widgetIds) {
         int i, id;
         Horoscope h = new Horoscope();
-        LocationService ls = LocationService.getInstance(context);
-        if(ls.location!=null) {
+        Location location = LocationService.getInstance().getLocation();
+        if(location!=null) {
             Calendar cal = Calendar.getInstance();
-            double lon = ls.location.getLongitude();
-            double lat = ls.location.getLatitude();
+            double lon = location.getLongitude();
+            double lat = location.getLatitude();
             double tz = (double)cal.get(Calendar.ZONE_OFFSET)/3600000.0;
             double dst = (double)cal.get(Calendar.DST_OFFSET)/3600000.0;
             h.setDaylightSavingTime(dst);

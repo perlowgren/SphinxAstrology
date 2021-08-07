@@ -1,5 +1,7 @@
 package net.spirangle.sphinx.activities;
 
+import static com.android.volley.Request.Method.POST;
+import static com.android.volley.Request.Method.PUT;
 import static net.spirangle.sphinx.config.SphinxProperties.*;
 
 import android.app.Dialog;
@@ -15,19 +17,21 @@ import android.widget.*;
 
 import androidx.core.content.res.ResourcesCompat;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+
 import net.spirangle.minerva.markdown.Markdown;
 import net.spirangle.minerva.util.Base36;
 import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.astro.Symbol;
 import net.spirangle.sphinx.db.AstroDB;
 import net.spirangle.sphinx.db.Key;
-import net.spirangle.sphinx.net.HttpClient;
-import net.spirangle.sphinx.net.RequestListener;
+import net.spirangle.sphinx.services.VolleyService;
 import net.spirangle.sphinx.text.CustomHtml;
 
 import org.json.JSONObject;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -271,23 +275,38 @@ public class EditTextActivity extends AstroActivity {
             language = locale.getLanguage();
         }
 
-        String etitle = JSONObject.quote(newTitle);
-        String etext = JSONObject.quote(newText);
-
         String url = URL_SPIRANGLE_API+"/users/"+user.key+"/texts/"+key;
-        String json = String.format(JSON_FORMAT,Base36.encode(symbolId),etitle,etext,language,flags);
+        Map<String,Object> params = new HashMap<>();
+        params.put("type","symbol");
+        params.put("symbol",Base36.encode(symbolId));
+        params.put("title",newTitle);
+        params.put("text",newText);
+        params.put("language",language);
+        params.put("flags",flags);
+        JSONObject json = new JSONObject(params);
 
-        Log.d(APP,TAG+".saveText("+json+")");
-
-        HttpClient http = HttpClient.getInstance(this);
+        RequestQueue requestQueue = VolleyService.getRequestQueue();
+        int method;
         if(textId==-1) {
             textId = db.insertText(user.id,key,2,null,symbolId,newTitle,newHtml,newText,null,language,flags);
-            http.authorizationGoogle(google.tokenId).contentTypeJSON().post(url,json,0,null,this);
+            method = POST;
         } else {
             db.updateText(textId,newTitle,newHtml,newText,null,flags);
-            http.authorizationGoogle(google.tokenId).contentTypeJSON().put(url,json,1,null,this);
+            method = PUT;
         }
-
+        requestQueue.add(new JsonObjectRequest(method,url,json,response -> {
+            shortToast(R.string.toast_profile_saved);
+        },error -> {
+            Log.e(APP,TAG+".saveProfile",error);
+            shortToast(R.string.toast_save_failed);
+        }) {
+            @Override
+            public Map<String,String> getHeaders() {
+                Map<String,String> headers = new HashMap<>();
+                headers.put("Authorization","Google "+google.tokenId);
+                return headers;
+            }
+        });
         return true;
     }
 

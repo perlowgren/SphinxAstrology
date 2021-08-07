@@ -1,5 +1,6 @@
 package net.spirangle.sphinx.activities;
 
+import static com.android.volley.Request.Method.DELETE;
 import static net.spirangle.sphinx.config.AstrologyProperties.*;
 import static net.spirangle.sphinx.config.SphinxProperties.APP;
 import static net.spirangle.sphinx.config.SphinxProperties.URL_SPIRANGLE_API;
@@ -22,19 +23,19 @@ import androidx.core.view.MenuItemCompat;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.cursoradapter.widget.SimpleCursorAdapter.ViewBinder;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+
 import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.astro.Coordinate;
 import net.spirangle.sphinx.astro.Horoscope;
 import net.spirangle.sphinx.astro.Symbol;
 import net.spirangle.sphinx.db.AstroDB;
 import net.spirangle.sphinx.db.Key;
-import net.spirangle.sphinx.net.HttpClient;
-import net.spirangle.sphinx.net.RequestListener;
+import net.spirangle.sphinx.services.VolleyService;
 import net.spirangle.sphinx.text.CustomHtml;
 
-import org.json.JSONObject;
-
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -222,9 +223,21 @@ public class ProfilesActivity extends AstroActivity implements OnQueryTextListen
         Cursor cur = db.query("SELECT profileKey FROM Profile WHERE _id="+id);
         if(cur.moveToFirst()) {
             Key key = new Key(cur.getLong(0));
-            HttpClient http = HttpClient.getInstance(ProfilesActivity.this);
-            http.authorizationGoogle(google.tokenId).contentTypeJSON()
-                .delete(URL_SPIRANGLE_API+"/users/"+user.key+"/profiles/"+key,id,null,ProfilesActivity.this);
+            String url = URL_SPIRANGLE_API+"/users/"+user.key+"/profiles/"+key;
+            RequestQueue requestQueue = VolleyService.getRequestQueue();
+            requestQueue.add(new JsonObjectRequest(DELETE,url,null,response -> {
+                shortToast(R.string.toast_profile_deleted);
+            },error -> {
+                Log.e(APP,TAG+".deleteProfile",error);
+                shortToast(R.string.toast_delete_failed);
+            }) {
+                @Override
+                public Map<String,String> getHeaders() {
+                    Map<String,String> headers = new HashMap<>();
+                    headers.put("Authorization","Google "+google.tokenId);
+                    return headers;
+                }
+            });
         }
         db.delete(AstroDB.TableProfile.table,AstroDB.TableProfile.id+"="+id);
         loadProfiles();

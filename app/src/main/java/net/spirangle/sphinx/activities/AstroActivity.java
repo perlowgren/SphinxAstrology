@@ -8,15 +8,15 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+
 import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.astro.Horoscope;
 import net.spirangle.sphinx.db.AstroDB;
-import net.spirangle.sphinx.net.HttpClient;
-import net.spirangle.sphinx.net.RequestListener;
+import net.spirangle.sphinx.services.VolleyService;
 
-import org.json.JSONObject;
-
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AstroActivity extends BasicActivity {
@@ -226,9 +226,35 @@ Log.d(APP,TAG+".init(year: "+y+", month: "+m+", day: "+d+", days: "+Database.tim
         Cursor cur = db.query("SELECT updated FROM Database WHERE _id=1");
         if(cur.moveToFirst()) t = cur.getInt(0);
         final long time = t;
-        HttpClient http = HttpClient.getInstance(this);
-        http.authorizationGoogle(google.tokenId).contentTypeJSON()
-            .get(URL_SPIRANGLE_API+"/status?timestamp="+time,
+        String url = URL_SPIRANGLE_API+"/status?timestamp="+time;
+        RequestQueue requestQueue = VolleyService.getRequestQueue();
+        requestQueue.add(new JsonObjectRequest(url,null,response -> {
+            String s = response.optString("status");
+            if(s.equals("OK")) {
+                user.id = 0l;
+                user.update(response);
+                db.updateUser(user,0);
+                int profiles = response.optInt("profiles",0);
+                int texts = response.optInt("texts",0);
+                if(profiles>0) db.downloadProfiles(time,0,0);
+                if(texts>0) db.downloadTexts(time,0,0);
+                return;
+            } else if(s.equals("expired")) {
+                google.silentSignIn(AstroActivity.this,null);
+            }
+        },error -> {
+            Log.e(APP,TAG+".spirangleSignIn",error);
+        }) {
+            @Override
+            public Map<String,String> getHeaders() {
+                Map<String,String> headers = new HashMap<>();
+                headers.put("Authorization","Google "+google.tokenId);
+                return headers;
+            }
+        });
+
+        /*http.authorizationGoogle(google.tokenId).contentTypeJSON()
+            .get(,
                  new RequestListener() {
                      @Override
                      public void result(Map<String,List<String>> headers,String data,int status,long id,Object object) {
@@ -236,32 +262,13 @@ Log.d(APP,TAG+".init(year: "+y+", month: "+m+", day: "+d+", days: "+Database.tim
                          if(data!=null && data.length()>0) {
                              try {
                                  JSONObject json = new JSONObject(data);
-                                 String s = json.optString("status");
-                                 if(s.equals("OK")) {
-                                     user.id = 0l;
-                                     user.update(json);
-                                     db.updateUser(user,0);
-                                     int profiles = json.optInt("profiles",0);
-                                     int texts = json.optInt("texts",0);
-                                     if(profiles>0) db.downloadProfiles(time,0,0);
-                                     if(texts>0) db.downloadTexts(time,0,0);
-                                     return;
-                                 } else if(s.equals("expired")) {
-                                     google.silentSignIn(AstroActivity.this,null);
-                                 } else {
-                                     String m = json.optString("message",null);
-                                     if(m!=null) {
-                                         shortToast(s+" ["+status+"]: "+m);
-                                         //									return;
-                                     }
-                                 }
                              } catch(Exception e) {
                                  Log.e(APP,TAG+".spirangleSignIn",e);
                              }
                          }
                          shortToast(R.string.toast_signin_failed);
                      }
-                 });
+                 });*/
     }
 
     public void openHoroscope(long id,int graph) {

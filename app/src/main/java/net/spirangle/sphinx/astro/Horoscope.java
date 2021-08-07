@@ -444,20 +444,24 @@ public class Horoscope implements Parcelable {
         out.writeInt(style);
     }
 
-    public String writeToJSON(long cat1,long cat2) {
+    public JSONObject getJSONObject(long cat1,long cat2) {
         String ename = JSONObject.quote(name);
-        return String.format(JSON_FORMAT,cat1,cat2,ename,
-                             (flags&BCE)==BCE? "BCE " : "",time.year,time.month,time.day,
-                             time.hour,time.minute,(int)time.second,
-                             time.type==JULIAN_CALENDAR? " J" : "",
-                             (int)Math.round(longitude*1000000.0),
-                             (int)Math.round(latitude*1000000.0),
-                             (int)Math.round(timeZone*3600.0),
-                             (int)Math.round(dst*3600.0),
-                             (isun>-1? (int)Math.round(planets[isun].absoluteLongitude*1000000.0) : 0),
-                             (imoon>-1? (int)Math.round(planets[imoon].absoluteLongitude*1000000.0) : 0),
-                             (iasc>-1? (int)Math.round(planets[iasc].absoluteLongitude*1000000.0) : 0),
-                             "",flags);
+        Map<String,Object> params = new HashMap<>();
+        params.put("categories",cat1+":"+cat2);
+        params.put("name",ename);
+        params.put("time",String.format(Locale.getDefault(),"%1$s%2$d-%3$02d-%4$02d %5$02d:%6$02d:%7$02d%8$s",
+                                        (flags&BCE)==BCE? "BCE " : "",time.year,time.month,time.day,
+                                        time.hour,time.minute,(int)time.second,time.type==JULIAN_CALENDAR? " J" : ""));
+        params.put("longitude",Math.round(longitude*1000000.0));
+        params.put("latitude",Math.round(latitude*1000000.0));
+        params.put("timeZone",Math.round(timeZone*3600.0));
+        params.put("dst",Math.round(dst*3600.0));
+        params.put("sun",(isun>-1? Math.round(planets[isun].absoluteLongitude*1000000.0) : 0L));
+        params.put("moon",(imoon>-1? Math.round(planets[imoon].absoluteLongitude*1000000.0) : 0L));
+        params.put("ascendant",(iasc>-1? Math.round(planets[iasc].absoluteLongitude*1000000.0) : 0L));
+        params.put("picture","");
+        params.put("flags",flags);
+        return new JSONObject(params);
     }
 
     public void setId(long i) { id = i; }

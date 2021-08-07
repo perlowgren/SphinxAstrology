@@ -7,6 +7,7 @@ import static net.spirangle.sphinx.config.SphinxProperties.EXTRA_RADIX1;
 import android.content.Intent;
 import android.database.Cursor;
 import android.location.Address;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -32,7 +33,6 @@ import net.spirangle.sphinx.text.CustomHtml;
 import net.spirangle.sphinx.views.*;
 
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 
@@ -175,12 +175,12 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener {
                 h = h1;
 
                 Log.d(APP,TAG+".onCreate(LocationService.getLocationManager...)");
-                final LocationService ls = LocationService.getInstance(this);
                 Log.d(APP,TAG+".onCreate(done...)");
-                if(ls.location!=null) {
+                Location location = LocationService.getInstance().getLocation();
+                if(location!=null) {
                     Calendar cal = Calendar.getInstance();
-                    final double lon = ls.location.getLongitude();
-                    final double lat = ls.location.getLatitude();
+                    final double lon = location.getLongitude();
+                    final double lat = location.getLatitude();
                     final double tz = (double)cal.get(Calendar.ZONE_OFFSET)/3600000.0;
                     final double dst = (double)cal.get(Calendar.DST_OFFSET)/3600000.0;
                     final String lang = Locale.getDefault().getLanguage();
@@ -196,20 +196,16 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener {
                     if(!cur.moveToFirst()) {
                         showLoading();
                         Log.d(APP,TAG+".onCreate(LocationService.getFromLocation...)");
-                        ls.getFromLocation(lon,lat,10,null,
-                                           new LocationService.AddressReceiver() {
-                                               @Override
-                                               public void receive(List<Address> addresses,int status) {
-                                                   if(addresses!=null && addresses.size()>0) {
-                                                       Address addr = addresses.get(0);
-                                                       h1.setLocation(addr,tz);
-                                                       db.insertLocation(addr.getLocality(),addr,lon,lat,lang,0);
-                                                       Log.d(APP,TAG+".onCreate => LocationService.AddressReceiver.receive(loc: "+addr.getLocality()+", lon: "+lon+", lat: "+lat+")");
-                                                   }
-                                                   setHoroscope(h1);
-                                                   hideLoading();
-                                               }
-                                           });
+                        LocationService.getInstance().getFromLocation(lon,lat,10,null,addresses -> {
+                            if(addresses!=null && addresses.size()>0) {
+                                Address addr = addresses.get(0);
+                                h1.setLocation(addr,tz);
+                                db.insertLocation(addr.getLocality(),addr,lon,lat,lang,0);
+                                Log.d(APP,TAG+".onCreate => LocationService.AddressReceiver.receive(loc: "+addr.getLocality()+", lon: "+lon+", lat: "+lat+")");
+                            }
+                            setHoroscope(h1);
+                            hideLoading();
+                        });
                         return;
                     }
                     h.setLocation(cur.getString(0),cur.getString(1),cur.getString(2),lon,lat,tz);
