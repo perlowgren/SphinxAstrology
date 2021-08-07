@@ -771,6 +771,15 @@ public class WheelGraphView extends HoroscopeView {
 
     protected void drawInfoLayer(Canvas canvas,GraphStyle gs) {
         Horoscope h = horoscope;
+        float width = viewport.right-viewport.left;
+        float height = viewport.bottom-viewport.top;
+        float s = Math.min(width,height);
+        float textSize1 = s*0.04f;
+        float textSize2 = s*0.035f;
+        float textSize3 = s*0.03f;
+        float lineHeight1 = textSize1+s*0.003f;
+        float lineHeight2 = textSize2+s*0.003f;
+        float margin1 = s*0.01f;
         float x1, y1;
         String str;
         int i/*,d*/, n, m;
@@ -781,14 +790,15 @@ public class WheelGraphView extends HoroscopeView {
         paint.setAntiAlias(true);
         paint.setColor(0xff000000);
 
-        paint.setTextSize(24.0f);
-        x1 = viewport.left+5.0f;
-        y1 = viewport.top+5.0f-paint.ascent();
-        str = h.getDateString();
+        paint.setTextSize(textSize1/*24.0f*/);
+        x1 = viewport.left+margin1;
+        y1 = viewport.top+margin1-paint.ascent();
+        str = h.getFormalDateString();
         canvas.drawText(str,x1,y1,paint);
-        paint.setTextSize(20.0f);
+        paint.setTextSize(textSize2/*20.0f*/);
         str = h.getTimeAndTimeZoneString();
-        canvas.drawText(str,x1,y1+24.0f,paint);
+        canvas.drawText(str,x1,y1+lineHeight1,paint);
+        y1 += lineHeight1+lineHeight2;
 
         x = h.moonPhase();
         z = h.moonPhaseDegreeDays();
@@ -807,21 +817,19 @@ public class WheelGraphView extends HoroscopeView {
 		}*/
         n = (int)(y*24.0);
         m = (int)Math.abs(y*1440.0)%60;
-        paint.setTextSize(24.0f);
-        canvas.drawText(moonPhasesUnicode[i],x1,y1+54.0f,paint);
-        paint.setTextSize(16.0f);
+        paint.setTextSize(textSize1/*24.0f*/);
+        canvas.drawText(moonPhasesUnicode[i],x1,y1+s*0.012f,paint);
+        paint.setTextSize(textSize3/*16.0f*/);
 		/*if(d>0) str = String.format("%1$+dd %2$d:%3$02d",d,n,m);
 		else */
         str = String.format("%1$+d:%2$02d",n,m);
-        canvas.drawText(str,x1+26.0f,y1+49.0f,paint);
+        canvas.drawText(str,x1+lineHeight1,y1+(textSize1-textSize3)*0.5f,paint);
 
-        paint.setTextSize(24.0f);
-        x1 = viewport.right-5.0f;
-        y1 = viewport.top+5.0f-paint.ascent();
-        str = h.getLongitudeString();
+        paint.setTextSize(textSize2/*24.0f*/);
+        x1 = viewport.right-margin1;
+        y1 = viewport.top+margin1-paint.ascent();
+        str = h.getLongitudeString()+" "+h.getLatitudeString();
         canvas.drawText(str,x1-paint.measureText(str),y1,paint);
-        str = h.getLatitudeString();
-        canvas.drawText(str,x1-paint.measureText(str),y1+26.0f,paint);
     }
 
     private void positionPlanet(Horoscope h,long id,float xc,float yc,WheelRectF[] pl,int p,double a,float sz,float r,int endp,int iter) {
