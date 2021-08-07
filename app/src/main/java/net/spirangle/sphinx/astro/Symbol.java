@@ -1469,12 +1469,16 @@ public class Symbol {
 
     public static String getName(int concept,int n) {
         if(concept<0 || concept>=_C.length) return null;
-        return _C[concept].getName(n);
+        Concept c = _C[concept];
+        int id = c.getId(n);
+        return c.getName(id);
     }
 
     private static String getName(int concept,int n,int step) {
         if(concept<0 || concept>=_C.length) return null;
-        return _C[concept].getName(n,step);
+        Concept c = _C[concept];
+        int id = c.getId(n);
+        return c.getName(id,step);
     }
 
     public static String getName(int s) { return getName((s >> 16),s); }
