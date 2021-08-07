@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">SphinxAstro</string>
+
+  <string name="ok">OK</string>
+  <string name="cancel">Cancel</string>
+  <string name="next">Next</string>
+  <string name="previous">Previous</string>
+
+  <string name="action_settings">Settings</string>
+
+  <string name="spirangle_studio">Spirangle Studio</string>
+  <string name="presents">Presents</string>
+
+  <string name="title_app">Sphinx Astrology</string>
+  <string name="title_profiles">Profiles</string>
+  <string name="title_edit_profile">Edit Profile</string>
+  <string name="title_text">Symbol Texts</string>
+  <string name="title_edit_text">Edit Text</string>
+  <string name="title_settings">Settings</string>
+  <string name="title_help">Help</string>
+
+  <string name="dialog_pick_link_title">Pick Text Link</string>
+
+  <string name="button_save_profile">Save Profile</string>
+  <string name="check_bce">Before Common Era (BCE)</string>
+  <string name="check_dst">Daylight Saving Time (DST)</string>
+  <string name="check_julian">Julian Calendar</string>
+  <string name="edit_date_time">YYYY-MM-DD HH:MM:SS</string>
+  <string name="edit_location">City, Place, Coordinates</string>
+  <string name="edit_name">First &amp; Second Name</string>
+  <string name="edit_time_zone">Time Zone</string>
+  <string name="text_advanced">Advanced</string>
+  <string name="text_date_time">Date &amp; Time</string>
+  <string name="text_location">Location</string>
+  <string name="text_name">Name</string>
+
+  <string name="text_recent_texts">Recent Texts</string>
+  <string name="text_concept">Concept</string>
+  <string name="text_values">Values</string>
+
+  <string name="toolbar_search_hint">Search…</string>
+
+  <string name="menu_cancel">Cancel</string>
+  <string name="menu_charts">Charts</string>
+  <string name="menu_composite_chart">Composite</string>
+  <string name="menu_delete">Delete</string>
+  <string name="menu_edit">Edit</string>
+  <string name="menu_edit_profile">Edit Profile</string>
+  <string name="menu_edit_text">Edit Text</string>
+  <string name="menu_help">Help</string>
+  <string name="menu_help_links">Help: Links</string>
+  <string name="menu_help_syntax">Help: Syntax</string>
+  <string name="menu_help_text">Help: Text</string>
+  <string name="menu_index">Index</string>
+  <string name="menu_natal_chart">Natal</string>
+  <string name="menu_new_profile">New Profile</string>
+  <string name="menu_new_text">New Text</string>
+  <string name="menu_open">Open</string>
+  <string name="menu_preview">Preview</string>
+  <string name="menu_profiles">Profiles</string>
+  <string name="menu_progression_chart">Progression</string>
+  <string name="menu_save">Save</string>
+  <string name="menu_search">Search</string>
+  <string name="menu_settings">Settings</string>
+  <string name="menu_sign_in">Sign In</string>
+  <string name="menu_sign_out">Sign Out</string>
+  <string name="menu_synastry_chart">Synastry</string>
+  <string name="menu_transit_chart">Transit</string>
+
+  <string name="msgbox_title_initial">Sphinx Astrology</string>
+  <string name="msgbox_initial"><![CDATA[
+<p>This app aims to be a useful tool for students of astrology.</p>
+
+<p>Please sign in with Google for storing profiles and texts online, and for sharing with others.</p>
+
+<p>For full documentation, see Help in the menu.</p>
+]]></string>
+
+  <string name="toast_db_error">Database has not been properly created. Please reinstall app.</string>
+  <string name="toast_signin_failed">Signing in failed</string>
+  <string name="toast_profile_saved">Profile saved</string>
+  <string name="toast_profile_deleted">Profile deleted</string>
+  <string name="toast_text_saved">Text saved</string>
+  <string name="toast_text_change_static">This text may not be changed</string>
+  <string name="toast_text_deleted">Text deleted</string>
+  <string name="toast_save_failed">Save failed</string>
+  <string name="toast_delete_failed">Delete failed</string>
+
+  <string name="list_text_empty">There is no text available for this symbol, but you can write your own interpretation.</string>
+
+  <!-- This should be a string with the four directions
+       in the order: East, West, North, South; one char each. -->
+  <string name="coordinate_directions">EWNS</string>
+
+  <string name="installing">Installing %1$s…</string>
+  <string name="horoscope_now">Now</string>
+  <string name="label_greenwich">Greenwich</string>
+  <string name="label_england">England</string>
+  <string name="label_gb">GB</string>
+  <string name="days">days</string>
+  <string name="unknown">Unknown</string>
+
+  <string name="table_wheel">Hjul</string>
+  <string name="table_planets">Planeter</string>
+  <string name="table_houses">Hus</string>
+  <string name="table_aspect_table">Aspekter</string>
+  <string name="table_elements">Element</string>
+  <string name="table_qualities">Kvaliteter</string>
+  <string name="table_aspects">Aspektlista</string>
+  <string name="table_aspect_patterns">Aspektmönster</string>
+  <string name="table_arabic_parts">Arabiska punkter</string>
+
+  <string name="text_help_index"><![CDATA[
+<h1>Sfinx Astrologi</h1>
+<h3>Sidor</h3>
+<p>
+<ul>
+  <li><a href="help:sphinxAstrology">Sfinx Astrologi</a></li>
+  <li><a href="help:faq">Frågor &amp; svar</a></li>
+  <li><a href="help:horoscope">Horoskop</a></li>
+  <li><a href="help:profiles">Profiler</a></li>
+  <li><a href="help:editProfile">Redigera Profil</a></li>
+  <li><a href="help:editText">Redigera Text</a></li>
+  <li><a href="help:textSyntax">Text Syntax</a></li>
+  <li><a href="help:textLinks">Text Länkar</a></li>
+  <li><a href="help:textTags">Text Taggar</a></li>
+  <li><a href="help:settings">Inställningar</a></li>
+</ul>
+</p>
+
+]]></string>
+
+  <string name="text_help_faq"><![CDATA[
+<h1>Sfinx Astrologi</h1>
+<h3>Frågor &amp; svar</h3>
+
+
+]]></string>
+
+  <string name="text_help_sphinx"><![CDATA[
+<h1>Sfinx Astrologi</h1>
+<h3>Om</h3>
+
+
+]]></string>
+
+  <string name="text_help_horoscope"><![CDATA[
+<h1>Sfinx Astrologi</h1>
+<h3>Horoskop</h3>
+
+]]></string>
+
+  <string name="text_help_profiles"><![CDATA[
+<h1>Sfinx Astrologi</h1>
+<h3>Profiler</h3>
+
+]]></string>
+
+  <string name="text_help_edit_profile"><![CDATA[
+<h1>Sfinx Astrologi</h1>
+<h3>Redigera Profil</h3>
+<p>Enter name of the profile, for a person it should be the first and second name, or it can be some other name if it refers to a specific point in time, e.g. a solar eclipse or similar.</p>
+
+<h5>Date & Time</h5>
+<p>Date should be in the format &quot;YYYY-MM-DD&quot;. Time should be in the format &quot;HH:MM:SS&quot;, but &quot;HH&quot; and &quot;HH:MM&quot; are accepted. Time can be omitted, in which case &quot;12:00&quot; will be used. Only number input is accepted, dashes and colons are inserted automatically.</p>
+
+<h5>Location</h5>
+<p>Location can be a city, place or even street address, be general or specific. Leave the field empty to use current location. You can also enter exact longitude and latitude coordinates in the format &quot;DDDXMMSS DDDXMMSS&quot;, where &apos;X&apos; the direction, e.g. &apos;E&apos;, &apos;W&apos;, &apos;N&apos;, &apos;S&apos;. Press the globe button to the right for finding locations. Select the correct location in the list below.</p>
+
+<p>Daylight Saving Time is set automatically, but may be set manually also.</p>
+
+<h5>Advanced</h5>
+<p>Advanced data permits fine adjusting the horoscope.</p>
+
+<h5>Se även</h5>
+<p><a href="help:sphinxAstrology">Sphinx Astrology</a><br>
+<a href="help:faq">FAQ</a></p>
+
+]]></string>
+
+  <string name="text_help_edit_text"><![CDATA[
+<h1>Sfinx Astrologi</h1>
+<h3>Redigera Text</h3>
+
+]]></string>
+
+  <string name="text_help_syntax"><![CDATA[
+<h1>Sfinx Astrologi</h1>
+<h3>Text Syntax</h3>
+
+<p>A very simple type of markup can be applied for styling and formatting text. It&apos;s
+been specifically designed for soft keyboards on mobile devices. The basis for this markup
+is a subset and combination the well known <em>Markdown</em>, <em>Txt2Tag</em> and
+<em>AsciiDoc</em>.</p>
+
+<h5>Paragraphs</h5>
+
+<p>Paragraphs are created with line breaks. A blank line makes a new paragraph.</p>
+
+<h5>Headers</h5>
+
+<p>Headers are created with either equal (=) or hash (#) signs, and the number of signs
+defines the header level, e.g. &quot;## Header&quot; makes a header level 2. Instead of
+repeating the same sign, a number can be added, e.g. &quot;### Header&quot; can be
+written as &quot;#3 Header&quot;. Headers must end with a line break.</p>
+
+<blockquote><code>#3 Header</code></blockquote>
+
+<p>Becomes:</p>
+
+<h3>Header</h3>
+
+<hr>
+
+<h5>Quotes</h5>
+
+<p>Quotes are created with the greater than sign (>). Each line in the quote must
+start with a &quot;>&quot; and an optional space &quot;> &quot;. Quotes can have
+many lines, and can also have sub-quotes, e.g. &quot;>>Quote&quot; generates a
+quote of two levels.</p>
+
+<blockquote><code>&gt; Astrology is a Language.<br>
+&gt; If you understand<br>
+&gt; this language,<br>
+&gt; The Sky Speaks to You.</code></blockquote>
+
+<p>Becomes:</p>
+
+<blockquote>Astrology is a Language. If you understand this language, The Sky Speaks
+to You.</blockquote>
+
+<h5>Text Styles</h5>
+
+<p>Text can be styled in many ways: *bold* becomes <strong>bold</strong>, /italic/
+becomes <em>italic</em>, _underline_ becomes <u>underline</u>, ~strike~ becomes
+<s>strike</s>, ^sup^ becomes <sup><small>sup</small></sup>, +big+ becomes
+<big>big</big>, and -small- becomes <small>small</small>. All styles can also be
+combined */_~multi~_/* becomes <strong><em><u><s>multi</s></u></em></strong>.</p>
+
+<p>Styles can only be applied to the beginning and ending of words with single signs.
+To apply a style anywhere in the text, use the sign twice, e.g. m**i**x//e//d
+becomes m<strong>i</strong>x<em>e</em>d.</p>
+
+<h5>Comments</h5>
+
+<p>Comments in a text are created with a percent sign (&#37;). Each line starting
+with &quot;&#37;&quot;, are hidden. Entire blocks can be hidden by wrapping between
+three percent signs &quot;&#37;&#37;&#37;&quot; on separate lines:</p>
+
+<p>&#37;&#37;&#37;<br>
+This text will not be visible. It can be a reminder, note or unfinished text.<br>
+&#37;&#37;&#37;</p>
+
+<h5>Horizontal Lines</h5>
+
+<p>Horizontal lines are created with two or more dashes &quot;--&quot; on a separate
+line (blank lines above and below):</p>
+
+<blockquote><code>--</code></blockquote>
+
+<p>Becomes:</p>
+
+<hr>
+
+<h5>The Back-Slash</h5>
+
+<p>If you want to use a special sign in your text without using it for styling,
+you can prefix it with a backslash, e.g. &quot;\\+text\\+&quot; becomes +text+.
+This applies to all special signs and formatting.</p>
+
+<hr>
+
+<p>There is also tags and links, which adds some nice features when writing texts.
+Links makes it possible to link texts together, and tags adds special signs and
+symbols etc.</p>
+
+<hr>
+
+<h5>Se även</h5>
+<p><a href="help:textLinks">Text Links</a><br>
+<a href="help:textTags">Text Tags</a></p>
+
+]]></string>
+
+  <string name="text_help_links"><![CDATA[
+<h1>Sfinx Astrologi</h1>
+<h3>Text Länkar</h3>
+
+<h5>Se även</h5>
+<p><a href="help:textSyntax">Text Syntax</a><br>
+<a href="help:textTags">Text Taggar</a></p>
+
+]]></string>
+
+  <string name="text_help_tags"><![CDATA[
+<h1>Sfinx Astrologi</h1>
+<h3>Text Taggar</h3>
+
+<h5>Se även</h5>
+<p><a href="help:textSyntax">Text Syntax</a><br>
+<a href="help:textLinks">Text Länkar</a></p>
+
+]]></string>
+
+  <string name="text_help_settings"><![CDATA[
+<h1>Sfinx Astrologi</h1>
+<h3>Inställningar</h3>
+
+]]></string>
+
+  <string name="symbol_format_0">%1$s</string>                  <!-- e.g. "Sun" -->
+  <string name="symbol_format_1">%2$s i %1$s</string>           <!-- e.g. "Sun in Aries" -->
+  <string name="symbol_format_2">%2$s och %3$s i %1$s</string>  <!-- e.g. "Sun and Moon in Conjunction" -->
+  <string name="symbol_format_3">%1$s: %2$s</string>            <!-- e.g. "Ruler: Sun" -->
+  <string name="symbol_format_4">%1$s: %2$s / %3$s</string>     <!-- e.g. "Mutual Receptive: Sun / Moon" -->
+</resources>

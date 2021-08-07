@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string-array name="actionbar_graph_views">
+		<item>@string/table_wheel</item>
+		<item>@string/table_planets</item>
+		<item>@string/table_houses</item>
+		<item>@string/table_aspect_table</item>
+		<item>@string/table_elements</item>
+		<item>@string/table_qualities</item>
+		<item>@string/table_aspects</item>
+		<item>@string/table_aspect_patterns</item>
+		<item>@string/table_arabic_parts</item>
+	</string-array>
+
+	<string-array name="symbol_formats">
+		<item>@string/symbol_format_0</item>  <!-- e.g. "Sun" -->
+		<item>@string/symbol_format_1</item>  <!-- e.g. "Sun in Aries" -->
+		<item>@string/symbol_format_2</item>  <!-- e.g. "Sun and Moon in Conjunction" -->
+		<item>@string/symbol_format_3</item>  <!-- e.g. "Ruler: Sun" -->
+		<item>@string/symbol_format_4</item>  <!-- e.g. "Mutual Receptive: Sun / Moon" -->
+	</string-array>
+
+	<string-array name="concept_names">
+		<item>Concept</item>
+		<item>System</item>
+		<item>Direction</item>
+		<item>Calendar</item>
+		<item>Month</item>
+		<item>Element</item>
+		<item>Planet</item>
+		<item>Zodiac</item>
+		<item>Astrology</item>
+		<item>Element</item>
+		<item>Quality</item>
+		<item>Energy</item>
+		<item>Zodiac</item>
+		<item>Planet</item>
+		<item>Minor Planet</item>
+		<item>Fixed Star</item>
+		<item>Point</item>
+		<item>Arabic Part</item>
+		<item>House</item>
+		<item>Aspect</item>
+		<item>Aspect Pattern</item>
+		<item>Shaping</item>
+		<item>Factor</item>
+		<item>House System</item>
+		<item>Chart Type</item>
+		<item>Planet in Zodiac</item>
+		<item>Minor Planet in Zodiac</item>
+		<item>Fixed Star in Zodiac</item>
+		<item>Planet in House</item>
+		<item>Minor Planet in House</item>
+		<item>Fixed Star in House</item>
+		<item>House in Zodiac</item>
+		<item>Planet in Aspect to Planet</item>
+		<item>Planet in Aspect to Minor Planet</item>
+		<item>Planet in Aspect to Fixed Star</item>
+		<item>Minor Planet in Aspect to Minor Planet</item>
+		<item>Fixed Star in Aspect to Fixed Star</item>
+		<item>Minor Planet in Aspect to Fixed Star</item>
+		<item>Planet in Aspect to House</item>
+		<item>Minor Planet in Aspect to House</item>
+		<item>Fixed Star in Aspect to House</item>
+		<item>Planet Factor</item>
+		<item>House Factor</item>
+		<item>Factor: Planet and Planet</item>
+		<item>Pattern of Element</item>
+		<item>Pattern of Quality</item>
+		<item>Planet in Aspect Pattern</item>
+		<item>Minor Planet in Aspect Pattern</item>
+		<item>Fixed Star in Aspect Pattern</item>
+		<item>House in Aspect Pattern</item>
+	</string-array>
+
+	<string-array name="system_names">
+		<item>Symbol</item>
+		<item>Astrology</item>
+		<item>Qabalah</item>
+		<item>Tarot</item>
+		<item>Enochian</item>
+		<item>Alchemy</item>
+		<item>Geomancy</item>
+	</string-array>
+
+	<string-array name="direction_names">
+		<item>Longitude</item>
+		<item>Latitude</item>
+		<item>East</item>
+		<item>West</item>
+		<item>North</item>
+		<item>South</item>
+	</string-array>
+
+	<string-array name="calendar_names">
+		<item>Julian Calendar</item>
+		<item>Julian Day</item>
+		<item>Gregorian Calendar</item>
+	</string-array>
+
+	<string-array name="week_day_names">
+		<item>Monday</item>
+		<item>Tuesday</item>
+		<item>Wednesday</item>
+		<item>Thursday</item>
+		<item>Friday</item>
+		<item>Saturday</item>
+		<item>Sunday</item>
+	</string-array>
+
+	<string-array name="month_names">
+		<item>January</item>
+		<item>February</item>
+		<item>March</item>
+		<item>April</item>
+		<item>May</item>
+		<item>June</item>
+		<item>July</item>
+		<item>August</item>
+		<item>September</item>
+		<item>October</item>
+		<item>November</item>
+		<item>December</item>
+	</string-array>
+
+	<string-array name="element_names">
+		<item>Spirit</item>
+		<item>Fire</item>
+		<item>Air</item>
+		<item>Water</item>
+		<item>Earth</item>
+	</string-array>
+
+	<string-array name="classic_planet_names">
+		<item>Sun</item>
+		<item>Moon</item>
+		<item>Mercury</item>
+		<item>Venus</item>
+		<item>Mars</item>
+		<item>Jupiter</item>
+		<item>Saturn</item>
+	</string-array>
+
+	<string-array name="zodiac_names">
+		<item>Aries</item>
+		<item>Taurus</item>
+		<item>Gemini</item>
+		<item>Cancer</item>
+		<item>Leo</item>
+		<item>Virgo</item>
+		<item>Libra</item>
+		<item>Scorpio</item>
+		<item>Sagittarius</item>
+		<item>Capricorn</item>
+		<item>Aquarius</item>
+		<item>Pisces</item>
+	</string-array>
+
+	<string-array name="astrology_category_names">
+		<item>Category</item>
+			<item>Categories</item>
+			<item>The Categories</item>
+		<item>Element</item>
+			<item>Elements</item>
+			<item>The Elements</item>
+		<item>Quality</item>
+			<item>Qualities</item>
+			<item>The Qualities</item>
+		<item>Energy</item>
+			<item>Energies</item>
+			<item>The Energies</item>
+		<item>Sign</item>
+			<item>Signs</item>
+			<item>The Signs</item>
+		<item>Planet</item>
+			<item>Planets</item>
+			<item>The Planets</item>
+		<item>House</item>
+			<item>Houses</item>
+			<item>The Houses</item>
+		<item>Aspect</item>
+			<item>Aspects</item>
+			<item>The Aspects</item>
+		<item>Aspect Pattern</item>
+			<item>Aspect Patterns</item>
+			<item>The Aspect Patterns</item>
+		<item>Shaping</item>
+			<item>Shapings</item>
+			<item>The Shapings</item>
+		<item>Factor</item>
+			<item>Factors</item>
+			<item>The Factors</item>
+		<item>House System</item>
+			<item>House Systems</item>
+			<item>The House Systems</item>
+	</string-array>
+
+	<string-array name="quality_names">
+		<item>Cardinal</item>
+		<item>Fixed</item>
+		<item>Mutable</item>
+	</string-array>
+
+	<string-array name="energy_names">
+		<item>Male</item>
+		<item>Female</item>
+	</string-array>
+
+	<string-array name="planet_names">
+		<item>Tellus</item>
+		<item>Uranus</item>
+		<item>Neptune</item>
+		<item>Pluto</item>
+	</string-array>
+
+	<string-array name="minor_planet_names">
+		<item>Chiron</item>
+		<item>Ceres</item>
+		<item>Pallas</item>
+		<item>Juno</item>
+		<item>Vesta</item>
+	</string-array>
+
+	<string-array name="fixed_star_names">
+		<item>Acamar (th-1Eri)</item><item>Achernar (alEri)</item><item>Achird (etCas)</item>
+		<item>Acrab (be-1Sco)</item><item>Acrux (al-1Cru)</item><item>Acubens (alCnc)</item>
+		<item>Adhafera (zeLeo)</item><item>Adhara (epCMa)</item><item>Adhil (xiAnd)</item>
+		<item>Ain (epTau)</item><item>Ain al Rami (nu-1Sgr)</item><item>Al Dhanab (gaGru)</item>
+		<item>Al Haud (thUMa)</item><item>Al Hecka (zeTau)</item><item>Al Jabhah (etLeo)</item>
+		<item>Al Kalb al Rai (rh-2Cep)</item><item>Al Khabdhilinan (ioAur)</item>
+		<item>Al Minliar al Asad (kaLeo)</item><item>Al Minliar al Shuja (siHya)</item>
+		<item>Al Pherg (etPsc)</item><item>Al Tarf (beCnc)</item><item>Al Thalimaim (ioAql)</item>
+		<item>Al Thalimaim (laAql)</item><item>Aladfar (etLyr)</item><item>Alaraph (beVir)</item>
+		<item>Alathfar (muLyr)</item><item>Alathfar (omeDra)</item><item>Albaldah (piSgr)</item>
+		<item>Albali (epAqr)</item><item>Albireo (be-1Cyg)</item><item>Alchiba (alCrv)</item>
+		<item>Alcor (80Uma)</item><item>Alcyone (etTau)</item><item>Aldafirah (beCom)</item>
+		<item>Aldebaran (alTau)</item><item>Alderamin (alCep)</item><item>Aldhibah (zeDra)</item>
+		<item>Alfecca Meridiana (alCrA)</item><item>Alfirk (beCep)</item><item>Algedi (al-1Cap)</item>
+		<item>Algedi (al-2Cap)</item><item>Algenib (gaPeg)</item><item>Algieba (etLeo)</item>
+		<item>Algieba (ga-1Leo)</item><item>Algol (bePer)</item><item>Algorab (deCrv)</item>
+		<item>Alhena (gaGem)</item><item>Alioth (epUMa)</item><item>Alkaid (etUMa)</item>
+		<item>Alkalurops (mu-1Boo)</item><item>Alkes (alCrt)</item><item>Alkurhah (xiCep)</item>
+		<item>Almaaz (epAur)</item><item>Almach (ga-1And)</item><item>Almeisan (gaGem)</item>
+		<item>Alnair (alGru)</item><item>Alnasl (ga-2Sgr)</item><item>Alnilam (epOri)</item>
+		<item>Alnitak (zeOri)</item><item>Alniyat (siSco)</item><item>Alphard (alHya)</item>
+		<item>Alphecca (alCrB)</item><item>Alpheratz (alAnd)</item><item>Alrischa (alPsc)</item>
+		<item>Alsafi (siDra)</item><item>Alsciaukat (31Lyn)</item><item>Alshain (beAql)</item>
+		<item>Alsharasif (beCrt)</item><item>Alshat (nuCap)</item><item>Altair (alAql)</item>
+		<item>Altais (deDra)</item><item>Alterf (laLeo)</item><item>Aludra (etCMa)</item>
+		<item>Alula Australis (xiUMa)</item><item>Alula Borealis (nuUMa)</item><item>Alya (th-1Ser)</item>
+		<item>Alzirr (xiGem)</item><item>Ancha (thAqr)</item><item>Andromeda (M31)</item>
+		<item>Angetenar (ta-2Eri)</item><item>Ankaa (alPhe)</item><item>Anser (alVul)</item>
+		<item>Antares (alSco)</item><item>Apex (HerA*)</item><item>Ara (alAra)</item>
+		<item>Arcturus (alBoo)</item><item>Arkab Posterior (be-2Sgr)</item><item>Arkab Prior (be-1Sgr)</item>
+		<item>Armus (etCap)</item><item>Arneb (alLep)</item><item>Arrakis (muDra)</item>
+		<item>Ascella (zeSgr)</item><item>Asellus Australis (deCnc)</item>
+		<item>Asellus Borealis (gaCnc)</item><item>Asellus Primus (thBoo)</item>
+		<item>Asellus Secundus (ioBoo)</item><item>Asellus Tertius (ka-2Boo)</item>
+		<item>Asmidiske (xiPup)</item><item>Aspidiske (ioCar)</item><item>Asterion (beCVn)</item>
+		<item>Asterope (21Tau)</item><item>Atik (zePer)</item><item>Atik (omiPer)</item>
+		<item>Atlas (27Tau)</item><item>Atria (alTrA)</item><item>Auva (deVir)</item>
+		<item>Avior (epCar)</item><item>Azelfafage (pi-1Cyg)</item><item>Azha (etEri)</item>
+		<item>"Barnard&apos;s star (V799 Oph)"</item><item>Baten Kaitos (zeCet)</item>
+		<item>Beid (omi-1Eri)</item><item>Bellatrix (gaOri)</item><item>Benetnash (etUMa)</item>
+		<item>Betelgeuse (alOri)</item><item>Biham (thPeg)</item><item>Bos (roCap)</item>
+		<item>Botein (deAri)</item><item>Brachium (siLib)</item><item>Bungula (alCen)</item>
+		<item>Caleano (16Tau)</item><item>Canopus (alCar)</item><item>Capella (alAur)</item>
+		<item>Caph (beCas)</item><item>Castor (alGem)</item><item>Castra (epCap)</item>
+		<item>Ceginus (phBoo)</item><item>Celbalrai (beOph)</item><item>Chara (beCVn)</item>
+		<item>Chertan (thLeo)</item><item>Chow (beSer)</item><item>Cor Caroli (al-2CVn)</item>
+		<item>Cor Hydrae (alHya)</item><item>Cor Serpentis (alSer)</item><item>Cujam (omeHer)</item>
+		<item>Cursa (beEri)</item><item>Dabih (beCap)</item><item>Deneb (alCyg)</item>
+		<item>Deneb Algedi (deCap)</item><item>Deneb Algenubi (etCet)</item>
+		<item>Deneb Dulphim (epDel)</item><item>Deneb Kaitos (ioCet)</item>
+		<item>Deneb Okab (deAql)</item><item>Denebola (beLeo)</item><item>Dheneb (zeAql)</item>
+		<item>Dhur (deLeo)</item><item>Diadem (alCom)</item><item>Diphda (beCet)</item>
+		<item>Dorsum (thCap)</item><item>Dschubba (deSco)</item><item>Dubhe (alUMa)</item>
+		<item>Dziban (ps-1Dra)</item><item>Edasich (ioDra)</item><item>El Kophrah (chUMa)</item>
+		<item>Electra (17Tau)</item><item>Elnath (beTau)</item><item>Eltanin (gaDra)</item>
+		<item>Enif (epPeg)</item><item>Erakis (muCep)</item><item>Errai (gaCep)</item>
+		<item>Fomalhaut (alPsA)</item><item>Foramen (etCap)</item><item>Fornacis (alFor)</item>
+		<item>Fum Alsamakah (bePsc)</item><item>Furud (zeCMa)</item><item>Gacrux (gaCru)</item>
+		<item>Gal. Center (SgrA*)</item><item>Gemma (alCrB)</item><item>Gianfar (laDra)</item>
+		<item>Giedi Prima (al-1Cap)</item><item>Giedi Secunda (al-2Cap)</item>
+		<item>Gienah (gaCrv)</item><item>Gienah Cygni (epCyg)</item><item>Gomeisa (beCMi)</item>
+		<item>Gorgona Quatra (omePer)</item><item>Gorgona Secunda (piPer)</item>
+		<item>Gorgona Tertia (rhPer)</item><item>Graffias (be-1Sco)</item><item>Grafias (xiSco)</item>
+		<item>Great Attractor (GA)</item><item>Grumium (xiDra)</item><item>Hadar (beCen)</item>
+		<item>Haedus (zeAur)</item><item>Hamal (alAri)</item><item>Han (zeOph)</item>
+		<item>Haris (gaBoo)</item><item>Hasseleh (ioAur)</item><item>Hatsya (ioOri)</item>
+		<item>Heka (laOri)</item><item>Heze (zeVir)</item><item>Hoedus (etAur)</item>
+		<item>Homam (zePeg)</item><item>Hyadum I (gaTau)</item><item>Hyadum II (de-1Tau)</item>
+		<item>Isis (gaCMa)</item><item>Izar (epBoo)</item><item>Jabbah (nuSco)</item>
+		<item>Jabhat al Akrab (ome-1Sco)</item><item>Jabhat al Akrab (ome-2Sco)</item>
+		<item>Kaffaljidhma (gaCet)</item><item>Kaus Australis (epSgr)</item>
+		<item>Kaus Borealis (laSgr)</item><item>Kaus Medis (deSgr)</item>
+		<item>Ke Kwan (kaCen)</item><item>Keid (omi-2Eri)</item><item>Kerb (taPeg)</item>
+		<item>Khambalia (laVir)</item><item>Kissin (gaCom)</item><item>Kitalpha (alEqu)</item>
+		<item>Kochab (beUMi)</item><item>Kornephoros (beHer)</item><item>Kraz (beCrv)</item>
+		<item>Kuma (nu-1Dra)</item><item>Kuma (nu-2Dra)</item><item>Kurdah (xiCep)</item>
+		<item>Kurhah (zeCep)</item><item>Labrum (deCrt)</item><item>Lesath (upSco)</item>
+		<item>Maasym (laHer)</item><item>Mabsuthat (31Lyn)</item><item>Maia (20Tau)</item>
+		<item>Manubrium (omiSgr)</item><item>Marfak (muCas)</item><item>Marfik (kaHer)</item>
+		<item>Marfik (laOph)</item><item>Markab (alPeg)</item><item>Markeb (kaVel)</item>
+		<item>Matar (etPeg)</item><item>Mebsuta (epGem)</item><item>Megrez (deUMa)</item>
+		<item>Meissa (laOri)</item><item>Mekbuda (zeGem)</item><item>Menkalinan (beAur)</item>
+		<item>Menkar (alCet)</item><item>Menkar (laCet)</item><item>Menkent (thCen)</item>
+		<item>Menkib (xiPer)</item><item>Merak (beUMa)</item><item>Merga (38Boo)</item>
+		<item>Merope (23Tau)</item><item>Mesarthim (gaAri)</item><item>Miaplacidus (beCar)</item>
+		<item>Mimosa (beCru)</item><item>Minchir (up-2Hya)</item><item>Minkar (epCrv)</item>
+		<item>Mintaka (deOri)</item><item>Mira (omiCet)</item><item>Mirach (beAnd)</item>
+		<item>Mirak (epBoo)</item><item>Miram (etPer)</item><item>Mirfak (alPer)</item>
+		<item>Mirzam (beCMa)</item><item>Misam (kaPer)</item><item>Mizar (zeUMa)</item>
+		<item>Mothallah (alTri)</item><item>Muhlifain (gaCen)</item><item>Muliphein (gaCMa)</item>
+		<item>Muphrid (etBoo)</item><item>Muscida (omiUMa)</item><item>Nair al Saif (ioOri)</item>
+		<item>Naos (zePup)</item><item>Nash (ga-2Sgr)</item><item>Nashira (gaCap)</item>
+		<item>Nekkar (beBoo)</item><item>Nihal (beLep)</item><item>Nodus I (zeDra)</item>
+		<item>Nodus II (deDra)</item><item>Nunki (siSgr)</item><item>Nusakan (beCrB)</item>
+		<item>Oculus (piCap)</item><item>Peacock (alPav)</item><item>Phact (alCol)</item>
+		<item>Phecda (gaUMa)</item><item>Pherkad (gaUMi)</item><item>Pherkad Minor (11UMi)</item>
+		<item>Polaris (alUMi)</item><item>Polaris Australis (siOct)</item><item>Polis (muSgr)</item>
+		<item>Pollux (beGem)</item><item>Porrima (gaVir)</item><item>Praecipua (omiLMi)</item>
+		<item>Prijipati (deAur)</item><item>Princeps (deBoo)</item><item>Procyon (alCMi)</item>
+		<item>Propus (etGem)</item><item>Proxima Cent. (V645 Cen)</item><item>Pulcherrima (epBoo)</item>
+		<item>Rana (deEri)</item><item>Ras Elased Australis (epLeo)</item><item>Rasalas (muLeo)</item>
+		<item>Rasalgethi (alHer)</item><item>Rasalhague (alOph)</item><item>Rastaban (beDra)</item>
+		<item>Regor (ga-2Vel)</item><item>Regulus (alLeo)</item><item>Rigel (beOri)</item>
+		<item>Rigel Kentaurus (alCen)</item><item>Rijl al Awwa (muVir)</item>
+		<item>Rotanev (beDel)</item><item>Ruchbah (deCas)</item><item>Ruchbah (ome-1Cyg)</item>
+		<item>Ruchbah (ome-2Cyg)</item><item>Rukbat (alSgr)</item><item>Sabik (etOph)</item>
+		<item>Sadalachbia (gaAqr)</item><item>Sadalbari (laPeg)</item><item>Sadalmelik (alAqr)</item>
+		<item>Sadalsuud (beAqr)</item><item>Sadatoni (zeAur)</item><item>Sadir (gaCyg)</item>
+		<item>Saidak (80Uma)</item><item>Saiph (kaOri)</item><item>Salm (taPeg)</item>
+		<item>Sargas (thSco)</item><item>Sarin (deHer)</item><item>Sceptrum (53Eri)</item>
+		<item>Scheat (bePeg)</item><item>Schedar (alCas)</item><item>Scutulum (ioCar)</item>
+		<item>Seat (piAqr)</item><item>Segin (epCas)</item><item>Seginus (gaBoo)</item>
+		<item>Sham (alSge)</item><item>Shaula (laSco)</item><item>Sheliak (beLyr)</item>
+		<item>Shemali (ioCet)</item><item>Sheratan (beAri)</item><item>Sinistra (nuOph)</item>
+		<item>Sirius (alCMa)</item><item>Sirrah (alAnd)</item><item>Situla (kaAqr)</item>
+		<item>Skat (deAqr)</item><item>Spica (alVir)</item><item>Sterope I (21Tau)</item>
+		<item>Sterope II (22Tau)</item><item>Sualocin (alDel)</item><item>Subra (omiLeo)</item>
+		<item>Suhail (laVel)</item><item>Suhail al Muhlif (ga-2Vel)</item>
+		<item>Sulafat (gaLyr)</item><item>Syrma (ioVir)</item><item>Tabit (pi-3Ori)</item>
+		<item>Tabit (pi-4Ori)</item><item>Talitha Australis (kaUMa)</item>
+		<item>Talitha Borealis (ioUMa)</item><item>Tania Australis (muUMa)</item>
+		<item>Tania Borealis (laUMa)</item><item>Tarazed (gaAql)</item>
+		<item>Taygeta (19Tau)</item><item>Tegmine (ze-1Cnc)</item><item>Tejat (muGem)</item>
+		<item>Terebellium (omeSgr)</item><item>Thabit (upOri)</item>
+		<item>The Blaze Star (taCrB)</item><item>The Garnet Star (muCep)</item>
+		<item>Theemin (up-2Eri)</item><item>Thuban (alDra)</item><item>Toliman (alCen)</item>
+		<item>Tse Tseng (ioLeo)</item><item>Tseen Ke (phVel)</item><item>Tsih (gaCas)</item>
+		<item>Tsze (laCol)</item><item>Tureis (ioCar)</item><item>Tyl (epDra)</item>
+		<item>Ukdah (ta-1Hya)</item><item>Ukdah (ta-2Hya)</item><item>Unukalhai (alSer)</item>
+		<item>Vega (alLyr)</item><item>Vindemiatrix (epVir)</item><item>Virgo Cluster (VC)</item>
+		<item>Wasat (deGem)</item><item>Wazn (beCol)</item><item>Wezen (deCMa)</item>
+		<item>Yed Posterior (epOph)</item><item>Yed Prior (deOph)</item><item>Yildun (deUMi)</item>
+		<item>Zaniah (etVir)</item><item>Zaurak (gaEri)</item><item>Zavijava (beVir)</item>
+		<item>Zibal (zeEri)</item><item>Zosma (deLeo)</item><item>Zuben Elakribi (deLib)</item>
+		<item>Zubenelakrab (gaLib)</item><item>Zubenelgenubi (al-2Lib)</item>
+		<item>Zubeneshamali (beLib)</item><item>Zubenhakrabi (nuLib)</item>
+	</string-array>
+
+	<string-array name="astro_point_names">
+		<item>N. Node</item>
+		<item>True N. Node</item>
+		<item>S. Node</item>
+		<item>True S. Node</item>
+		<item>Lilith</item>
+		<item>Vertex</item>
+		<item>Eastpoint</item>
+	</string-array>
+
+	<string-array name="arabic_part_names">
+		<item>Fortune</item>
+	</string-array>
+
+	<string-array name="house_names">
+		<item>Ascendant</item>
+			<item>1:st</item>
+		<item>2:nd House</item>
+			<item>2:nd</item>
+		<item>3:rd House</item>
+			<item>3:rd</item>
+		<item>Imum Coeli</item>
+			<item>4:th</item>
+		<item>5:th House</item>
+			<item>5:th</item>
+		<item>6:th House</item>
+			<item>6:th</item>
+		<item>Descendent</item>
+			<item>7:th</item>
+		<item>8:th House</item>
+			<item>8:th</item>
+		<item>9:th House</item>
+			<item>9:th</item>
+		<item>Medium Coeli</item>
+			<item>10:th</item>
+		<item>11:th House</item>
+			<item>11:th</item>
+		<item>12:th House</item>
+			<item>12:th</item>
+	</string-array>
+
+	<string-array name="aspect_names">
+		<item>Conjunction</item>
+		<item>Semisextile</item>
+		<item>Decile</item>
+		<item>Novile</item>
+		<item>Semisquare</item>
+		<item>Septile</item>
+		<item>Sextile</item>
+		<item>Quintile</item>
+		<item>Square</item>
+		<item>Trine</item>
+		<item>Sesquiquadrate</item>
+		<item>Quincunx</item>
+		<item>Opposition</item>
+	</string-array>
+
+	<string-array name="aspect_pattern_names">
+		<item>Stellium</item>
+		<item>T-Square</item>
+		<item>Great Square</item>
+		<item>Great Cross</item>
+		<item>Great Trine</item>
+		<item>Yod</item>
+		<item>Mystic Rectangle</item>
+		<item>Kite</item>
+		<item>Great Quintile</item>
+		<item>Star of David</item>
+	</string-array>
+
+	<string-array name="shaping_names">
+		<item>Bowl</item>
+		<item>Wedge</item>
+		<item>Seesaw</item>
+		<item>Splay</item>
+		<item>Locomotive</item>
+		<item>Bucket</item>
+		<item>Bundle</item>
+		<item>Splash</item>
+	</string-array>
+
+	<string-array name="factor_names">
+		<item>Ruling Planet</item>
+		<item>Regenthouse</item>
+		<item>Rising</item>
+		<item>Angular</item>
+		<item>Mutually Receptive</item>
+	</string-array>
+
+	<string-array name="hsystem_names">
+		<item>Placidus</item>
+		<item>Koch</item>
+	</string-array>
+
+	<string-array name="chart_type_names">
+		<item>Natal</item>
+		<item>Synastry</item>
+		<item>Composite</item>
+		<item>Geocentric</item>
+		<item>Heliocentric</item>
+		<item>Sidereal</item>
+		<item>Tropical</item>
+		<item>Aspect in Sign</item>
+	</string-array>
+</resources>
