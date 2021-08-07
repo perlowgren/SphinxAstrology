@@ -338,10 +338,7 @@ public abstract class BasicActivity extends AppCompatActivity implements OnNavig
             res.getStringArray(R.array.shaping_names),
             res.getStringArray(R.array.factor_names),
             res.getStringArray(R.array.hsystem_names),
-            res.getStringArray(R.array.chart_type_names),
-            res.getStringArray(R.array.hebrew_letter_names),
-            res.getStringArray(R.array.tarot_arcana_names),
-            res.getStringArray(R.array.tarot_minor_arcana_names),
+            res.getStringArray(R.array.chart_type_names)
         };
         String[] symbol_formats = res.getStringArray(R.array.symbol_formats);
         Symbol.setStringData(symbol_data,symbol_formats);
