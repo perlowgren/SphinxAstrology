@@ -427,6 +427,16 @@ symbols etc.</p>
 		<item>Gregorian Calendar</item>
 	</string-array>
 
+	<string-array name="week_day_names">
+		<item>Monday</item>
+		<item>Tuesday</item>
+		<item>Wednesday</item>
+		<item>Thursday</item>
+		<item>Friday</item>
+		<item>Saturday</item>
+		<item>Sunday</item>
+	</string-array>
+
 	<string-array name="month_names">
 		<item>January</item>
 		<item>February</item>
