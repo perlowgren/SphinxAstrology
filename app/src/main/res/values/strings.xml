@@ -8,6 +8,11 @@
 	<string name="next">Next</string>
 	<string name="previous">Previous</string>
 
+	<plurals name="request_permissions">
+		<item quantity="one">To continue you have to accept this permission.</item>
+		<item quantity="other">To continue you have to accept these permissions.</item>
+	</plurals>
+
 	<string name="action_settings">Settings</string>
 
 	<string name="spirangle_studio">Spirangle Studio</string>

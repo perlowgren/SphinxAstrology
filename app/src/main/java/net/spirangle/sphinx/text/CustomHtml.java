@@ -24,8 +24,8 @@ public class CustomHtml {
     public static final int LINKS = 0x0008;
     public static final int ALL = 0x000f;
 
-    public static interface CustomHtmlListener {
-        public void onLinkClick(View view,String url);
+    public interface CustomHtmlListener {
+        void onLinkClick(View view,String url);
     }
 
     @SuppressWarnings("deprecation")

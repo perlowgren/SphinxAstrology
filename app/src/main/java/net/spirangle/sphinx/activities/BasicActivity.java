@@ -1,10 +1,14 @@
 package net.spirangle.sphinx.activities;
 
+import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
 import static net.spirangle.sphinx.config.SphinxProperties.ACTIVITY_SIGN_IN;
 import static net.spirangle.sphinx.config.SphinxProperties.APP;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -14,12 +18,16 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,13 +38,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
+import com.google.common.io.BaseEncoding;
 
 import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.astro.Coordinate;
 import net.spirangle.sphinx.astro.Symbol;
 import net.spirangle.sphinx.db.Database;
 import net.spirangle.sphinx.db.Key;
+import net.spirangle.sphinx.db.SphinxDatabase;
 import net.spirangle.sphinx.services.GoogleSignInService;
+import net.spirangle.sphinx.services.PermissionService;
+import net.spirangle.sphinx.services.VolleyService;
 import net.spirangle.sphinx.text.CustomHtml;
 import net.spirangle.sphinx.text.CustomHtml.CustomHtmlListener;
 
@@ -44,6 +56,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
 
@@ -117,73 +131,69 @@ public abstract class BasicActivity extends AppCompatActivity implements OnNavig
     protected MenuItem drawerSignIn = null;
     protected MenuItem drawerSignOut = null;
     protected NavigationView navigationView = null;
-    protected RelativeLayout loadingPanel = null;
+    private RelativeLayout loadingPanel = null;
+    private boolean loading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
+        SphinxDatabase.initialize(this,null);
+        VolleyService.initialize(this);
+        if(!activityInitiated) {
+            activityInitiated = true;
+            onInit();
+        }
+        ++activityCounter;
+        Log.d(APP,TAG+".onCreate("+activityCounter+")");
 
-            if(!activityInitiated) {
-                activityInitiated = true;
-                onInit();
-            }
-            ++activityCounter;
-            Log.d(APP,TAG+".onCreate("+activityCounter+")");
+        if(activity_layout_id==-1) return;
+        setContentView(activity_layout_id);
 
-            if(activity_layout_id==-1) return;
-            setContentView(activity_layout_id);
-
-            if(toolbar_id!=-1) {
-                toolbar = (Toolbar)findViewById(toolbar_id);
-                setSupportActionBar(toolbar);
-                {
-                    ActionBar ab = getSupportActionBar();
-                    if((create_flags&HOME_AS_UP_ENABLED)!=0) {
-                        ab.setDisplayHomeAsUpEnabled(true);
-                        ab.setHomeAsUpIndicator(R.drawable.ic_ab_back);
-                    }
-                    ab.setDisplayShowTitleEnabled((create_flags&ACTIONBAR_TITLE)!=0);
+        if(toolbar_id!=-1) {
+            toolbar = (Toolbar)findViewById(toolbar_id);
+            setSupportActionBar(toolbar);
+            {
+                ActionBar ab = getSupportActionBar();
+                if((create_flags&HOME_AS_UP_ENABLED)!=0) {
+                    ab.setDisplayHomeAsUpEnabled(true);
+                    ab.setHomeAsUpIndicator(R.drawable.ic_ab_back);
                 }
+                ab.setDisplayShowTitleEnabled((create_flags&ACTIONBAR_TITLE)!=0);
+            }
 
-                if(navigation_icon_id!=-1) {
-                    if(drawer_layout_id!=-1 && navigation_view_id!=-1) {
-                        drawerLayout = (DrawerLayout)findViewById(drawer_layout_id);
-                        navigationView = (NavigationView)findViewById(navigation_view_id);
-                        navigationView.setNavigationItemSelectedListener(this);
-                        toolbar.setNavigationIcon(navigation_icon_id);
-                        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                drawerLayout.openDrawer(GravityCompat.START);
-                            }
-                        });
-                    } else if((create_flags&NAVIGATION_ICON_BACK)!=0) {
-                        toolbar.setNavigationIcon(navigation_icon_id);
-                        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                finish();
-                            }
-                        });
-                    }
+            if(navigation_icon_id!=-1) {
+                if(drawer_layout_id!=-1 && navigation_view_id!=-1) {
+                    drawerLayout = (DrawerLayout)findViewById(drawer_layout_id);
+                    navigationView = (NavigationView)findViewById(navigation_view_id);
+                    navigationView.setNavigationItemSelectedListener(this);
+                    toolbar.setNavigationIcon(navigation_icon_id);
+                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            drawerLayout.openDrawer(GravityCompat.START);
+                        }
+                    });
+                } else if((create_flags&NAVIGATION_ICON_BACK)!=0) {
+                    toolbar.setNavigationIcon(navigation_icon_id);
+                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            finish();
+                        }
+                    });
                 }
             }
-
-            if(loading_panel_id!=-1) {
-                loadingPanel = (RelativeLayout)findViewById(loading_panel_id);
-            }
-
-            Log.d(APP,TAG+".onCreate("+toolbar+")");
-
-        } catch(Exception e) {
-            Log.e(APP,TAG+".onCreate",e);
         }
 
+        if(loading_panel_id!=-1) {
+            loadingPanel = (RelativeLayout)findViewById(loading_panel_id);
+        }
+
+        Log.d(APP,TAG+".onCreate("+toolbar+")");
     }
 
     @Override
-    public void onDestroy() {
+    protected void onDestroy() {
         super.onDestroy();
         --activityCounter;
         Log.d(APP,TAG+".onDestroy("+activityCounter+")");
@@ -191,7 +201,7 @@ public abstract class BasicActivity extends AppCompatActivity implements OnNavig
     }
 
     @Override
-    public void onStart() {
+    protected void onStart() {
         super.onStart();
         Log.d(APP,TAG+".onStart()");
         updateUserInterface();
@@ -237,6 +247,12 @@ public abstract class BasicActivity extends AppCompatActivity implements OnNavig
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode,@NonNull String[] permissions,@NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        PermissionService.getInstance().onRequestPermissionsResult(this,requestCode,permissions,grantResults);
+    }
+
+    @Override
     public void onLinkClick(View view,String url) {
     }
 
@@ -275,6 +291,35 @@ public abstract class BasicActivity extends AppCompatActivity implements OnNavig
 	}*/
 
     public abstract void spirangleSignIn();
+
+    /**
+     * Gets the SHA1 signature, hex encoded for inclusion with Google Cloud Platform API requests
+     *
+     * @return a lowercase, hex-encoded
+     */
+    public String getSignature() {
+        try {
+            PackageManager pm = getPackageManager();
+            String packageName = getPackageName();
+            PackageInfo pi = pm.getPackageInfo(packageName,PackageManager.GET_SIGNATURES);
+            if (pi == null || pi.signatures == null ||
+                pi.signatures.length == 0 || pi.signatures[0] == null) return null;
+            return signatureDigest(pi.signatures[0]);
+        } catch (PackageManager.NameNotFoundException e) {
+            return null;
+        }
+    }
+
+    private String signatureDigest(Signature sig) {
+        byte[] signature = sig.toByteArray();
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+            byte[] digest = md.digest(signature);
+            return BaseEncoding.base16().lowerCase().encode(digest);
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        }
+    }
 
     private void readUserData() {
         Database db = Database.getInstance();
@@ -399,18 +444,21 @@ public abstract class BasicActivity extends AppCompatActivity implements OnNavig
     }
 
     public void showLoading() {
+        loading = true;
         if(loadingPanel==null) return;
-        getWindow().setFlags(
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                            );
+        getWindow().setFlags(FLAG_NOT_TOUCHABLE,FLAG_NOT_TOUCHABLE);
         loadingPanel.setVisibility(View.VISIBLE);
     }
 
     public void hideLoading() {
+        loading = false;
         if(loadingPanel==null) return;
         loadingPanel.setVisibility(View.GONE);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        getWindow().clearFlags(FLAG_NOT_TOUCHABLE);
+    }
+
+    public boolean isLoading() {
+        return loading;
     }
 
     public static String loadFile(Context context,String file) {

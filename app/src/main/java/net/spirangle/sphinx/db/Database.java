@@ -12,6 +12,7 @@ import android.util.Log;
 
 import net.spirangle.minerva.util.Regex;
 import net.spirangle.sphinx.activities.BasicActivity;
+import net.spirangle.sphinx.activities.BasicActivity.User;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -74,12 +75,14 @@ public abstract class Database extends SQLiteOpenHelper {
         return Regex.replace(text,newLines,"\n");
     }
 
-    protected static String whereId(long id) { return Table.id+"="+id; }
+    protected static String whereId(long id) {
+        return Table.id+"="+id;
+    }
 
-    protected Context context = null;
-    protected DatabaseListener listener = null;
-    protected String name = null;
-    protected int version = -1;
+    protected Context context;
+    protected DatabaseListener listener;
+    protected String name;
+    protected int version;
     protected float progress = 1.0f;
 
     protected Database(Context context,DatabaseListener listener,String name,int version) {
@@ -143,11 +146,10 @@ Log.w(APP,"Upgrading completed.");
         float pend = 0.0f;
         int i = 0;
         for(Entry<String,String> entry : files.entrySet()) {
-            if(listener!=null) {
-                progress = pstart = pend;
-                pend = (float)(i+1)/(float)files.size();
+            progress = pstart = pend;
+            pend = (float)(i+1)/(float)files.size();
+            if(listener!=null)
                 listener.onDatabaseInstallProgress(entry.getKey(),progress);
-            }
             String sql = BasicActivity.loadFile(context,entry.getValue());
             db.beginTransaction();
             try {
@@ -223,9 +225,13 @@ Log.w(APP,"Upgrading completed.");
         }
     }
 
-    public boolean update(String table,ContentValues values,long id) { return update(table,values,whereId(id),null); }
+    public boolean update(String table,ContentValues values,long id) {
+        return update(table,values,whereId(id),null);
+    }
 
-    public boolean update(String table,ContentValues values,String where) { return update(table,values,where,null); }
+    public boolean update(String table,ContentValues values,String where) {
+        return update(table,values,where,null);
+    }
 
     public boolean update(String table,ContentValues values,String where,String[] args) {
         try {
@@ -239,9 +245,13 @@ Log.w(APP,"Upgrading completed.");
         return true;
     }
 
-    public boolean delete(String table,long id) { return delete(table,whereId(id),null); }
+    public boolean delete(String table,long id) {
+        return delete(table,whereId(id),null);
+    }
 
-    public boolean delete(String table,String where) { return delete(table,where,null); }
+    public boolean delete(String table,String where) {
+        return delete(table,where,null);
+    }
 
     public boolean delete(String table,String where,String[] args) {
         try {
@@ -255,7 +265,9 @@ Log.w(APP,"Upgrading completed.");
         return true;
     }
 
-    public Cursor query(String sql) { return query(sql,null); }
+    public Cursor query(String sql) {
+        return query(sql,null);
+    }
 
     public Cursor query(String sql,String[] args) {
         Cursor cur = null;
@@ -276,7 +288,9 @@ Log.w(APP,"Upgrading completed.");
         return -1l;
     }
 
-    public int queryFlags(String table,long id) { return queryFlags(table,whereId(id)); }
+    public int queryFlags(String table,long id) {
+        return queryFlags(table,whereId(id));
+    }
 
     public int queryFlags(String table,String where) {
         String sql = "SELECT flags FROM  "+table+(where!=null? " WHERE "+where : "");
@@ -313,7 +327,7 @@ Log.w(APP,"Upgrading completed.");
         return insert(TableUser.table,v);
     }
 
-    public boolean updateUser(BasicActivity.User u,int fl) {
+    public boolean updateUser(User u,int fl) {
         return updateUser(u.id,u.key,u.email,u.user,u.name,u.language,u.picture,fl);
     }
 

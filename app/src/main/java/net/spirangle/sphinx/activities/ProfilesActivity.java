@@ -30,8 +30,8 @@ import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.astro.Coordinate;
 import net.spirangle.sphinx.astro.Horoscope;
 import net.spirangle.sphinx.astro.Symbol;
-import net.spirangle.sphinx.db.AstroDB;
 import net.spirangle.sphinx.db.Key;
+import net.spirangle.sphinx.db.SphinxDatabase;
 import net.spirangle.sphinx.services.VolleyService;
 import net.spirangle.sphinx.text.CustomHtml;
 
@@ -192,9 +192,9 @@ public class ProfilesActivity extends AstroActivity implements OnQueryTextListen
     }
 
     private static final String[] fromColumns = {
-        AstroDB.TableProfile.id,
-        AstroDB.TableProfile.name,
-        AstroDB.TableProfile.year,
+        SphinxDatabase.TableProfile.id,
+        SphinxDatabase.TableProfile.name,
+        SphinxDatabase.TableProfile.year,
     };
     private static final int[] toViews = {
         R.id.listview_item_menu,
@@ -209,7 +209,7 @@ public class ProfilesActivity extends AstroActivity implements OnQueryTextListen
     public void loadProfiles(String where,String[] args) {
         if(where==null) where = "";
         else where = " WHERE "+where;
-        AstroDB db = AstroDB.getInstance();
+        SphinxDatabase db = SphinxDatabase.getInstance();
         Cursor cur = db.query("SELECT _id,name,year,month,day,hour,minute,longitude,latitude,sun,moon,ascendant,flags "+
                               "FROM Profile"+where+" ORDER BY name",args);
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,R.layout.profile_listview_item,
@@ -219,12 +219,12 @@ public class ProfilesActivity extends AstroActivity implements OnQueryTextListen
     }
 
     public void deleteProfile(long id) {
-        AstroDB db = AstroDB.getInstance();
+        SphinxDatabase db = SphinxDatabase.getInstance();
         Cursor cur = db.query("SELECT profileKey FROM Profile WHERE _id="+id);
         if(cur.moveToFirst()) {
             Key key = new Key(cur.getLong(0));
             String url = URL_SPIRANGLE_API+"/users/"+user.key+"/profiles/"+key;
-            RequestQueue requestQueue = VolleyService.getRequestQueue();
+            RequestQueue requestQueue = VolleyService.getInstance().getRequestQueue();
             requestQueue.add(new JsonObjectRequest(DELETE,url,null,response -> {
                 shortToast(R.string.toast_profile_deleted);
             },error -> {
@@ -239,7 +239,7 @@ public class ProfilesActivity extends AstroActivity implements OnQueryTextListen
                 }
             });
         }
-        db.delete(AstroDB.TableProfile.table,AstroDB.TableProfile.id+"="+id);
+        db.delete(SphinxDatabase.TableProfile.table,SphinxDatabase.TableProfile.id+"="+id);
         loadProfiles();
     }
 

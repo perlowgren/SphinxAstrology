@@ -9,8 +9,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import net.spirangle.sphinx.db.AstroDB;
 import net.spirangle.sphinx.db.Key;
+import net.spirangle.sphinx.db.SphinxDatabase;
 
 import org.json.JSONObject;
 
@@ -565,21 +565,21 @@ public class Horoscope implements Parcelable {
     public int getStyle() { return style; }
 
     public void putContentValues(ContentValues v) {
-        v.put(AstroDB.TableProfile.name,name);
-        v.put(AstroDB.TableProfile.year,time.year);
-        v.put(AstroDB.TableProfile.month,time.month);
-        v.put(AstroDB.TableProfile.day,time.day);
-        v.put(AstroDB.TableProfile.hour,time.hour);
-        v.put(AstroDB.TableProfile.minute,time.minute);
-        v.put(AstroDB.TableProfile.second,(int)time.second);
-        v.put(AstroDB.TableProfile.longitude,(int)Math.round(longitude*1000000.0));
-        v.put(AstroDB.TableProfile.latitude,(int)Math.round(latitude*1000000.0));
-        v.put(AstroDB.TableProfile.timeZone,(int)Math.round(timeZone*3600.0));
-        v.put(AstroDB.TableProfile.dst,(int)Math.round(dst*3600.0));
-        v.put(AstroDB.TableProfile.sun,(isun>-1? (int)Math.round(planets[isun].absoluteLongitude*1000000.0) : 0));
-        v.put(AstroDB.TableProfile.moon,(imoon>-1? (int)Math.round(planets[imoon].absoluteLongitude*1000000.0) : 0));
-        v.put(AstroDB.TableProfile.ascendant,(iasc>-1? (int)Math.round(planets[iasc].absoluteLongitude*1000000.0) : 0));
-        v.put(AstroDB.TableProfile.flags,flags);
+        v.put(SphinxDatabase.TableProfile.name,name);
+        v.put(SphinxDatabase.TableProfile.year,time.year);
+        v.put(SphinxDatabase.TableProfile.month,time.month);
+        v.put(SphinxDatabase.TableProfile.day,time.day);
+        v.put(SphinxDatabase.TableProfile.hour,time.hour);
+        v.put(SphinxDatabase.TableProfile.minute,time.minute);
+        v.put(SphinxDatabase.TableProfile.second,(int)time.second);
+        v.put(SphinxDatabase.TableProfile.longitude,(int)Math.round(longitude*1000000.0));
+        v.put(SphinxDatabase.TableProfile.latitude,(int)Math.round(latitude*1000000.0));
+        v.put(SphinxDatabase.TableProfile.timeZone,(int)Math.round(timeZone*3600.0));
+        v.put(SphinxDatabase.TableProfile.dst,(int)Math.round(dst*3600.0));
+        v.put(SphinxDatabase.TableProfile.sun,(isun>-1? (int)Math.round(planets[isun].absoluteLongitude*1000000.0) : 0));
+        v.put(SphinxDatabase.TableProfile.moon,(imoon>-1? (int)Math.round(planets[imoon].absoluteLongitude*1000000.0) : 0));
+        v.put(SphinxDatabase.TableProfile.ascendant,(iasc>-1? (int)Math.round(planets[iasc].absoluteLongitude*1000000.0) : 0));
+        v.put(SphinxDatabase.TableProfile.flags,flags);
     }
 
 //	public void countElements(int &f,int &e,int &a,int &w) { int n[4];horoscope_elements(h,n);f = n[0],e = n[1],a = n[2],w = n[3]; }

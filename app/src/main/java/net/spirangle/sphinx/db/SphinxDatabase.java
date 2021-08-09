@@ -26,8 +26,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class AstroDB extends Database {
-    private static final String TAG = AstroDB.class.getSimpleName();
+public class SphinxDatabase extends Database {
+    private static final String TAG = SphinxDatabase.class.getSimpleName();
 
     private static final Map<String,String> astroDBFiles = new LinkedHashMap<>();
     static {
@@ -105,19 +105,18 @@ public class AstroDB extends Database {
         public static final String[] types = {null,"profile","symbol"};
     }
 
-    ;
-
-    public static synchronized AstroDB getInstance(Context context,DatabaseListener listener) {
-        if(instance==null)
-            instance = new AstroDB(context.getApplicationContext(),listener,DB_ASTRO,DB_ASTRO_VERSION);
-        return (AstroDB)instance;
+    public static synchronized void initialize(Context context,DatabaseListener listener) {
+        if(instance==null) {
+            Context ac = context.getApplicationContext();
+            instance = new SphinxDatabase(ac,listener,DB_ASTRO,DB_ASTRO_VERSION);
+        }
     }
 
-    public static synchronized AstroDB getInstance() {
-        return (AstroDB)instance;
+    public static synchronized SphinxDatabase getInstance() {
+        return (SphinxDatabase)instance;
     }
 
-    protected AstroDB(Context context,DatabaseListener listener,String name,int version) {
+    protected SphinxDatabase(Context context,DatabaseListener listener,String name,int version) {
         super(context,listener,name,version);
     }
 
@@ -163,7 +162,7 @@ public class AstroDB extends Database {
         String tokenId = BasicActivity.google.tokenId;
         if(key==null || tokenId==null) return;
         String url = URL_SPIRANGLE_API+"/users/"+key+"/profiles?from="+from+"&offset="+offset+"&limit="+limit;
-        RequestQueue requestQueue = VolleyService.getRequestQueue();
+        RequestQueue requestQueue = VolleyService.getInstance().getRequestQueue();
         requestQueue.add(new JsonObjectRequest(url,null,this::handleResponse,error -> {
             Log.e(APP,TAG+".downloadProfiles",error);
         }) {
@@ -181,7 +180,7 @@ public class AstroDB extends Database {
         String tokenId = BasicActivity.google.tokenId;
         if(key==null || tokenId==null) return;
         String url = URL_SPIRANGLE_API+"/users/"+key+"/texts?from="+from+"&offset="+offset+"&limit="+limit;
-        RequestQueue requestQueue = VolleyService.getRequestQueue();
+        RequestQueue requestQueue = VolleyService.getInstance().getRequestQueue();
         requestQueue.add(new JsonObjectRequest(url,null,this::handleResponse,error -> {
             Log.e(APP,TAG+".downloadTexts",error);
         }) {
@@ -254,27 +253,23 @@ public class AstroDB extends Database {
     public long insertLocation(String name,Address addr,String lang,int fl) {
         if(addr==null) return -1;
         if(name==null) name = addr.getLocality();
-        return insertLocation(
-            name,
-            addr.getLocality(),
-            addr.getCountryName(),
-            addr.getCountryCode(),
-            addr.getLongitude(),
-            addr.getLatitude(),
-            lang,0
-                             );
+        return insertLocation(name,
+                              addr.getLocality(),
+                              addr.getCountryName(),
+                              addr.getCountryCode(),
+                              addr.getLongitude(),
+                              addr.getLatitude(),
+                              lang,0);
     }
 
     public long insertLocation(String name,Address addr,double lon,double lat,String lang,int fl) {
         if(addr==null) return -1;
         if(name==null) name = addr.getLocality();
-        return insertLocation(
-            name,
-            addr.getLocality(),
-            addr.getCountryName(),
-            addr.getCountryCode(),
-            lon,lat,lang,0
-                             );
+        return insertLocation(name,
+                              addr.getLocality(),
+                              addr.getCountryName(),
+                              addr.getCountryCode(),
+                              lon,lat,lang,0);
     }
 
     public long insertLocation(String name,String ln,String cn,String cc,double lon,double lat,String lang,int fl) {

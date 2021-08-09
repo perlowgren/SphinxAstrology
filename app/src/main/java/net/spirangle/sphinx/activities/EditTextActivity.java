@@ -24,8 +24,8 @@ import net.spirangle.minerva.markdown.Markdown;
 import net.spirangle.minerva.util.Base36;
 import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.astro.Symbol;
-import net.spirangle.sphinx.db.AstroDB;
 import net.spirangle.sphinx.db.Key;
+import net.spirangle.sphinx.db.SphinxDatabase;
 import net.spirangle.sphinx.services.VolleyService;
 import net.spirangle.sphinx.text.CustomHtml;
 
@@ -219,7 +219,7 @@ public class EditTextActivity extends AstroActivity {
         flags = 0;
         if(id!=-1l && user.id!=-1l) {
             Locale locale = Locale.getDefault();
-            AstroDB db = AstroDB.getInstance();
+            SphinxDatabase db = SphinxDatabase.getInstance();
             Cursor cur = db.query("SELECT userId,textKey,title,text,writer,language,flags FROM Text WHERE _id="+id);
             if(cur!=null && cur.moveToFirst()) {
                 textId = id;
@@ -245,10 +245,10 @@ public class EditTextActivity extends AstroActivity {
         String newText = editText.getText().toString();
         String newHtml = "";
 
-        AstroDB db = AstroDB.getInstance();
+        SphinxDatabase db = SphinxDatabase.getInstance();
 
         if(textId!=-1) {
-            flags = db.queryFlags(AstroDB.TableText.table,textId);
+            flags = db.queryFlags(SphinxDatabase.TableText.table,textId);
             if((flags&FLAG_STATIC)!=0) {
                 shortToast(R.string.toast_text_change_static);
                 return false;
@@ -285,7 +285,7 @@ public class EditTextActivity extends AstroActivity {
         params.put("flags",flags);
         JSONObject json = new JSONObject(params);
 
-        RequestQueue requestQueue = VolleyService.getRequestQueue();
+        RequestQueue requestQueue = VolleyService.getInstance().getRequestQueue();
         int method;
         if(textId==-1) {
             textId = db.insertText(user.id,key,2,null,symbolId,newTitle,newHtml,newText,null,language,flags);
@@ -312,8 +312,8 @@ public class EditTextActivity extends AstroActivity {
 
     public boolean deleteText() {
         if(textId==-1l) return false;
-        AstroDB db = AstroDB.getInstance();
-        db.delete(AstroDB.TableText.table,textId);
+        SphinxDatabase db = SphinxDatabase.getInstance();
+        db.delete(SphinxDatabase.TableText.table,textId);
         shortToast(R.string.toast_text_deleted);
         setResult(RESULT_OK,null);
         finish();

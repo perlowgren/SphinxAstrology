@@ -24,8 +24,8 @@ import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.astro.Coordinate;
 import net.spirangle.sphinx.astro.Horoscope;
 import net.spirangle.sphinx.astro.Horoscope.Calendar;
-import net.spirangle.sphinx.db.AstroDB;
 import net.spirangle.sphinx.db.Key;
+import net.spirangle.sphinx.db.SphinxDatabase;
 import net.spirangle.sphinx.services.LocationService;
 import net.spirangle.sphinx.services.VolleyService;
 
@@ -206,7 +206,7 @@ public class EditProfileActivity extends AstroActivity {
     public boolean loadProfile(long id) {
         if(id==-1l) return false;
         String lang = Locale.getDefault().getLanguage();
-        AstroDB db = AstroDB.getInstance();
+        SphinxDatabase db = SphinxDatabase.getInstance();
         Cursor cur = db.query("SELECT p._id,p.profileKey,p.name,p.year,p.month,p.day,p.hour,p.minute,p.second,"+
                               "l.locality,l.countryCode,p.longitude,p.latitude,p.timeZone,p.dst,p.flags "+
                               "FROM Profile as p LEFT JOIN Location as l "+
@@ -314,8 +314,8 @@ public class EditProfileActivity extends AstroActivity {
         String url = URL_SPIRANGLE_API+"/users/"+user.key+"/profiles/"+key;
         JSONObject json = h.getJSONObject(cat1,cat2);
 
-        AstroDB db = AstroDB.getInstance();
-        RequestQueue requestQueue = VolleyService.getRequestQueue();
+        SphinxDatabase db = SphinxDatabase.getInstance();
+        RequestQueue requestQueue = VolleyService.getInstance().getRequestQueue();
         int method;
         if(h.getId()==-1) {
             db.insertProfile(user.id,cat1,cat2,h);
@@ -489,7 +489,7 @@ Log.e(APP,TAG+".findLocation",e);
         Locale locale = Locale.getDefault();
         String lang = locale.getLanguage();
         Address addr;
-        AstroDB db = AstroDB.getInstance();
+        SphinxDatabase db = SphinxDatabase.getInstance();
         for(int i = 0; i<addresses.size(); ++i) {
             addr = addresses.get(i);
             db.insertLocation(loc,addr,lang,0);
@@ -502,7 +502,7 @@ Log.e(APP,TAG+".findLocation",e);
         if(loc==null || loc.equals("")) return false;
         if(locationText!=null && locationText.equals(loc)) return true;
         Locale locale = Locale.getDefault();
-        AstroDB db = AstroDB.getInstance();
+        SphinxDatabase db = SphinxDatabase.getInstance();
         Cursor cur = db.query("SELECT name,locality,country,countryCode,longitude,latitude FROM Location WHERE "+
                               "(name='"+loc+"' OR locality='"+loc+"') AND language='"+locale.getLanguage()+"'");
         return loadLocations(cur,locale);
@@ -510,7 +510,7 @@ Log.e(APP,TAG+".findLocation",e);
 
     public boolean loadLocations(double lon,double lat) {
         Locale locale = Locale.getDefault();
-        AstroDB db = AstroDB.getInstance();
+        SphinxDatabase db = SphinxDatabase.getInstance();
         Cursor cur = db.query("SELECT name,locality,country,countryCode,longitude,latitude FROM Location WHERE "+
                               "longitude="+(int)Math.round(lon*1000000.0)+" AND latitude="+(int)Math.round(lat*1000000.0)+" AND "+
                               "language='"+locale.getLanguage()+"'");
@@ -602,7 +602,7 @@ Log.e(APP,TAG+".findLocation",e);
                 double tzOffset = (double)timeZoneUtc.rawOffset/3600.0;
                 double dst = (double)timeZoneUtc.dstOffset/3600.0;
                 String lang = Locale.getDefault().getLanguage();
-                AstroDB db = AstroDB.getInstance();
+                SphinxDatabase db = SphinxDatabase.getInstance();
                 db.insertTimeZone(timeZoneUtc.timeZoneName,lon,lat,utc,tzOffset,dst,lang,0);
                 setTimeZone(timeZoneUtc.timeZoneName,tzOffset);
                 setDST(dst);
@@ -613,10 +613,10 @@ Log.e(APP,TAG+".findLocation",e);
 
     public boolean loadTimeZone(double lon,double lat,long time,boolean local) {
         Locale locale = Locale.getDefault();
-        long n = AstroDB.timestamp();
+        long n = SphinxDatabase.timestamp();
         long t = 7L*24L*3600L;
         String ts = "timestamp"+(local? "+offset" : "");
-        AstroDB db = AstroDB.getInstance();
+        SphinxDatabase db = SphinxDatabase.getInstance();
         Cursor cur = db.query("SELECT name,offset,dst FROM TimeZone WHERE "+
                               "longitude="+(int)Math.round(lon*1000000.0)+" AND latitude="+(int)Math.round(lat*1000000.0)+" AND "+
                               ts+(time<n-t? "="+time : ">="+(time-t))+" "+"AND language='"+locale.getLanguage()+"' "+

@@ -21,7 +21,7 @@ import net.spirangle.minerva.markdown.Markdown;
 import net.spirangle.minerva.util.Base36;
 import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.astro.Symbol;
-import net.spirangle.sphinx.db.AstroDB;
+import net.spirangle.sphinx.db.SphinxDatabase;
 import net.spirangle.sphinx.text.CustomHtml;
 
 
@@ -198,8 +198,8 @@ public class TextActivity extends AstroActivity implements ViewBinder, OnItemCli
     }
 
     private static final String[] fromColumns = {
-        AstroDB.TableText.title,
-        AstroDB.TableText.userId,
+        SphinxDatabase.TableText.title,
+        SphinxDatabase.TableText.userId,
     };
     private static final int[] toViews = {
         R.id.listview_item_title,
@@ -212,7 +212,7 @@ public class TextActivity extends AstroActivity implements ViewBinder, OnItemCli
             return loadTexts(userId,symbolId);
 
         boolean ret = false;
-        AstroDB db = AstroDB.getInstance();
+        SphinxDatabase db = SphinxDatabase.getInstance();
         Cursor cur = db.query("SELECT symbol,title,html,text,writer,flags FROM Text WHERE _id="+textId);
         if(cur.moveToFirst()) {
             symbolId = cur.getLong(0);
@@ -255,7 +255,7 @@ public class TextActivity extends AstroActivity implements ViewBinder, OnItemCli
             if(userId!=-1) where += (where.length()>0? " AND" : "")+" userId="+userId;
             if(symbolId!=-1) where += (where.length()>0? " AND" : "")+" symbol="+symbolId;
             if(where.length()>0) where = " WHERE"+where;
-            AstroDB db = AstroDB.getInstance();
+            SphinxDatabase db = SphinxDatabase.getInstance();
             Cursor cur = db.query("SELECT _id,userId,symbol,title,language,flags,updated "+
                                   "FROM Text"+where+" ORDER BY updated DESC LIMIT 20");
             Log.d(APP,TAG+".loadTexts(count: "+cur.getCount()+")");

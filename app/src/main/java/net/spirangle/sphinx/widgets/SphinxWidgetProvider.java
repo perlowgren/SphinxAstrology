@@ -25,6 +25,7 @@ import net.spirangle.sphinx.astro.Symbol;
 import net.spirangle.sphinx.services.LocationService;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 
 public class SphinxWidgetProvider extends AppWidgetProvider {
@@ -193,7 +194,7 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
             baseline = (PFS-paint.ascent())*0.5f;
             canvas.drawText(moonPhaseUnicode[i],x,y+baseline,paint);
             paint.setTextSize(HFS);
-            str = String.format("%1$+d",n);
+            str = String.format(Locale.getDefault(),"%1$+d",n);
 //			baseline = (PFS-paint.ascent())*0.5f;
             canvas.drawText(str,x+PFS,y+baseline,paint);
         }

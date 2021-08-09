@@ -13,7 +13,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.astro.Horoscope;
-import net.spirangle.sphinx.db.AstroDB;
+import net.spirangle.sphinx.db.SphinxDatabase;
 import net.spirangle.sphinx.services.VolleyService;
 
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public abstract class AstroActivity extends BasicActivity {
 
     public AstroActivity() {
         super();
-        AstroDB.getInstance();
+        SphinxDatabase.getInstance();
     }
 
     @Override
@@ -221,13 +221,13 @@ Log.d(APP,TAG+".init(year: "+y+", month: "+m+", day: "+d+", days: "+Database.tim
     @Override
     public void spirangleSignIn() {
         Log.d(APP,TAG+".spirangleSignIn(google.tokenId: "+google.tokenId+")");
-        final AstroDB db = AstroDB.getInstance();
+        final SphinxDatabase db = SphinxDatabase.getInstance();
         long t = 0;
         Cursor cur = db.query("SELECT updated FROM Database WHERE _id=1");
         if(cur.moveToFirst()) t = cur.getInt(0);
         final long time = t;
         String url = URL_SPIRANGLE_API+"/status?timestamp="+time;
-        RequestQueue requestQueue = VolleyService.getRequestQueue();
+        RequestQueue requestQueue = VolleyService.getInstance().getRequestQueue();
         requestQueue.add(new JsonObjectRequest(url,null,response -> {
             String s = response.optString("status");
             if(s.equals("OK")) {

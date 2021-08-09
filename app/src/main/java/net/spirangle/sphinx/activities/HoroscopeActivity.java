@@ -26,9 +26,10 @@ import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.astro.Horoscope;
 import net.spirangle.sphinx.astro.Symbol;
 import net.spirangle.sphinx.astro.Symbol.SymbolListener;
-import net.spirangle.sphinx.db.AstroDB;
 import net.spirangle.sphinx.db.Key;
+import net.spirangle.sphinx.db.SphinxDatabase;
 import net.spirangle.sphinx.services.LocationService;
+import net.spirangle.sphinx.services.LocationService.LocationServiceCallback;
 import net.spirangle.sphinx.text.CustomHtml;
 import net.spirangle.sphinx.views.*;
 
@@ -36,7 +37,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 
-public class HoroscopeActivity extends AstroActivity implements SymbolListener {
+public class HoroscopeActivity extends AstroActivity implements SymbolListener, LocationServiceCallback<Location> {
     private static final String TAG = HoroscopeActivity.class.getSimpleName();
 
     private static final String[] moonPhasesUnicode = {
@@ -45,9 +46,9 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener {
 
     private AppCompatSpinner toolbarSpinner;
     private MenuItem drawerEdit;
-    private MenuItem menuNew = null;
-    private MenuItem menuEdit = null;
-    private MenuItem menuProfiles = null;
+    private MenuItem menuNew;
+    private MenuItem menuEdit;
+    private MenuItem menuProfiles;
     private TextView textInfo;
     private ScrollView scroll;
     private HoroscopeView[] horoscopeViews;
@@ -57,11 +58,12 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener {
     private AspectListView aspectList;
     private AspectPatternsView aspectPatterns;
     private ArabicPartsView arabicParts;
-    private long id = -1;
+    private long id;
+    private Horoscope horoscope;
 
     public static Horoscope loadHoroscope(long id) {
         String lang = Locale.getDefault().getLanguage();
-        AstroDB db = AstroDB.getInstance();
+        SphinxDatabase db = SphinxDatabase.getInstance();
         Cursor cur = db.query("SELECT p._id,p.profileKey,p.name,p.year,p.month,p.day,p.hour,p.minute,p.second,"+
                               "l.locality,l.country,l.countryCode,p.longitude,p.latitude,p.timeZone,p.dst,p.flags "+
                               "FROM Profile as p LEFT JOIN Location as l "+
@@ -81,7 +83,7 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener {
         int day = cur.getInt(5);
         int hour = cur.getInt(6);
         int min = cur.getInt(7);
-        double sec = (double)cur.getInt(8);
+        double sec = cur.getInt(8);
         String ln = cur.getString(9);
         String cn = cur.getString(10);
         String cc = cur.getString(11);
@@ -101,6 +103,14 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener {
     }
 
     public HoroscopeActivity() {
+        super();
+
+        menuNew = null;
+        menuEdit = null;
+        menuProfiles = null;
+        id = -1;
+        horoscope = null;
+
         activity_layout_id = R.layout.activity_horoscope;
         drawer_layout_id = R.id.drawer_layout;
         toolbar_id = R.id.toolbar;
@@ -111,22 +121,22 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
             Menu menu = navigationView.getMenu();
-            drawerSignIn = (MenuItem)menu.findItem(R.id.drawer_sign_in);
-            drawerSignOut = (MenuItem)menu.findItem(R.id.drawer_sign_out);
-            drawerEdit = (MenuItem)menu.findItem(R.id.drawer_edit);
-            toolbarSpinner = (AppCompatSpinner)findViewById(R.id.toolbar_spinner);
-            textInfo = (TextView)findViewById(R.id.text_info);
-            scroll = (ScrollView)findViewById(R.id.scroll_view);
-            wheelGraph = (WheelGraphView)findViewById(R.id.wheel_graph_view);
-            planets = (PlanetsView)findViewById(R.id.planets_view);
-            aspectTable = (AspectTableView)findViewById(R.id.aspect_table_view);
-            aspectList = (AspectListView)findViewById(R.id.aspect_list_view);
-            aspectPatterns = (AspectPatternsView)findViewById(R.id.aspect_patterns_view);
-            arabicParts = (ArabicPartsView)findViewById(R.id.arabic_parts_view);
+            drawerSignIn = menu.findItem(R.id.drawer_sign_in);
+            drawerSignOut = menu.findItem(R.id.drawer_sign_out);
+            drawerEdit = menu.findItem(R.id.drawer_edit);
+            toolbarSpinner = findViewById(R.id.toolbar_spinner);
+            textInfo = findViewById(R.id.text_info);
+            scroll = findViewById(R.id.scroll_view);
+            wheelGraph = findViewById(R.id.wheel_graph_view);
+            planets = findViewById(R.id.planets_view);
+            aspectTable = findViewById(R.id.aspect_table_view);
+            aspectList = findViewById(R.id.aspect_list_view);
+            aspectPatterns = findViewById(R.id.aspect_patterns_view);
+            arabicParts = findViewById(R.id.arabic_parts_view);
 
             horoscopeViews = new HoroscopeView[] {
                 wheelGraph,
@@ -144,98 +154,35 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener {
                 horoscopeViews[i].setSymbolListener(this);
 
             Intent intent = getIntent();
-            Horoscope h = (Horoscope)intent.getParcelableExtra(EXTRA_RADIX1);
-            if(h!=null) id = h.getId();
-            else {
-/*			Calendar cal = Calendar.getInstance();
-
-			int year    = cal.get(Calendar.YEAR);
-			int mon     = cal.get(Calendar.MONTH)+1;
-			int day     = cal.get(Calendar.DAY_OF_MONTH);
-			int hour    = cal.get(Calendar.HOUR_OF_DAY);
-			int min     = cal.get(Calendar.MINUTE);
-			double sec  = (double)cal.get(Calendar.SECOND)+((double)cal.get(Calendar.MILLISECOND)/1000.0);
-			double dst  = (double)cal.get(Calendar.DST_OFFSET)/3600000.0;
-			String ln   = getString(R.string.label_greenwich);
-			String cn   = getString(R.string.label_england);
-			String cc   = getString(R.string.label_gb);
-			double lon  = GMT_LON;
-			double lat  = GMT_LAT;
-			double tz   = (double)cal.get(Calendar.ZONE_OFFSET)/3600000.0;
-
-//			LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
-//			String locationProvider = LocationManager.NETWORK_PROVIDER;
-			// Or use LocationManager.GPS_PROVIDER
-//			Location location = locationManager.getLastKnownLocation(locationProvider);
-
-			h = new Horoscope(-1,null,getString(R.string.horoscope_now),year,mon,day,hour,min,sec);
-			h.setDaylightSavingTime(dst);
-			h.setLocation(ln,cn,cc,lon,lat,tz);*/
-                final Horoscope h1 = new Horoscope(getString(R.string.horoscope_now));
-                h = h1;
-
-                Log.d(APP,TAG+".onCreate(LocationService.getLocationManager...)");
-                Log.d(APP,TAG+".onCreate(done...)");
-                Location location = LocationService.getInstance().getLocation();
-                if(location!=null) {
-                    Calendar cal = Calendar.getInstance();
-                    final double lon = location.getLongitude();
-                    final double lat = location.getLatitude();
-                    final double tz = (double)cal.get(Calendar.ZONE_OFFSET)/3600000.0;
-                    final double dst = (double)cal.get(Calendar.DST_OFFSET)/3600000.0;
-                    final String lang = Locale.getDefault().getLanguage();
-                    final AstroDB db = AstroDB.getInstance();
-
-                    double m = 0.01+(lat/90.0)*0.0083;
-                    Cursor cur = db.query("SELECT locality,country,countryCode FROM Location WHERE "+
-                                          "longitude>="+(int)Math.round((lon-m)*1000000.0)+" AND "+
-                                          "longitude<="+(int)Math.round((lon+m)*1000000.0)+" AND "+
-                                          "latitude>="+(int)Math.round((lat-0.01)*1000000.0)+" AND "+
-                                          "latitude<="+(int)Math.round((lat+0.01)*1000000.0)+" AND "+
-                                          "language='"+lang+"' LIMIT 1",null);
-                    if(!cur.moveToFirst()) {
-                        showLoading();
-                        Log.d(APP,TAG+".onCreate(LocationService.getFromLocation...)");
-                        LocationService.getInstance().getFromLocation(lon,lat,10,null,addresses -> {
-                            if(addresses!=null && addresses.size()>0) {
-                                Address addr = addresses.get(0);
-                                h1.setLocation(addr,tz);
-                                db.insertLocation(addr.getLocality(),addr,lon,lat,lang,0);
-                                Log.d(APP,TAG+".onCreate => LocationService.AddressReceiver.receive(loc: "+addr.getLocality()+", lon: "+lon+", lat: "+lat+")");
-                            }
-                            setHoroscope(h1);
-                            hideLoading();
-                        });
-                        return;
-                    }
-                    h.setLocation(cur.getString(0),cur.getString(1),cur.getString(2),lon,lat,tz);
-                    cur.close();
-                }
-
-/*			Geocoder geocoder = new Geocoder(getApplicationContext(),Locale.getDefault());
-			if(goecoder.isPresent()) {
-				try {
-					List<Address> listAddresses = geocoder.getFromLocation(lat,lon,1);
-					if(listAddresses!=null && listAddresses.size()>0) {
-						Address addr;
-						for(int i=0; i<listAddresses.size(); ++i) {
-							addr = listAddresses.get(i);
-							loc = addr.getLocality();
-//Log.d(APP,TAG+".onCreate(loc: "+loc+")");
-						}
-						loc = listAddresses.get(0).getLocality();
-					}
-				} catch(Exception e) {
-//Log.e(APP,TAG+".onCreate",e);
-				}
-			}*/
-
-                Log.d(APP,TAG+".onCreate(done)");
+            Horoscope h = intent.getParcelableExtra(EXTRA_RADIX1);
+            if(h==null) {
+                LocationService.getInstance().requestLocationPermissions(this);
+                LocationService.getInstance().requestLocationUpdates(this,this);
+                openHereAndNow();
+            } else {
+                id = h.getId();
+                setHoroscope(h);
             }
-            setHoroscope(h);
         } catch(Exception e) {
             Log.e(APP,TAG+".onCreate",e);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocationService.getInstance().stopLocationUpdates(this);
+    }
+
+    @Override
+    public void onLocationUpdate(Location location) {
+        openHereAndNow();
+        LocationService.getInstance().stopLocationUpdates(this);
     }
 
     @Override
@@ -403,9 +350,53 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener {
         }
         textInfo.setText(CustomHtml.fromHtml(info,0,0.0f,null));
 
+        horoscope = h;
         for(int i = 0; i<horoscopeViews.length; ++i)
             horoscopeViews[i].setHoroscope(h);
 
         drawerEdit.setVisible(id!=-1);
+    }
+
+    private void openHereAndNow() {
+        if(isLoading()) return;
+        final Horoscope h = new Horoscope(getString(R.string.horoscope_now));
+        Location location = LocationService.getInstance().getLocation();
+        if(location!=null) {
+            Calendar cal = Calendar.getInstance();
+            final double lon = location.getLongitude();
+            final double lat = location.getLatitude();
+            final double tz = (double)cal.get(Calendar.ZONE_OFFSET)/3600000.0;
+            final double dst = (double)cal.get(Calendar.DST_OFFSET)/3600000.0;
+            final String lang = Locale.getDefault().getLanguage();
+            final SphinxDatabase db = SphinxDatabase.getInstance();
+            h.setLocation("","","",lon,lat,tz);
+
+            double m = 0.01+(lat/90.0)*0.0083;
+            Cursor cur = db.query("SELECT locality,country,countryCode FROM Location WHERE "+
+                                  "longitude>="+(int)Math.round((lon-m)*1000000.0)+" AND "+
+                                  "longitude<="+(int)Math.round((lon+m)*1000000.0)+" AND "+
+                                  "latitude>="+(int)Math.round((lat-0.01)*1000000.0)+" AND "+
+                                  "latitude<="+(int)Math.round((lat+0.01)*1000000.0)+" AND "+
+                                  "language='"+lang+"' LIMIT 1",null);
+            if(!cur.moveToFirst()) {
+                showLoading();
+                Log.d(APP,TAG+".onCreate(LocationService.getFromLocation...)");
+                LocationService.getInstance().getFromLocation(lon,lat,10,null,addresses -> {
+                    if(addresses!=null && addresses.size()>0) {
+                        Address addr = addresses.get(0);
+                        h.setLocation(addr,tz);
+                        db.insertLocation(addr.getLocality(),addr,lon,lat,lang,0);
+                        Log.d(APP,TAG+".openHereAndNow => LocationService.AddressReceiver.receive(loc: "+addr.getLocality()+", lon: "+lon+", lat: "+lat+")");
+                    }
+                    setHoroscope(h);
+                    hideLoading();
+                });
+                return;
+            }
+            h.setLocation(cur.getString(0),cur.getString(1),cur.getString(2),lon,lat,tz);
+            cur.close();
+        }
+        Log.d(APP,TAG+".onCreate(done)");
+        setHoroscope(h);
     }
 }

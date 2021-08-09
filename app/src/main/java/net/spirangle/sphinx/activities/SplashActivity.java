@@ -12,9 +12,10 @@ import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 
 import net.spirangle.sphinx.astro.Horoscope;
-import net.spirangle.sphinx.db.AstroDB;
 import net.spirangle.sphinx.db.Database;
 import net.spirangle.sphinx.db.Database.DatabaseListener;
+import net.spirangle.sphinx.db.SphinxDatabase;
+import net.spirangle.sphinx.services.VolleyService;
 import net.spirangle.sphinx.views.SplashView;
 
 
@@ -29,6 +30,7 @@ public class SplashActivity extends AppCompatActivity implements DatabaseListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        VolleyService.initialize(this);
         LinearLayout ll;
         LayoutParams lp;
         ll = new LinearLayout(this);
@@ -59,7 +61,8 @@ public class SplashActivity extends AppCompatActivity implements DatabaseListene
 
         new Thread(() -> {
             // Make certain the AstroDB is initiated as db instance:
-            AstroDB db = AstroDB.getInstance(SplashActivity.this,SplashActivity.this);
+            SphinxDatabase.initialize(SplashActivity.this,SplashActivity.this);
+            SphinxDatabase db = SphinxDatabase.getInstance();
             long id = db.queryId(Database.TableDatabase.table,null);
             if(db.getProgress()>=1.0f)
                 installProgress = 1.0f;
