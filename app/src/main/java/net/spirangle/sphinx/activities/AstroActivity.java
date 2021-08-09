@@ -19,7 +19,7 @@ import net.spirangle.sphinx.services.VolleyService;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AstroActivity extends BasicActivity {
+public abstract class AstroActivity extends GenericActivity {
     private static final String TAG = AstroActivity.class.getSimpleName();
 
     public AstroActivity() {
@@ -231,8 +231,7 @@ Log.d(APP,TAG+".init(year: "+y+", month: "+m+", day: "+d+", days: "+Database.tim
         requestQueue.add(new JsonObjectRequest(url,null,response -> {
             String s = response.optString("status");
             if(s.equals("OK")) {
-                user.id = 0l;
-                user.update(response);
+                user.update(0L,response);
                 db.updateUser(user,0);
                 int profiles = response.optInt("profiles",0);
                 int texts = response.optInt("texts",0);

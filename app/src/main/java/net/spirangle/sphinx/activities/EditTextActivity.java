@@ -217,7 +217,7 @@ public class EditTextActivity extends AstroActivity {
         writer = null;
         language = null;
         flags = 0;
-        if(id!=-1l && user.id!=-1l) {
+        if(id!=-1l && user.getId()!=-1l) {
             Locale locale = Locale.getDefault();
             SphinxDatabase db = SphinxDatabase.getInstance();
             Cursor cur = db.query("SELECT userId,textKey,title,text,writer,language,flags FROM Text WHERE _id="+id);
@@ -240,7 +240,7 @@ public class EditTextActivity extends AstroActivity {
     }
 
     public boolean saveText() {
-        if(symbolId==-1l || user.id==-1l) return false;
+        if(symbolId==-1l || user.getId()==-1l) return false;
         String newTitle = null;
         String newText = editText.getText().toString();
         String newHtml = "";
@@ -275,7 +275,7 @@ public class EditTextActivity extends AstroActivity {
             language = locale.getLanguage();
         }
 
-        String url = URL_SPIRANGLE_API+"/users/"+user.key+"/texts/"+key;
+        String url = URL_SPIRANGLE_API+"/users/"+user.getKey()+"/texts/"+key;
         Map<String,Object> params = new HashMap<>();
         params.put("type","symbol");
         params.put("symbol",Base36.encode(symbolId));
@@ -288,7 +288,7 @@ public class EditTextActivity extends AstroActivity {
         RequestQueue requestQueue = VolleyService.getInstance().getRequestQueue();
         int method;
         if(textId==-1) {
-            textId = db.insertText(user.id,key,2,null,symbolId,newTitle,newHtml,newText,null,language,flags);
+            textId = db.insertText(user.getId(),key,2,null,symbolId,newTitle,newHtml,newText,null,language,flags);
             method = POST;
         } else {
             db.updateText(textId,newTitle,newHtml,newText,null,flags);

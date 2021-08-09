@@ -9,7 +9,7 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 
-import net.spirangle.sphinx.activities.BasicActivity;
+import net.spirangle.sphinx.activities.GenericActivity;
 
 public class VolleyService {
 
@@ -24,8 +24,8 @@ public class VolleyService {
             instance.requestQueue = new RequestQueue(cache,network);
         }
         instance.requestQueue.start();
-        if(context instanceof BasicActivity) {
-            instance.setPackageSignature((BasicActivity)context);
+        if(context instanceof GenericActivity) {
+            instance.setPackageSignature((GenericActivity)context);
         }
     }
 
@@ -49,7 +49,7 @@ public class VolleyService {
         return requestQueue;
     }
 
-    private void setPackageSignature(BasicActivity activity) {
+    private void setPackageSignature(GenericActivity activity) {
         packageName = activity.getPackageName();
         signatureSHA1 = activity.getSignature();
     }

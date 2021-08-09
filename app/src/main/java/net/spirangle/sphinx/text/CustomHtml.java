@@ -12,7 +12,7 @@ import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.View;
 
-import net.spirangle.sphinx.activities.BasicActivity;
+import net.spirangle.sphinx.activities.GenericActivity;
 
 
 public class CustomHtml {
@@ -117,7 +117,7 @@ public class CustomHtml {
                                 }
                                 break;
                             }
-                            CustomTypefaceSpan typefaceSpan = new CustomTypefaceSpan(BasicActivity.symbolFont,0,symbolSize);
+                            CustomTypefaceSpan typefaceSpan = new CustomTypefaceSpan(GenericActivity.symbolFont,0,symbolSize);
                             strBuilder.setSpan(typefaceSpan,i,e,0);
                             i = e-1;
                         } else if(ic && c1>='\ue000' && c1<='\uebff') {
@@ -126,7 +126,7 @@ public class CustomHtml {
                                 if(c1>='\ue000' && c1<='\uebff') continue;
                                 break;
                             }
-                            CustomTypefaceSpan typefaceSpan = new CustomTypefaceSpan(BasicActivity.iconFont,0,0.0f);
+                            CustomTypefaceSpan typefaceSpan = new CustomTypefaceSpan(GenericActivity.iconFont,0,0.0f);
                             strBuilder.setSpan(typefaceSpan,i,e,0);
                             i = e-1;
                         }

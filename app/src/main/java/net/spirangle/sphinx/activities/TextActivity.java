@@ -229,7 +229,7 @@ public class TextActivity extends AstroActivity implements ViewBinder, OnItemCli
 
             String writer = cur.getString(4);
             if(writer==null || writer.length()==0) {
-                if(user.user!=null) writer = user.user;
+                if(user.getUser()!=null) writer = user.getUser();
                 else writer = getString(R.string.unknown);
             }
             String str = String.format("<b>#%1$s</b>, by <i>%2$s</i>",Base36.encode(symbolId),writer);

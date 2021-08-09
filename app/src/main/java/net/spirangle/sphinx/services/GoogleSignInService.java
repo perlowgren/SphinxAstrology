@@ -12,7 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-import net.spirangle.sphinx.activities.BasicActivity;
+import net.spirangle.sphinx.activities.GenericActivity;
 
 import java.util.Objects;
 
@@ -36,7 +36,7 @@ public class GoogleSignInService {
         signingIn = false;
     }
 
-    private void update(final BasicActivity activity,Task<GoogleSignInAccount> result) {
+    private void update(final GenericActivity activity,Task<GoogleSignInAccount> result) {
         Log.d(APP,TAG+".Google.update(result:"+(result!=null && result.isSuccessful())+")");
         signingIn = false;
         if(result==null || !result.isSuccessful()) {
@@ -60,7 +60,7 @@ public class GoogleSignInService {
         }
     }
 
-    private void updateAccount(final BasicActivity activity,GoogleSignInAccount account) {
+    private void updateAccount(final GenericActivity activity,GoogleSignInAccount account) {
         id = account.getId();
         tokenId = account.getIdToken();
         activity.user.update(account);
@@ -69,7 +69,7 @@ public class GoogleSignInService {
             activity.spirangleSignIn();
     }
 
-    private void init(final BasicActivity activity) {
+    private void init(final GenericActivity activity) {
         Log.d(APP,TAG+".Google.init("+client+")");
         if(client!=null) return;
         try {
@@ -85,7 +85,7 @@ public class GoogleSignInService {
         }
     }
 
-    public void silentSignIn(final BasicActivity activity,final Runnable r) {
+    public void silentSignIn(final GenericActivity activity,final Runnable r) {
         Log.d(APP,TAG+".Google.silentSignIn("+client+")");
         if(client==null) init(activity);
         if(client==null) return;
@@ -95,7 +95,7 @@ public class GoogleSignInService {
         update(activity,result);
     }
 
-    public void signIn(final BasicActivity activity) {
+    public void signIn(final GenericActivity activity) {
         Log.d(APP,TAG+".Google.signIn("+client+")");
         if(client==null) init(activity);
         if(client==null) return;
@@ -103,7 +103,7 @@ public class GoogleSignInService {
         activity.startActivityForResult(intent,ACTIVITY_SIGN_IN);
     }
 
-    public void signOut(final BasicActivity activity) {
+    public void signOut(final GenericActivity activity) {
         Log.d(APP,TAG+".Google.signOut("+client+")");
         if(client==null) init(activity);
         if(client==null) return;

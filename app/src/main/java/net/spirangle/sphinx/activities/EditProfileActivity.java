@@ -311,14 +311,14 @@ public class EditProfileActivity extends AstroActivity {
 
         h.calculate(planets,0);
 
-        String url = URL_SPIRANGLE_API+"/users/"+user.key+"/profiles/"+key;
+        String url = URL_SPIRANGLE_API+"/users/"+user.getKey()+"/profiles/"+key;
         JSONObject json = h.getJSONObject(cat1,cat2);
 
         SphinxDatabase db = SphinxDatabase.getInstance();
         RequestQueue requestQueue = VolleyService.getInstance().getRequestQueue();
         int method;
         if(h.getId()==-1) {
-            db.insertProfile(user.id,cat1,cat2,h);
+            db.insertProfile(user.getId(),cat1,cat2,h);
             method = POST;
         } else {
             db.updateProfile(cat1,cat2,h);

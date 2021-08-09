@@ -1,6 +1,7 @@
 package net.spirangle.sphinx.activities;
 
 import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+import static android.widget.TextView.BufferType.SPANNABLE;
 import static net.spirangle.sphinx.config.SphinxProperties.ACTIVITY_SIGN_IN;
 import static net.spirangle.sphinx.config.SphinxProperties.APP;
 
@@ -13,7 +14,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.method.LinkMovementMethod;
@@ -35,7 +35,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
 import com.google.common.io.BaseEncoding;
@@ -44,15 +43,13 @@ import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.astro.Coordinate;
 import net.spirangle.sphinx.astro.Symbol;
 import net.spirangle.sphinx.db.Database;
-import net.spirangle.sphinx.db.Key;
 import net.spirangle.sphinx.db.SphinxDatabase;
+import net.spirangle.sphinx.db.User;
 import net.spirangle.sphinx.services.GoogleSignInService;
 import net.spirangle.sphinx.services.PermissionService;
 import net.spirangle.sphinx.services.VolleyService;
 import net.spirangle.sphinx.text.CustomHtml;
 import net.spirangle.sphinx.text.CustomHtml.CustomHtmlListener;
-
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,52 +58,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
 
-public abstract class BasicActivity extends AppCompatActivity implements OnNavigationItemSelectedListener, CustomHtmlListener {
-    private static final String TAG = BasicActivity.class.getSimpleName();
+public abstract class GenericActivity extends AppCompatActivity implements OnNavigationItemSelectedListener, CustomHtmlListener {
+    private static final String TAG = GenericActivity.class.getSimpleName();
 
-    public static class User {
-        public long id;     /* User id in local database table */
-        public Key key;     /* Spirangle API key */
-        public String email;
-        public String user;
-        public String name;
-        public String language;
-        public String picture;
-
-        public User() { clear(); }
-
-        public void clear() {
-            id = -1l;
-            key = null;
-            email = null;
-            user = null;
-            name = null;
-            language = null;
-            picture = null;
-        }
-
-        public void update(GoogleSignInAccount acct) {
-            email = acct.getEmail();
-            user = acct.getDisplayName();
-            name = acct.getGivenName()+" "+acct.getFamilyName();
-            language = Locale.getDefault().getLanguage();
-            picture = acct.getPhotoUrl().toString();
-        }
-
-        public void update(JSONObject json) {
-            String k = json.optString("key",null);
-            key = k==null? null : new Key(k);
-            email = json.optString("email",null);
-            user = json.optString("user",null);
-            name = json.optString("name",null);
-            language = json.optString("language",null);
-            picture = json.optString("picture",null);
-        }
-    }
-
-    protected static final int HOME_AS_UP_ENABLED = 1;
-    protected static final int ACTIONBAR_TITLE = 1<<1;
-    protected static final int NAVIGATION_ICON_BACK = 1<<2;
+    protected static final int HOME_AS_UP_ENABLED    = 0x1;
+    protected static final int ACTIONBAR_TITLE       = 0x2;
+    protected static final int NAVIGATION_ICON_BACK  = 0x4;
 
     public static Typeface monoFont = null;
     public static Typeface iconFont = null;
@@ -126,6 +83,7 @@ public abstract class BasicActivity extends AppCompatActivity implements OnNavig
     protected int navigation_icon_id = -1;
     protected int navigation_view_id = -1;
     protected int loading_panel_id = -1;
+
     protected Toolbar toolbar = null;
     protected DrawerLayout drawerLayout = null;
     protected MenuItem drawerSignIn = null;
@@ -325,16 +283,8 @@ public abstract class BasicActivity extends AppCompatActivity implements OnNavig
         Database db = Database.getInstance();
         Cursor cur = db.query("SELECT _id,userKey,email,user,name,language,picture,flags FROM User WHERE _id=0");
         if(cur.moveToFirst()) {
-            user.id = cur.getLong(0);
-            user.key = new Key(cur.getString(1));
-            user.email = cur.getString(2);
-            user.user = cur.getString(3);
-            user.name = cur.getString(4);
-            user.language = cur.getString(5);
-            user.picture = cur.getString(6);
-
-            Log.d(APP,TAG+".readUserData(key: "+user.key+", user: "+user.user+", name: "+user.name+
-                      ", language: "+user.language+", picture: "+user.picture+")");
+            user.update(cur);
+            Log.d(APP,TAG+".readUserData("+user+")");
         }
         cur.close();
     }
@@ -346,7 +296,6 @@ public abstract class BasicActivity extends AppCompatActivity implements OnNavig
         setLocale(locale);
     }
 
-    @SuppressWarnings("deprecation")
     public void setLocale(Locale locale) {
         Resources res = getApplicationContext().getResources();
         Configuration config = res.getConfiguration();

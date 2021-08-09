@@ -223,7 +223,7 @@ public class ProfilesActivity extends AstroActivity implements OnQueryTextListen
         Cursor cur = db.query("SELECT profileKey FROM Profile WHERE _id="+id);
         if(cur.moveToFirst()) {
             Key key = new Key(cur.getLong(0));
-            String url = URL_SPIRANGLE_API+"/users/"+user.key+"/profiles/"+key;
+            String url = URL_SPIRANGLE_API+"/users/"+user.getKey()+"/profiles/"+key;
             RequestQueue requestQueue = VolleyService.getInstance().getRequestQueue();
             requestQueue.add(new JsonObjectRequest(DELETE,url,null,response -> {
                 shortToast(R.string.toast_profile_deleted);

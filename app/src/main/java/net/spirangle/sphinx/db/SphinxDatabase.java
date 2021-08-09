@@ -12,7 +12,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import net.spirangle.minerva.util.Base36;
-import net.spirangle.sphinx.activities.BasicActivity;
+import net.spirangle.sphinx.activities.GenericActivity;
 import net.spirangle.sphinx.astro.Horoscope;
 import net.spirangle.sphinx.services.VolleyService;
 
@@ -158,8 +158,8 @@ public class SphinxDatabase extends Database {
     }
 
     public void downloadProfiles(long from,int offset,int limit) {
-        Key key = BasicActivity.user.key;
-        String tokenId = BasicActivity.google.tokenId;
+        Key key = GenericActivity.user.getKey();
+        String tokenId = GenericActivity.google.tokenId;
         if(key==null || tokenId==null) return;
         String url = URL_SPIRANGLE_API+"/users/"+key+"/profiles?from="+from+"&offset="+offset+"&limit="+limit;
         RequestQueue requestQueue = VolleyService.getInstance().getRequestQueue();
@@ -176,8 +176,8 @@ public class SphinxDatabase extends Database {
     }
 
     public void downloadTexts(long from,int offset,int limit) {
-        Key key = BasicActivity.user.key;
-        String tokenId = BasicActivity.google.tokenId;
+        Key key = GenericActivity.user.getKey();
+        String tokenId = GenericActivity.google.tokenId;
         if(key==null || tokenId==null) return;
         String url = URL_SPIRANGLE_API+"/users/"+key+"/texts?from="+from+"&offset="+offset+"&limit="+limit;
         RequestQueue requestQueue = VolleyService.getInstance().getRequestQueue();
@@ -216,7 +216,7 @@ public class SphinxDatabase extends Database {
         Matcher m = profileTime.matcher(time);
         m.matches();
         ContentValues v = new ContentValues();
-        v.put(TableProfile.userId,BasicActivity.user.id);
+        v.put(TableProfile.userId,GenericActivity.user.getId());
         v.put(TableProfile.profileKey,new Key(json.optString("key")).id);
         v.put(TableProfile.cat1,0l);
         v.put(TableProfile.cat2,0l);
@@ -340,7 +340,7 @@ public class SphinxDatabase extends Database {
         String type = json.optString("type");
         int t = 0;
         ContentValues v = new ContentValues();
-        v.put(TableText.userId,BasicActivity.user.id);
+        v.put(TableText.userId,GenericActivity.user.getId());
         v.put(TableText.textKey,Base36.decode(json.optString("key")));
         if(type.equals(TableText.types[TEXT_TYPE_PROFILE])) {
             t = TEXT_TYPE_PROFILE;

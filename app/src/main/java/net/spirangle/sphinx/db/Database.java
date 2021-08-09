@@ -11,8 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import net.spirangle.minerva.util.Regex;
-import net.spirangle.sphinx.activities.BasicActivity;
-import net.spirangle.sphinx.activities.BasicActivity.User;
+import net.spirangle.sphinx.activities.GenericActivity;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -150,7 +149,7 @@ Log.w(APP,"Upgrading completed.");
             pend = (float)(i+1)/(float)files.size();
             if(listener!=null)
                 listener.onDatabaseInstallProgress(entry.getKey(),progress);
-            String sql = BasicActivity.loadFile(context,entry.getValue());
+            String sql = GenericActivity.loadFile(context,entry.getValue());
             db.beginTransaction();
             try {
                 exec(db,sql,pstart,pend);
@@ -328,7 +327,7 @@ Log.w(APP,"Upgrading completed.");
     }
 
     public boolean updateUser(User u,int fl) {
-        return updateUser(u.id,u.key,u.email,u.user,u.name,u.language,u.picture,fl);
+        return updateUser(u.getId(),u.getKey(),u.getEmail(),u.getUser(),u.getName(),u.getLanguage(),u.getPicture(),fl);
     }
 
     public boolean updateUser(Key key,String email,String user,String name,String lang,String pic,int fl) {
