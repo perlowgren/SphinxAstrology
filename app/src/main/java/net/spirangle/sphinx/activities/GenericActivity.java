@@ -108,10 +108,11 @@ public abstract class GenericActivity extends AppCompatActivity implements OnNav
         setContentView(activity_layout_id);
 
         if(toolbar_id!=-1) {
-            toolbar = (Toolbar)findViewById(toolbar_id);
+            toolbar = findViewById(toolbar_id);
             setSupportActionBar(toolbar);
-            {
-                ActionBar ab = getSupportActionBar();
+
+            ActionBar ab = getSupportActionBar();
+            if(ab!=null) {
                 if((create_flags&HOME_AS_UP_ENABLED)!=0) {
                     ab.setDisplayHomeAsUpEnabled(true);
                     ab.setHomeAsUpIndicator(R.drawable.ic_ab_back);
@@ -121,30 +122,20 @@ public abstract class GenericActivity extends AppCompatActivity implements OnNav
 
             if(navigation_icon_id!=-1) {
                 if(drawer_layout_id!=-1 && navigation_view_id!=-1) {
-                    drawerLayout = (DrawerLayout)findViewById(drawer_layout_id);
-                    navigationView = (NavigationView)findViewById(navigation_view_id);
+                    drawerLayout = findViewById(drawer_layout_id);
+                    navigationView = findViewById(navigation_view_id);
                     navigationView.setNavigationItemSelectedListener(this);
                     toolbar.setNavigationIcon(navigation_icon_id);
-                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            drawerLayout.openDrawer(GravityCompat.START);
-                        }
-                    });
+                    toolbar.setNavigationOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
                 } else if((create_flags&NAVIGATION_ICON_BACK)!=0) {
                     toolbar.setNavigationIcon(navigation_icon_id);
-                    toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            finish();
-                        }
-                    });
+                    toolbar.setNavigationOnClickListener(v -> finish());
                 }
             }
         }
 
         if(loading_panel_id!=-1) {
-            loadingPanel = (RelativeLayout)findViewById(loading_panel_id);
+            loadingPanel = findViewById(loading_panel_id);
         }
 
         Log.d(APP,TAG+".onCreate("+toolbar+")");
@@ -234,7 +225,8 @@ public abstract class GenericActivity extends AppCompatActivity implements OnNav
             if(counter==0) {
                 showMessageBox(getString(R.string.msgbox_title_initial),getString(R.string.msgbox_initial));
             }
-            db.exec("UPDATE Database SET counter=counter+1,flags="+flags+" WHERE _id=1");
+            ++counter;
+            db.exec("UPDATE Database SET version="+version+",counter="+counter+",flags="+flags+" WHERE _id=1");
         }
 //		google.init(this);
     }
@@ -302,10 +294,7 @@ public abstract class GenericActivity extends AppCompatActivity implements OnNav
         if(locale==null) locale = Locale.getDefault();
         else {
             Locale.setDefault(locale);
-            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
-                config.setLocales(new LocaleList(locale));
-            else
-                config.locale = locale;
+            config.setLocales(new LocaleList(locale));
             res.updateConfiguration(config,res.getDisplayMetrics());
         }
 
@@ -356,9 +345,13 @@ public abstract class GenericActivity extends AppCompatActivity implements OnNav
 		getApplicationContext().getResources().updateConfiguration(config,getResources().getDisplayMetrics());
 	}*/
 
-    public void shortToast(int id) { shortToast(getString(id)); }
+    public void shortToast(int id) {
+        shortToast(getString(id));
+    }
 
-    public void shortToast(String text) { Toast.makeText(this,text,Toast.LENGTH_SHORT).show(); }
+    public void shortToast(String text) {
+        Toast.makeText(this,text,Toast.LENGTH_SHORT).show();
+    }
 
     public void updateUserInterface() {
         if(drawerLayout!=null) {
@@ -387,7 +380,7 @@ public abstract class GenericActivity extends AppCompatActivity implements OnNav
     public void hideKeyboard() {
         View view = this.getCurrentFocus();
         if(view!=null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(),0);
         }
     }
@@ -427,9 +420,8 @@ public abstract class GenericActivity extends AppCompatActivity implements OnNav
         return text;
     }
 
-    @SuppressWarnings("deprecation")
     protected void setTextViewHTML(TextView text,String html,int customFlags,float symbolSize) {
-        text.setText(CustomHtml.fromHtml(html,customFlags,symbolSize,this),TextView.BufferType.SPANNABLE);
+        text.setText(CustomHtml.fromHtml(html,customFlags,symbolSize,this),SPANNABLE);
         text.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
