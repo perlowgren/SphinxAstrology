@@ -22,23 +22,31 @@ public class HoroscopeView extends TableView {
     protected static final int boxColor = 0xffcccccc;
     protected static final int activeBoxColor = 0xffcccccc;
 
-    protected static final float TFS = 20.0f;
-    protected static final float PFS = 30.0f;
-    protected static final float AFS = 36.5f;
-    protected static final float DFS = 26.0f;
-    protected static final float RFS = 16.0f;
+    protected static final float fontSize1 = 20.0f;
+    protected static final float fontSize2 = 30.0f;
+    protected static final float fontSize3 = 36.5f;
+    protected static final float fontSize4 = 26.0f;
+    protected static final float fontSize5 = 16.0f;
 
     protected Horoscope horoscope = null;
 
     private Symbol.SymbolListener symbolListener = null;
 
-    public HoroscopeView(Context context) { super(context); }
+    public HoroscopeView(Context context) {
+        super(context);
+    }
 
-    public HoroscopeView(Context context,AttributeSet attrs) { super(context,attrs); }
+    public HoroscopeView(Context context,AttributeSet attrs) {
+        super(context,attrs);
+    }
 
-    public HoroscopeView(Context context,AttributeSet attrs,int defStyle) { super(context,attrs,defStyle); }
+    public HoroscopeView(Context context,AttributeSet attrs,int defStyle) {
+        super(context,attrs,defStyle);
+    }
 
-    public HoroscopeView(Context context,AttributeSet attrs,int defStyle,int defStyleRes) { super(context,attrs,defStyle,defStyleRes); }
+    public HoroscopeView(Context context,AttributeSet attrs,int defStyle,int defStyleRes) {
+        super(context,attrs,defStyle,defStyleRes);
+    }
 
     @Override
     public void onActivateMapRect(MapRectF rect) {

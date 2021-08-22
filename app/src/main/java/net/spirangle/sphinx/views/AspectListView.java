@@ -21,8 +21,8 @@ public class AspectListView extends HoroscopeView {
     private static final int columns = 3;
     private static final float spacing = 5.0f;
     private static final float padding = 2.0f;
-    private static final float header = padding+TFS+padding;
-    private static final float row = padding+PFS+padding;
+    private static final float header = padding+fontSize1+padding;
+    private static final float row = padding+fontSize2+padding;
 
     private int[] index;
 
@@ -102,12 +102,12 @@ public class AspectListView extends HoroscopeView {
 
             x = spacing;
             y = 0.0f;
-            paint.setTextSize(TFS);
+            paint.setTextSize(fontSize1);
             paint.setColor(titleBackground);
             canvas.drawRect(0.0f,0.0f,width,header,paint);
             paint.setColor(titleColor);
             str = context.getString(R.string.table_aspects);
-            baseline = (header-TFS)*0.5f-paint.ascent();
+            baseline = (header-fontSize1)*0.5f-paint.ascent();
             canvas.drawText(str,x,y+baseline,paint);
 
             x = spacing;
@@ -131,26 +131,26 @@ public class AspectListView extends HoroscopeView {
                 ++m;
 
                 paint.setColor(textColor);
-                paint.setTextSize(PFS);
+                paint.setTextSize(fontSize2);
                 str = Symbol.getUnicode(h.planetId(h.aspectPlanet1(n)));
-                center = padding+7.0f+(PFS-paint.measureText(str))*0.5f;
-                baseline = (row-PFS)*0.5f-paint.ascent();
+                center = padding+7.0f+(fontSize2-paint.measureText(str))*0.5f;
+                baseline = (row-fontSize2)*0.5f-paint.ascent();
                 canvas.drawText(str,x1+center,y1+baseline,paint);
 
                 paint.setColor(aspectColors[h.aspect(n)&0xffff]);
                 str = Symbol.getUnicode(h.aspect(n));
-                center = padding+7.0f+(PFS-paint.measureText(str))*0.5f;
-                canvas.drawText(str,x1+PFS+center,y1+baseline,paint);
+                center = padding+7.0f+(fontSize2-paint.measureText(str))*0.5f;
+                canvas.drawText(str,x1+fontSize2+center,y1+baseline,paint);
 
                 paint.setColor(textColor);
                 str = Symbol.getUnicode(h.planetId(h.aspectPlanet2(n)));
-                center = padding+7.0f+(PFS-paint.measureText(str))*0.5f;
-                canvas.drawText(str,x1+PFS+PFS+center,y1+baseline,paint);
+                center = padding+7.0f+(fontSize2-paint.measureText(str))*0.5f;
+                canvas.drawText(str,x1+fontSize2+fontSize2+center,y1+baseline,paint);
 
-                paint.setTextSize(DFS);
+                paint.setTextSize(fontSize4);
                 str = Coordinate.formatHM(h.aspectOrb(n),'°',360,"");
                 right = column-padding-7.0f-paint.measureText(str);
-                baseline = (row-DFS)*0.5f-paint.ascent();
+                baseline = (row-fontSize4)*0.5f-paint.ascent();
                 canvas.drawText(str,x1+right,y1+baseline,paint);
 
                 y1 += row+spacing;

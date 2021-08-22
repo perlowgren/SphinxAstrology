@@ -17,11 +17,10 @@ import net.spirangle.sphinx.astro.Symbol;
 public class AspectTableView extends HoroscopeView {
     private static final String TAG = AspectTableView.class.getSimpleName();
 
-    private static final int columns = 3;
     private static final float spacing = 5.0f;
     private static final float padding = 2.0f;
-    private static final float header = padding+TFS+padding;
-    private static final float box = padding+AFS+padding;
+    private static final float header = padding+fontSize1+padding;
+    private static final float box = padding+fontSize3+padding;
 
     public AspectTableView(Context context) { super(context); }
 
@@ -86,18 +85,18 @@ public class AspectTableView extends HoroscopeView {
 
             x = spacing;
             y = 0.0f;
-            paint.setTextSize(TFS);
+            paint.setTextSize(fontSize1);
             paint.setColor(titleBackground);
             canvas.drawRect(0.0f,0.0f,width,header,paint);
             paint.setColor(titleColor);
             str = context.getString(R.string.table_aspect_table);
-            baseline = (header-TFS)*0.5f-paint.ascent();
+            baseline = (header-fontSize1)*0.5f-paint.ascent();
             canvas.drawText(str,x,y+baseline,paint);
             str = context.getString(R.string.table_elements);
             canvas.drawText(str,x+120.0f,y+baseline,paint);
 
-            paint.setTextSize(AFS);
-            baseline = (box-AFS)*0.5f-paint.ascent();
+            paint.setTextSize(fontSize3);
+            baseline = (box-fontSize3)*0.5f-paint.ascent();
             x = spacing;
             y = header+spacing;
             for(p1 = 0,x1 = x; p1<p; ++p1) {

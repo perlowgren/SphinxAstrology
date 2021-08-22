@@ -25,16 +25,24 @@ public class PlanetsView extends HoroscopeView {
     private static final int columns = 3;
     private static final float spacing = 5.0f;
     private static final float padding = 2.0f;
-    private static final float header = padding+TFS+padding;
-    private static final float row = padding+PFS+padding;
+    private static final float header = padding+fontSize1+padding;
+    private static final float row = padding+fontSize2+padding;
 
-    public PlanetsView(Context context) { super(context); }
+    public PlanetsView(Context context) {
+        super(context);
+    }
 
-    public PlanetsView(Context context,AttributeSet attrs) { super(context,attrs); }
+    public PlanetsView(Context context,AttributeSet attrs) {
+        super(context,attrs);
+    }
 
-    public PlanetsView(Context context,AttributeSet attrs,int defStyle) { super(context,attrs,defStyle); }
+    public PlanetsView(Context context,AttributeSet attrs,int defStyle) {
+        super(context,attrs,defStyle);
+    }
 
-    public PlanetsView(Context context,AttributeSet attrs,int defStyle,int defStyleRes) { super(context,attrs,defStyle,defStyleRes); }
+    public PlanetsView(Context context,AttributeSet attrs,int defStyle,int defStyleRes) {
+        super(context,attrs,defStyle,defStyleRes);
+    }
 
     @Override
     public void onMeasure(int wms,int hms) {
@@ -96,17 +104,17 @@ public class PlanetsView extends HoroscopeView {
 
             x = spacing;
             y = 0.0f;
-            paint.setTextSize(TFS);
+            paint.setTextSize(fontSize1);
             paint.setColor(titleBackground);
             canvas.drawRect(0.0f,0.0f,width,header,paint);
             paint.setColor(titleColor);
             str = context.getString(R.string.table_planets);
-            baseline = (header-TFS)*0.5f-paint.ascent();
+            baseline = (header-fontSize1)*0.5f-paint.ascent();
             canvas.drawText(str,x,y+baseline,paint);
             str = context.getString(R.string.table_houses);
             canvas.drawText(str,x+column+spacing+column+spacing,y+baseline,paint);
 
-            paint.setTextSize(PFS);
+            paint.setTextSize(fontSize2);
             x = spacing;
             y = header+spacing;
 //Log.d(APP,TAG+".onDraw(PFS: "+PFS+", ascent+descent: "+(-paint.ascent()+paint.descent())+")");
@@ -127,39 +135,39 @@ public class PlanetsView extends HoroscopeView {
                 }
                 ++m;
 
-                x2 = x1+(column-(PFS+65.0f+12.0f+PFS+30.0f))*0.5f;
+                x2 = x1+(column-(fontSize2+65.0f+12.0f+fontSize2+30.0f))*0.5f;
 
                 paint.setColor(textColor);
-                paint.setTextSize(PFS);
+                paint.setTextSize(fontSize2);
                 str = Symbol.getUnicode(n);
-                baseline = (row-PFS)*0.5f-paint.ascent();
+                baseline = (row-fontSize2)*0.5f-paint.ascent();
                 canvas.drawText(str,x2,y1+baseline,paint);
 
-                x2 += PFS+65.0f;
-                paint.setTextSize(DFS);
+                x2 += fontSize2+65.0f;
+                paint.setTextSize(fontSize4);
                 str = Coordinate.formatHM(h.planetLongitude(i),'°',30,"");
-                baseline = (row-DFS)*0.5f-paint.ascent();
+                baseline = (row-fontSize4)*0.5f-paint.ascent();
                 canvas.drawText(str,x2-paint.measureText(str),y1+baseline,paint);
 
                 if(h.planetIsRetrograde(i)) {
-                    paint.setTextSize(RFS);
+                    paint.setTextSize(fontSize5);
                     str = "R";
                     canvas.drawText(str,x2+2.0f,y1+baseline,paint);
                 }
 
                 x2 += 12.0f;
-                paint.setTextSize(PFS);
+                paint.setTextSize(fontSize2);
                 sign = h.planetSign(i);
                 paint.setColor(zodiacColors[(sign&0xf)]);
                 str = Symbol.getUnicode(sign);
-                baseline = (row-PFS)*0.5f-paint.ascent();
+                baseline = (row-fontSize2)*0.5f-paint.ascent();
                 canvas.drawText(str,x2,y1+baseline,paint);
 
-                x2 += PFS+30.0f;
-                paint.setTextSize(DFS);
+                x2 += fontSize2+30.0f;
+                paint.setTextSize(fontSize4);
                 paint.setColor(textColor);
                 str = String.valueOf(1+h.planetHouse(i)-ASTRO_ASCENDANT);
-                baseline = (row-DFS)*0.5f-paint.ascent();
+                baseline = (row-fontSize4)*0.5f-paint.ascent();
                 canvas.drawText(str,x2-paint.measureText(str),y1+baseline,paint);
 
                 y1 += row+spacing;
@@ -169,7 +177,7 @@ public class PlanetsView extends HoroscopeView {
                 }
             }
 
-            paint.setTextSize(PFS);
+            paint.setTextSize(fontSize2);
             x = width-spacing-column;
             y = header+spacing;
             for(i = 0,x1 = x,y1 = y; i<houses.length; ++i) {
@@ -191,27 +199,27 @@ public class PlanetsView extends HoroscopeView {
                 }
                 ++m;
 
-                x2 = x1+(column-(40.0f+65.0f+12.0f+PFS))*0.5f;
+                x2 = x1+(column-(40.0f+65.0f+12.0f+fontSize2))*0.5f;
 
                 paint.setColor(textColor);
-                paint.setTextSize(PFS);
+                paint.setTextSize(fontSize2);
                 if(n==ASTRO_ASCENDANT || n==ASTRO_MC) str = Symbol.getUnicode(n);
                 else str = Integer.toString(Symbol.Attribute.valueOf(n));
-                baseline = (row-PFS)*0.5f-paint.ascent();
+                baseline = (row-fontSize2)*0.5f-paint.ascent();
                 canvas.drawText(str,x2,y1+baseline,paint);
 
                 x2 += 40.0f+65.0f;
-                paint.setTextSize(DFS);
+                paint.setTextSize(fontSize4);
                 str = Coordinate.formatHM(h.planetLongitude(i),'°',30,"");
-                baseline = (row-DFS)*0.5f-paint.ascent();
+                baseline = (row-fontSize4)*0.5f-paint.ascent();
                 canvas.drawText(str,x2-paint.measureText(str),y1+baseline,paint);
 
                 x2 += 12.0f;
-                paint.setTextSize(PFS);
+                paint.setTextSize(fontSize2);
                 sign = h.planetSign(i);
                 paint.setColor(zodiacColors[(sign&0xf)]);
                 str = Symbol.getUnicode(sign);
-                baseline = (row-PFS)*0.5f-paint.ascent();
+                baseline = (row-fontSize2)*0.5f-paint.ascent();
                 canvas.drawText(str,x2,y1+baseline,paint);
 
                 y1 += row+spacing;
