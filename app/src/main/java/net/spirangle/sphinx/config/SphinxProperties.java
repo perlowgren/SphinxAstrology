@@ -14,7 +14,7 @@ public class SphinxProperties {
     public static final double GMT_LON   = 0.0;
     public static final double GMT_LAT   = 51.0+(28.0/60.0)+(38.0/3600.0);
 
-    public static final String SERVER_CLIENT_ID      = BuildConfig.googlemapsserverClientId;
+    public static final String SERVER_CLIENT_ID      = BuildConfig.googleserverClientId;
     public static final String GOOGLE_MAPS_API_KEY   = BuildConfig.googlemapsapiKey;
 
     public static final int ACTIVITY_HOROSCOPE    = 1;

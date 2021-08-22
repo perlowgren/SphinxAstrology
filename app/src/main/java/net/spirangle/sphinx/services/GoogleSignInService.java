@@ -1,5 +1,6 @@
 package net.spirangle.sphinx.services;
 
+import static com.google.android.gms.auth.api.signin.GoogleSignInOptions.DEFAULT_SIGN_IN;
 import static net.spirangle.sphinx.config.SphinxProperties.*;
 
 import android.content.Intent;
@@ -15,6 +16,8 @@ import com.google.android.gms.tasks.Task;
 import net.spirangle.sphinx.activities.GenericActivity;
 
 import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 public class GoogleSignInService {
     private static final String TAG = GoogleSignInService.class.getSimpleName();
@@ -36,7 +39,7 @@ public class GoogleSignInService {
         signingIn = false;
     }
 
-    private void update(final GenericActivity activity,Task<GoogleSignInAccount> result) {
+    public void update(GenericActivity activity,Task<GoogleSignInAccount> result) {
         Log.d(APP,TAG+".Google.update(result:"+(result!=null && result.isSuccessful())+")");
         signingIn = false;
         if(result==null || !result.isSuccessful()) {
@@ -60,23 +63,24 @@ public class GoogleSignInService {
         }
     }
 
-    private void updateAccount(final GenericActivity activity,GoogleSignInAccount account) {
+    private void updateAccount(GenericActivity activity,@Nullable GoogleSignInAccount account) {
+        if(account==null) return;
         id = account.getId();
         tokenId = account.getIdToken();
-        activity.user.update(account);
+        GenericActivity.user.update(account);
         activity.updateUserInterface();
         if(tokenId!=null)
             activity.spirangleSignIn();
     }
 
-    private void init(final GenericActivity activity) {
+    private void init(GenericActivity activity) {
         Log.d(APP,TAG+".Google.init("+client+")");
         if(client!=null) return;
         try {
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(SERVER_CLIENT_ID)
-                .requestEmail()
-                .build();
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(DEFAULT_SIGN_IN)
+                                                             .requestIdToken(SERVER_CLIENT_ID)
+                                                             .requestEmail()
+                                                             .build();
             client = GoogleSignIn.getClient(activity,gso);
 
             Log.d(APP,TAG+".googleInit:2("+client+")");
@@ -85,7 +89,7 @@ public class GoogleSignInService {
         }
     }
 
-    public void silentSignIn(final GenericActivity activity,final Runnable r) {
+    public void silentSignIn(GenericActivity activity,Runnable r) {
         Log.d(APP,TAG+".Google.silentSignIn("+client+")");
         if(client==null) init(activity);
         if(client==null) return;
@@ -95,7 +99,7 @@ public class GoogleSignInService {
         update(activity,result);
     }
 
-    public void signIn(final GenericActivity activity) {
+    public void signIn(GenericActivity activity) {
         Log.d(APP,TAG+".Google.signIn("+client+")");
         if(client==null) init(activity);
         if(client==null) return;
@@ -103,7 +107,7 @@ public class GoogleSignInService {
         activity.startActivityForResult(intent,ACTIVITY_SIGN_IN);
     }
 
-    public void signOut(final GenericActivity activity) {
+    public void signOut(GenericActivity activity) {
         Log.d(APP,TAG+".Google.signOut("+client+")");
         if(client==null) init(activity);
         if(client==null) return;

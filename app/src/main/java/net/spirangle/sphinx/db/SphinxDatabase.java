@@ -152,7 +152,7 @@ public class SphinxDatabase extends Database {
                 updateDatabase(0,0);
             }
         } catch(Exception e) {
-            Log.e(APP,TAG+".spirangleSignIn",e);
+            Log.e(APP,TAG+".handleResponse",e);
         }
 //		shortToast(R.string.toast_signin_failed);
     }

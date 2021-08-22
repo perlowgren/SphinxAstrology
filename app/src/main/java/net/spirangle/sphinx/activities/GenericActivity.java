@@ -35,6 +35,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
 import com.google.common.io.BaseEncoding;
@@ -190,7 +191,7 @@ public abstract class GenericActivity extends AppCompatActivity implements OnNav
         switch(request) {
             case ACTIVITY_SIGN_IN:
                 // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-                //TODO: google.update(this,Auth.GoogleSignInApi.getSignInResultFromIntent(data));
+                google.update(this,GoogleSignIn.getSignedInAccountFromIntent(data));
                 break;
         }
     }
