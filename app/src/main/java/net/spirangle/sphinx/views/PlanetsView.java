@@ -210,13 +210,13 @@ public class PlanetsView extends HoroscopeView {
 
                 x2 += 40.0f+65.0f;
                 paint.setTextSize(fontSize4);
-                str = Coordinate.formatHM(h.planetLongitude(i),'°',30,"");
+                str = Coordinate.formatHM(h.houseCusp(i),'°',30,"");
                 baseline = (row-fontSize4)*0.5f-paint.ascent();
                 canvas.drawText(str,x2-paint.measureText(str),y1+baseline,paint);
 
                 x2 += 12.0f;
                 paint.setTextSize(fontSize2);
-                sign = h.planetSign(i);
+                sign = h.houseSign(i);
                 paint.setColor(zodiacColors[(sign&0xf)]);
                 str = Symbol.getUnicode(sign);
                 baseline = (row-fontSize2)*0.5f-paint.ascent();
