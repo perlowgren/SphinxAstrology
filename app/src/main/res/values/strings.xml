@@ -186,13 +186,22 @@
 	<string name="text_help_edit_profile"><![CDATA[
 <h1>Sphinx Astrology</h1>
 <h3>Edit Profile</h3>
-<p>Enter name of the profile, for a person it should be the first and second name, or it can be some other name if it refers to a specific point in time, e.g. a solar eclipse or similar.</p>
+<p>Enter name of the profile, for a person it should be the first and second name, or it
+can be some other name if it refers to a specific point in time, e.g. a solar eclipse or
+similar.</p>
 
 <h5>Date & Time</h5>
-<p>Date should be in the format &quot;YYYY-MM-DD&quot;. Time should be in the format &quot;HH:MM:SS&quot;, but &quot;HH&quot; and &quot;HH:MM&quot; are accepted. Time can be omitted, in which case &quot;12:00&quot; will be used. Only number input is accepted, dashes and colons are inserted automatically.</p>
+<p>Date should be in the format &quot;YYYY-MM-DD&quot;. Time should be in the format
+&quot;HH:MM:SS&quot;, but &quot;HH&quot; and &quot;HH:MM&quot; are accepted. Time can be
+omitted, in which case &quot;12:00&quot; will be used. Only number input is accepted,
+dashes and colons are inserted automatically.</p>
 
 <h5>Location</h5>
-<p>Location can be a city, place or even street address, be general or specific. Leave the field empty to use current location. You can also enter exact longitude and latitude coordinates in the format &quot;DDDXMMSS DDDXMMSS&quot;, where &apos;X&apos; the direction, e.g. &apos;E&apos;, &apos;W&apos;, &apos;N&apos;, &apos;S&apos;. Press the globe button to the right for finding locations. Select the correct location in the list below.</p>
+<p>Location can be a city, place or even street address, be general or specific. Leave the
+field empty to use current location. You can also enter exact longitude and latitude
+coordinates in the format &quot;DDDXMMSS DDDXMMSS&quot;, where &apos;X&apos; the direction,
+e.g. &apos;E&apos;, &apos;W&apos;, &apos;N&apos;, &apos;S&apos;. Press the globe button to the
+right for finding locations. Select the correct location in the list below.</p>
 
 <p>Daylight Saving Time is set automatically, but may be set manually also.</p>
 
