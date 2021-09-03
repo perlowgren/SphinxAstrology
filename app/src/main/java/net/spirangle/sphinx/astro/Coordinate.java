@@ -21,31 +21,57 @@ public class Coordinate {
         S = dirs.charAt(3);
     }
 
-    public static final double valueOf(String str) { return new Coordinate(str).grade; }
+    public static double valueOf(String str) {
+        return new Coordinate(str).grade;
+    }
 
-    public static final String formatHMS(char d,double g) { return new Coordinate(d,g).formatHMS(); }
+    public static String formatHMS(char d,double g) {
+        return new Coordinate(d,g).formatHMS();
+    }
 
-    public static final String formatHM(char d,double g) { return new Coordinate(d,g).formatHM(); }
+    public static String formatHM(char d,double g) {
+        return new Coordinate(d,g).formatHM();
+    }
 
-    public static final String formatHDMS(char d,double g) { return new Coordinate(d,g).formatHDMS(); }
+    public static String formatHDMS(char d,double g) {
+        return new Coordinate(d,g).formatHDMS();
+    }
 
-    public static final String formatHDM(char d,double g) { return new Coordinate(d,g).formatHDM(); }
+    public static String formatHDM(char d,double g) {
+        return new Coordinate(d,g).formatHDM();
+    }
 
-    public static final String formatHMSD(char d,double g) { return new Coordinate(d,g).formatHMSD(); }
+    public static String formatHMSD(char d,double g) {
+        return new Coordinate(d,g).formatHMSD();
+    }
 
-    public static final String formatHMD(char d,double g) { return new Coordinate(d,g).formatHMD(); }
+    public static String formatHMD(char d,double g) {
+        return new Coordinate(d,g).formatHMD();
+    }
 
-    public static final String formatLongitude(double g) { return new Coordinate(g<0.0? W : E,g<0.0? -g : g).formatHMS(); }
+    public static String formatLongitude(double g) {
+        return new Coordinate(g<0.0? W : E,g<0.0? -g : g).formatHMS();
+    }
 
-    public static final String formatLatitude(double g) { return new Coordinate(g<0.0? S : N,g<0.0? -g : g).formatHMS(); }
+    public static String formatLatitude(double g) {
+        return new Coordinate(g<0.0? S : N,g<0.0? -g : g).formatHMS();
+    }
 
-    public static final String formatLongitudeShort(double g) { return new Coordinate(g<0.0? W : E,g<0.0? -g : g).formatHM(); }
+    public static String formatLongitudeShort(double g) {
+        return new Coordinate(g<0.0? W : E,g<0.0? -g : g).formatHM();
+    }
 
-    public static final String formatLatitudeShort(double g) { return new Coordinate(g<0.0? S : N,g<0.0? -g : g).formatHM(); }
+    public static String formatLatitudeShort(double g) {
+        return new Coordinate(g<0.0? S : N,g<0.0? -g : g).formatHM();
+    }
 
-    public static final String formatLongitudeGrade(double g) { return new Coordinate(g<0.0? W : E,g<0.0? -g : g).formatHDM(); }
+    public static String formatLongitudeGrade(double g) {
+        return new Coordinate(g<0.0? W : E,g<0.0? -g : g).formatHDM();
+    }
 
-    public static final String formatLatitudeGrade(double g) { return new Coordinate(g<0.0? S : N,g<0.0? -g : g).formatHDM(); }
+    public static String formatLatitudeGrade(double g) {
+        return new Coordinate(g<0.0? S : N,g<0.0? -g : g).formatHDM();
+    }
 
     public static String formatHMS(double g,char sep,int d,String suffix) {
         Coordinate c = new Coordinate(E,g,d);
@@ -121,7 +147,7 @@ public class Coordinate {
     public Coordinate(char r,double g) { this(r,g,360); }
 
     public Coordinate(char r,double g,int d) {
-        int h, m, s, n;
+        int h,m,s,n;
         boolean neg = g<0.0;
         if(g<0.0) g = -g;
         h = (int)g;
@@ -171,7 +197,9 @@ public class Coordinate {
     }
 
     @Override
-    public String toString() { return formatHDMS(); }
+    public String toString() {
+        return formatHDMS();
+    }
 }
 
 

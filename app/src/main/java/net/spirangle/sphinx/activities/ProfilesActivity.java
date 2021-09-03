@@ -68,9 +68,9 @@ public class ProfilesActivity extends AstroActivity implements OnQueryTextListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Menu menu = navigationView.getMenu();
-        drawerSignIn = (MenuItem)menu.findItem(R.id.drawer_sign_in);
-        drawerSignOut = (MenuItem)menu.findItem(R.id.drawer_sign_out);
-        listProfiles = (ListView)findViewById(R.id.listview);
+        drawerSignIn = menu.findItem(R.id.drawer_sign_in);
+        drawerSignOut = menu.findItem(R.id.drawer_sign_out);
+        listProfiles = findViewById(R.id.listview);
         listProfiles.setOnItemClickListener(this);
         listProfiles.setOnItemLongClickListener(this);
         listProfiles.setOnItemSelectedListener(this);
@@ -132,7 +132,7 @@ public class ProfilesActivity extends AstroActivity implements OnQueryTextListen
 //try {
 //Log.d(APP,TAG+".onCreate(.setViewValue(view: 0x"+Long.toHexString(view.getId())+", col: "+col+"))");
         if(col==0) {
-            view.setTag(new Long(cur.getLong(col)));
+            view.setTag(cur.getLong(col));
 //			ProfilesActivity.this.registerForContextMenu(view);
             return true;
         } else if(col==1 || col==2) {
