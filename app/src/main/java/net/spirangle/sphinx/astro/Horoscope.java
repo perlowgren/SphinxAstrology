@@ -449,7 +449,7 @@ public class Horoscope implements Parcelable {
         Map<String,Object> params = new HashMap<>();
         params.put("categories",cat1+":"+cat2);
         params.put("name",ename);
-        params.put("time",String.format(Locale.getDefault(),"%1$s%2$d-%3$02d-%4$02d %5$02d:%6$02d:%7$02d%8$s",
+        params.put("time",String.format(Locale.ENGLISH,"%1$s%2$d-%3$02d-%4$02d %5$02d:%6$02d:%7$02d%8$s",
                                         (flags&BCE)==BCE? "BCE " : "",time.year,time.month,time.day,
                                         time.hour,time.minute,(int)time.second,time.type==JULIAN_CALENDAR? " J" : ""));
         params.put("longitude",Math.round(longitude*1000000.0));

@@ -550,7 +550,7 @@ public class EditTextActivity extends AstroActivity {
                 Editable ed = editText.getEditableText();
                 int start = editText.getSelectionStart();
                 int end = editText.getSelectionEnd();
-                String link = String.format("[%s #%s]",symbol.getTitle(),symbol.toString());
+                String link = String.format(Locale.getDefault(),"[%s #%s]",symbol.getTitle(),symbol.toString());
                 ed.replace(start,end,link);
                 start += link.length();
                 editText.setSelection(start,start);

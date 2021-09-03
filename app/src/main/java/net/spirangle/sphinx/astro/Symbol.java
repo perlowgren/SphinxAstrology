@@ -4,6 +4,8 @@ import static net.spirangle.sphinx.config.AstrologyProperties.*;
 
 import net.spirangle.minerva.util.Base36;
 
+import java.util.Locale;
+
 public class Symbol {
     private static final String TAG = Symbol.class.getSimpleName();
 
@@ -1647,19 +1649,19 @@ public class Symbol {
             if(concept.number>=5) s5 = concept.fifth.getName(fifth);
             switch(concept.number) {
                 case 1:
-                    title = String.format(concept.format,s1);
+                    title = String.format(Locale.ENGLISH,concept.format,s1);
                     break;
                 case 2:
-                    title = String.format(concept.format,s1,s2);
+                    title = String.format(Locale.ENGLISH,concept.format,s1,s2);
                     break;
                 case 3:
-                    title = String.format(concept.format,s1,s2,s3);
+                    title = String.format(Locale.ENGLISH,concept.format,s1,s2,s3);
                     break;
                 case 4:
-                    title = String.format(concept.format,s1,s2,s3,s4);
+                    title = String.format(Locale.ENGLISH,concept.format,s1,s2,s3,s4);
                     break;
                 case 5:
-                    title = String.format(concept.format,s1,s2,s3,s4,s5);
+                    title = String.format(Locale.ENGLISH,concept.format,s1,s2,s3,s4,s5);
                     break;
             }
         }

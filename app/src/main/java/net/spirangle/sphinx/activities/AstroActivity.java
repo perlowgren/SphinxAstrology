@@ -136,49 +136,50 @@ c1.set(y,m,d,h,n,(int)s);
 Log.d(APP,TAG+".init(year: "+y+", month: "+m+", day: "+d+", days: "+Horoscope.Calendar.secondsFromUnixEpoch(y,m,d,h,n,(int)(s-((dst+tz)*3600.0)))+")");
 Log.d(APP,TAG+".init(year: "+y+", month: "+m+", day: "+d+", days: "+Database.timestamp()+")");*/
 
-		/*int i,x,y,z;
+		/*Locale l = Locale.getDefault();
+		int i,x,y,z;
 //		long n;
 		for(i=0; i<10; ++i)
-			Log.d(APP,TAG+String.format(".init(profile key: %1$s)",getKey(KEY_PROFILE)));*/
+			Log.d(APP,TAG+String.format(l,".init(profile key: %1$s)",getKey(KEY_PROFILE)));*/
 
 		/*for(x=ASTRO_FIRE; x<=ASTRO_WATER; ++x) {
 			n = Symbol.astrologyElement(x);
-			Log.d(APP,TAG+String.format(".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
+			Log.d(APP,TAG+String.format(l,".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
 		}
 		for(x=ASTRO_CARDINAL; x<=ASTRO_MUTABLE; ++x) {
 			n = Symbol.astrologyQuality(x);
-			Log.d(APP,TAG+String.format(".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
+			Log.d(APP,TAG+String.format(l,".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
 		}
 		for(x=ASTRO_ARIES; x<=ASTRO_PISCES; ++x) {
 			n = Symbol.astrologyZodiac(x);
-			Log.d(APP,TAG+String.format(".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
+			Log.d(APP,TAG+String.format(l,".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
 		}
 		for(x=ASTRO_SUN; x<=ASTRO_PLUTO; ++x) {
 			n = Symbol.astrologyPlanet(x);
-			Log.d(APP,TAG+String.format(".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
+			Log.d(APP,TAG+String.format(l,".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
 		}
 		for(x=ASTRO_ASCENDANT; x<=ASTRO_12TH_HOUSE; ++x) {
 			n = Symbol.astrologyHouse(x);
-			Log.d(APP,TAG+String.format(".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
+			Log.d(APP,TAG+String.format(l,".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
 		}
 		for(x=CONJUNCTION; x<=OPPOSITION; ++x) {
 			n = Symbol.astrologyAspect(x);
-			Log.d(APP,TAG+String.format(".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
+			Log.d(APP,TAG+String.format(l,".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
 		}*/
 		/*for(x=ASTRO_SUN; x<=ASTRO_PLUTO; ++x) {
 			for(y=ASTRO_ARIES; y<=ASTRO_PISCES; ++y) {
 				n = Symbol.astrologyPlanetInZodiac(x,y);
-				Log.d(APP,TAG+String.format(".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
+				Log.d(APP,TAG+String.format(l,".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
 			}
 			for(y=ASTRO_ASCENDANT; y<=ASTRO_12TH_HOUSE; ++y) {
 				n = Symbol.astrologyPlanetInHouse(x,y);
-				Log.d(APP,TAG+String.format(".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
+				Log.d(APP,TAG+String.format(l,".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
 			}
 		}*/
 		/*x = ASTRO_ASCENDANT;
 		for(y=ASTRO_ARIES; y<=ASTRO_PISCES; ++y) {
 			n = Symbol.astrologyHouseInZodiac(x,y);
-			Log.d(APP,TAG+String.format(".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
+			Log.d(APP,TAG+String.format(l,".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT),n,Symbol.getTitle(n)));
 		}*/
 		/*int p[] = {ASTRO_SUN,ASTRO_MOON,ASTRO_MERCURY,ASTRO_VENUS,ASTRO_MARS,ASTRO_JUPITER,ASTRO_SATURN,ASTRO_URANUS,ASTRO_NEPTUNE,ASTRO_PLUTO,ASTRO_ASCENDANT};
 		int a[] = {CONJUNCTION,SEMISEXTILE,SEMISQUARE,SEXTILE,SQUARE,TRINE,OPPOSITION};
@@ -188,29 +189,27 @@ Log.d(APP,TAG+".init(year: "+y+", month: "+m+", day: "+d+", days: "+Database.tim
 				for(z=x+1; z<p.length; ++z,++i) {
 					if(p[z]!=ASTRO_ASCENDANT) n = Symbol.astrologyPlanetToPlanetAspect(p[x],p[z],a[y]);
 					else n = Symbol.astrologyPlanetToHouseAspect(p[x],p[z],a[y]);
-					Log.d(APP,TAG+String.format(".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT,i),n,Symbol.getTitle(n)));
+					Log.d(APP,TAG+String.format(l,".init('%1$s',4,%2$d,'%3$s'",getKey(KEY_TEXT,i),n,Symbol.getTitle(n)));
 				}
 				Thread.sleep(100l);
 			}
 		}*/
 
-		/*String b36;
-		long n;
-		b36 = base36Encode(1234567);
-		n = base36Decode(b36);
-		Log.d(APP,TAG+String.format(".init(b36: %1$s, n: %2$d)",b36,n));
+		/*String b36 = base36Encode(1234567);
+		long n = base36Decode(b36);
+		Log.d(APP,TAG+String.format(l,".init(b36: %1$s, n: %2$d)",b36,n));
 		b36 = base36Encode(2345678);
 		n = base36Decode(b36);
-		Log.d(APP,TAG+String.format(".init(b36: %1$s, n: %2$d)",b36,n));
+		Log.d(APP,TAG+String.format(l,".init(b36: %1$s, n: %2$d)",b36,n));
 		b36 = base36Encode(7654321);
 		n = base36Decode(b36);
-		Log.d(APP,TAG+String.format(".init(b36: %1$s, n: %2$d)",b36,n));
+		Log.d(APP,TAG+String.format(l,".init(b36: %1$s, n: %2$d)",b36,n));
 		b36 = base36Encode(78912365);
 		n = base36Decode(b36);
-		Log.d(APP,TAG+String.format(".init(b36: %1$s, n: %2$d)",b36,n));
+		Log.d(APP,TAG+String.format(l,".init(b36: %1$s, n: %2$d)",b36,n));
 		b36 = base36Encode(8765432);
 		n = base36Decode(b36);
-		Log.d(APP,TAG+String.format(".init(b36: %1$s, n: %2$d)",b36,n));*/
+		Log.d(APP,TAG+String.format(l,".init(b36: %1$s, n: %2$d)",b36,n));*/
 
 
         } catch(Exception e) {

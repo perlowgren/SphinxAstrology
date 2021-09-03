@@ -24,6 +24,8 @@ import net.spirangle.sphinx.astro.Symbol;
 import net.spirangle.sphinx.db.SphinxDatabase;
 import net.spirangle.sphinx.text.CustomHtml;
 
+import java.util.Locale;
+
 
 public class TextActivity extends AstroActivity implements ViewBinder, OnItemClickListener, OnItemLongClickListener, OnItemSelectedListener {
     private static final String TAG = TextActivity.class.getSimpleName();
@@ -232,7 +234,7 @@ public class TextActivity extends AstroActivity implements ViewBinder, OnItemCli
                 if(user.getUser()!=null) writer = user.getUser();
                 else writer = getString(R.string.unknown);
             }
-            String str = String.format("<b>#%1$s</b>, by <i>%2$s</i>",Base36.encode(symbolId),writer);
+            String str = String.format(Locale.getDefault(),"<b>#%1$s</b>, by <i>%2$s</i>",Base36.encode(symbolId),writer);
             textWriter.setText(CustomHtml.fromHtml(str,0,0.0f,null));
             textFlags = cur.getInt(5);
             showText = true;

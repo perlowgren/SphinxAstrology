@@ -1,6 +1,8 @@
 package net.spirangle.sphinx.astro;
 
 
+import java.util.Locale;
+
 public class Coordinate {
     public static final char DEG = '°';
     public static final char APOS = '\'';
@@ -53,13 +55,13 @@ public class Coordinate {
             ss = "";
         }
         if(suffix==null) suffix = "";
-        return String.format("%d%c%02d%s%02d%s%s",c.hour,sep,c.minute,ms,c.second,ss,suffix);
+        return String.format(Locale.getDefault(),"%d%c%02d%s%02d%s%s",c.hour,sep,c.minute,ms,c.second,ss,suffix);
     }
 
     public static String formatHM(double g,char sep,int d,String suffix) {
         Coordinate c = new Coordinate(E,g,d);
         if(suffix==null) suffix = "";
-        return String.format("%d%c%02d%s",c.hour,sep,c.minute,suffix);
+        return String.format(Locale.getDefault(),"%d%c%02d%s",c.hour,sep,c.minute,suffix);
     }
 
     public final double grade;
@@ -144,17 +146,29 @@ public class Coordinate {
         second = s;
     }
 
-    public String formatHMS() { return String.format("%2$d%1$c%3$02d'%4$02d\"",dir,hour,minute,second); }
+    public String formatHMS() {
+        return String.format(Locale.ENGLISH,"%2$d%1$c%3$02d'%4$02d\"",dir,hour,minute,second);
+    }
 
-    public String formatHM() { return String.format("%2$d%1$c%3$02d",dir,hour,minute); }
+    public String formatHM() {
+        return String.format(Locale.ENGLISH,"%2$d%1$c%3$02d",dir,hour,minute);
+    }
 
-    public String formatHDMS() { return String.format("%2$d°%1$c %3$02d'%4$02d\"",dir,hour,minute,second); }
+    public String formatHDMS() {
+        return String.format(Locale.ENGLISH,"%2$d°%1$c %3$02d'%4$02d\"",dir,hour,minute,second);
+    }
 
-    public String formatHDM() { return String.format("%2$d°%1$c %3$02d'",dir,hour,minute); }
+    public String formatHDM() {
+        return String.format(Locale.ENGLISH,"%2$d°%1$c %3$02d'",dir,hour,minute);
+    }
 
-    public String formatHMSD() { return String.format("%2$d°%3$02d'%4$02d\"%1$c",dir,hour,minute,second); }
+    public String formatHMSD() {
+        return String.format(Locale.ENGLISH,"%2$d°%3$02d'%4$02d\"%1$c",dir,hour,minute,second);
+    }
 
-    public String formatHMD() { return String.format("%2$d°%3$02d'%1$c",dir,hour,minute); }
+    public String formatHMD() {
+        return String.format(Locale.ENGLISH,"%2$d°%3$02d'%1$c",dir,hour,minute);
+    }
 
     @Override
     public String toString() { return formatHDMS(); }

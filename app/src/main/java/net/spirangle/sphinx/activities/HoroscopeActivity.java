@@ -346,7 +346,7 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener, 
         if(l==null || c==null) info = "<b>"+n+"</b>";
         else {
             if(n.length()+l.length()+c.length()>46) c = h.getCountryCode();
-            info = String.format("<b>%1$s</b>, %2$s, %3$s",n,l,c);
+            info = String.format(Locale.getDefault(),"<b>%1$s</b>, %2$s, %3$s",n,l,c);
         }
         textInfo.setText(CustomHtml.fromHtml(info,0,0.0f,null));
 

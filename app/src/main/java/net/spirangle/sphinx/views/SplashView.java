@@ -11,6 +11,8 @@ import android.view.View;
 
 import net.spirangle.sphinx.R;
 
+import java.util.Locale;
+
 
 public class SplashView extends View {
     private static final String TAG = SplashView.class.getSimpleName();
@@ -89,7 +91,7 @@ public class SplashView extends View {
     }
 
     public void setProgress(float progress,String label) {
-        if(label!=null) this.label = String.format(labelFormat,label);
+        if(label!=null) this.label = String.format(Locale.getDefault(),labelFormat,label);
         this.progress = progress;
         invalidate();
     }

@@ -17,6 +17,8 @@ import net.spirangle.sphinx.activities.AstroActivity;
 import net.spirangle.sphinx.astro.Horoscope;
 import net.spirangle.sphinx.astro.Symbol;
 
+import java.util.Locale;
+
 
 public class WheelGraphView extends HoroscopeView {
     private static final String TAG = WheelGraphView.class.getSimpleName();
@@ -820,9 +822,9 @@ public class WheelGraphView extends HoroscopeView {
         paint.setTextSize(textSize1/*24.0f*/);
         canvas.drawText(moonPhasesUnicode[i],x1,y1+s*0.012f,paint);
         paint.setTextSize(textSize3/*16.0f*/);
-		/*if(d>0) str = String.format("%1$+dd %2$d:%3$02d",d,n,m);
+		/*if(d>0) str = String.format(Locale.ENGLISH,"%1$+dd %2$d:%3$02d",d,n,m);
 		else */
-        str = String.format("%1$+d:%2$02d",n,m);
+        str = String.format(Locale.ENGLISH,"%1$+d:%2$02d",n,m);
         canvas.drawText(str,x1+lineHeight1,y1+(textSize1-textSize3)*0.5f,paint);
 
         paint.setTextSize(textSize2/*24.0f*/);

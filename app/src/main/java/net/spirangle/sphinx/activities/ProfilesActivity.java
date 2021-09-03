@@ -36,6 +36,7 @@ import net.spirangle.sphinx.services.VolleyService;
 import net.spirangle.sphinx.text.CustomHtml;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -136,16 +137,16 @@ public class ProfilesActivity extends AstroActivity implements OnQueryTextListen
             String text;
             int flags = cur.getInt(12);
             if(col==1) {
-                text = String.format("<b>%1$s</b> %2$s%3$s %4$s%5$s %6$s%7$s",cur.getString(1),
+                text = String.format(Locale.ENGLISH,"<b>%1$s</b> %2$s%3$s %4$s%5$s %6$s%7$s",cur.getString(1),
                                      Symbol.getUnicode(ASTRO_SUN),Symbol.getUnicode(ASTRO_ARIES+(cur.getInt(9)/30000000)),
                                      Symbol.getUnicode(ASTRO_MOON),Symbol.getUnicode(ASTRO_ARIES+(cur.getInt(10)/30000000)),
                                      Symbol.getUnicode(ASTRO_ASCENDANT),Symbol.getUnicode(ASTRO_ARIES+(cur.getInt(11)/30000000)));
             } else {
                 String time;
                 if((flags&Horoscope.TIME_UNKNOWN)==0)
-                    time = String.format(" %1$02d:%2$02d",cur.getInt(5),cur.getInt(6));
+                    time = String.format(Locale.ENGLISH," %1$02d:%2$02d",cur.getInt(5),cur.getInt(6));
                 else time = "";
-                text = String.format("&#xe192; %1$d-%2$02d-%3$02d%4$s &#xE55F; %5$s, %6$s",
+                text = String.format(Locale.ENGLISH,"&#xe192; %1$d-%2$02d-%3$02d%4$s &#xE55F; %5$s, %6$s",
                                      cur.getInt(2),cur.getInt(3),cur.getInt(4),time,
                                      Coordinate.formatLongitudeGrade((double)cur.getInt(7)/1000000.0),
                                      Coordinate.formatLatitudeGrade((double)cur.getInt(8)/1000000.0));

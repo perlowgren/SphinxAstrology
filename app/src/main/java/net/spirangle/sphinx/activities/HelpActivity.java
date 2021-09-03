@@ -15,6 +15,7 @@ import net.spirangle.sphinx.text.CustomHtml;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -86,14 +87,14 @@ public class HelpActivity extends AstroActivity {
             } catch(Exception e) {
                 Log.e(APP,TAG+".onLinkClick",e);
             }
-            Log.d(APP,TAG+String.format(".onLinkClick(id: 0x%x)",id));
+            Log.d(APP,TAG+String.format(Locale.ENGLISH,".onLinkClick(id: 0x%x)",id));
             showHelpText(id);
         }
     }
 
     public void showHelpText(int id) {
         if(id==textId) return;
-        Log.d(APP,TAG+String.format(".showHelpText(id: 0x%x)",id));
+        Log.d(APP,TAG+String.format(Locale.ENGLISH,".showHelpText(id: 0x%x)",id));
         String html = null;
         try {
             html = getString(id);

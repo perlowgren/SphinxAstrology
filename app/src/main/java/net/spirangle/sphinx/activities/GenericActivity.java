@@ -477,7 +477,7 @@ public abstract class GenericActivity extends AppCompatActivity implements OnNav
 		{
 			List<String> list = new ArrayList<String>();
 			for(int i=1; i<=31; ++i)
-				list.add(String.format("%02d",i));
+				list.add(String.format(Locale.ENGLISH,"%02d",i));
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 					this,android.R.layout.simple_spinner_item,list);
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
