@@ -17,6 +17,7 @@ import android.widget.*;
 
 import androidx.core.content.res.ResourcesCompat;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 
@@ -31,6 +32,7 @@ import net.spirangle.sphinx.text.CustomHtml;
 
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -297,8 +299,17 @@ public class EditTextActivity extends AstroActivity {
         requestQueue.add(new JsonObjectRequest(method,url,json,response -> {
             shortToast(R.string.toast_profile_saved);
         },error -> {
+            NetworkResponse response = error.networkResponse;
+            String m = null;
+            try {
+                JSONObject j = new JSONObject(Arrays.toString(response.data));
+                m = j.optString("message","");
+            } catch(Exception e) {
+                Log.e(APP,TAG+".result",e);
+            }
             Log.e(APP,TAG+".saveProfile",error);
-            shortToast(R.string.toast_save_failed);
+            if(m!=null) shortToast(getString(R.string.toast_save_failed)+": "+m);
+            else shortToast(R.string.toast_save_failed);
         }) {
             @Override
             public Map<String,String> getHeaders() {
