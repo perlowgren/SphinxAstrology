@@ -107,12 +107,12 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
         _ASTRO_PLUTO_,
         -1};
 
-    protected static final float TFS = 12.0f*density;
-    protected static final float PFS = 18.0f*density;
-    protected static final float DFS = 14.0f*density;
-    protected static final float RFS = 10.0f*density;
-    protected static final float HFS = 10.0f*density;
-    protected static final float WFS = 16.0f*density;
+    protected static final float fontSize1 = 12.0f*density;
+    protected static final float fontSize2 = 18.0f*density;
+    protected static final float fontSize3 = 14.0f*density;
+    protected static final float fontSize4 = 10.0f*density;
+    protected static final float fontSize5 = 10.0f*density;
+    protected static final float fontSize6 = 16.0f*density;
 
     protected static final float spacing = 1.5f*density;
     protected static final float padding = 3.0f*density;
@@ -158,14 +158,14 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
             paint.setStyle(Paint.Style.FILL);
             paint.setAntiAlias(true);
             paint.setColor(textColor);
-            paint.setTextSize(TFS);
+            paint.setTextSize(fontSize1);
             paint.setTypeface(symbolFont);
 
             String str = h.getName();
-            float p = height-TFS, c = p*0.5f;
+            float p = height-fontSize1, c = p*0.5f;
             canvas.drawText(str,(p-paint.measureText(str))*0.5f,0.0f-paint.ascent(),paint);
-            drawMoonPhase(0.0f,height-PFS);
-            drawWheel(c,TFS+c,c-spacing);
+            drawMoonPhase(0.0f,height-fontSize2);
+            drawWheel(c,fontSize1+c,c-spacing);
             drawPlanets(p,0.0f);
 
             long t2 = System.currentTimeMillis();
@@ -190,13 +190,13 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
             n = (int)(h*24.0);
             m = (int)Math.abs(h*1440.0)%60;
             paint.setColor(textColor);
-            paint.setTextSize(PFS);
-            baseline = (PFS-paint.ascent())*0.5f;
+            paint.setTextSize(fontSize2);
+            baseline = (fontSize2-paint.ascent())*0.5f;
             canvas.drawText(moonPhaseUnicode[i],x,y+baseline,paint);
-            paint.setTextSize(HFS);
+            paint.setTextSize(fontSize5);
             str = String.format(Locale.ENGLISH,"%1$+d",n);
 //			baseline = (PFS-paint.ascent())*0.5f;
-            canvas.drawText(str,x+PFS,y+baseline,paint);
+            canvas.drawText(str,x+fontSize2,y+baseline,paint);
         }
 
         public void drawWheel(float xc,float yc,float r) {
@@ -215,7 +215,7 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
             planets = new WheelGraphPlanet[p];
             for(i = 0; i<p; ++i)
                 planets[i] = new WheelGraphPlanet(i,(float)(DTR*h.planetAbsoluteLongitude(i)),xc,yc,r1);
-            WheelGraphPlanet.organize(planets,xc,yc,r1,WFS,(float)(DTR*1.0));
+            WheelGraphPlanet.organize(planets,xc,yc,r1,fontSize6,(float)(DTR*1.0));
 
             paint.setStyle(Paint.Style.STROKE);
             paint.setAntiAlias(true);
@@ -234,7 +234,7 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
             paint.setColor(0xff000000);
             canvas.drawCircle(xc,yc,r3,paint);
 
-            paint.setTextSize(WFS);
+            paint.setTextSize(fontSize6);
             paint.setStrokeWidth(0.5f*density);
             for(i = 0; i<p; ++i) {
                 p1 = planets[i];
@@ -311,7 +311,7 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
 
             x1 = x;
             y1 = y;
-            paint.setTextSize(PFS);
+            paint.setTextSize(fontSize2);
             for(i = 0; i<p; ++i) {
                 n = h.planetId(i);
                 x2 = x1;
@@ -325,22 +325,22 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
                 x2 += padding;
                 paint.setStyle(Paint.Style.FILL);
                 paint.setColor(textColor);
-                paint.setTextSize(PFS);
+                paint.setTextSize(fontSize2);
                 str = Symbol.getUnicode(n);
-                center = (PFS-paint.measureText(str))*0.6f;
+                center = (fontSize2-paint.measureText(str))*0.6f;
                 baseline = (row-paint.ascent())*0.5f;
                 canvas.drawText(str,x2+center,y2+baseline,paint);
-                x2 += PFS*1.2f;
+                x2 += fontSize2*1.2f;
 
                 sign = h.planetSign(i);
                 paint.setColor(zodiacColors[(sign&0xf)]);
                 str = Symbol.getUnicode(sign);
-                center = (PFS-paint.measureText(str))*0.6f;
+                center = (fontSize2-paint.measureText(str))*0.6f;
                 canvas.drawText(str,x2+center,y2+baseline,paint);
-                x2 += PFS*1.2f;
+                x2 += fontSize2*1.2f;
 
                 paint.setColor(textColor);
-                paint.setTextSize(DFS);
+                paint.setTextSize(fontSize3);
 //					str = Coordinate.formatHM(h.planetLongitude(i),'°',30,"");
                 str = (int)h.planetLongitude(i)+"°";
                 baseline = (row-paint.ascent())*0.5f;
@@ -348,7 +348,7 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
                 x2 += paint.measureText(str);
 
                 if(h.planetIsRetrograde(i)) {
-                    paint.setTextSize(RFS);
+                    paint.setTextSize(fontSize4);
                     str = "R";
                     canvas.drawText(str,x2+2.0f,y2+baseline,paint);
                 }
