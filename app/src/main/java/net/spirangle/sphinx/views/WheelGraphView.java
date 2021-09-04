@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -22,15 +21,6 @@ import java.util.Locale;
 
 public class WheelGraphView extends HoroscopeView {
     private static final String TAG = WheelGraphView.class.getSimpleName();
-
-    public static final int RING = 0;
-    public static final int RULER = 1;
-    public static final int ELEMENTS = 2;
-    public static final int ZODIAC = 3;
-    public static final int PLANETS = 4;
-    public static final int HOUSES = 5;
-    public static final int ASC_MC_ARROW = 6;
-    public static final int ASPECTS = 7;
 
     public static final int Z = 12;
     public static final int P = 17;
@@ -62,103 +52,367 @@ public class WheelGraphView extends HoroscopeView {
     private static final int[] contentAspectColors = {0xff000000};
 
     private static final String[] moonPhasesUnicode = {
-        "\uD83C\uDF15","\uD83C\uDF16","\uD83C\uDF17","\uD83C\uDF18",
-        "\uD83C\uDF11","\uD83C\uDF12","\uD83C\uDF13","\uD83C\uDF14",
+        "\uD83C\uDF15",
+        "\uD83C\uDF16",
+        "\uD83C\uDF17",
+        "\uD83C\uDF18",
+        "\uD83C\uDF11",
+        "\uD83C\uDF12",
+        "\uD83C\uDF13",
+        "\uD83C\uDF14",
     };
 
     public class WheelRectF extends MapRectF {
         public float angle = 0.0f;
     }
 
-    private static abstract class Content {
+    private abstract static class WheelGraph {
         public int type;
         public float angle;
         public int[] color;
 
-        public Content(int t,float a,int[] c) {
-            type = t;
+        public WheelGraph(float a,int[] c) {
             angle = a;
             color = c;
         }
+
+        public void drawBackground(Canvas canvas,GraphStyle gs,GraphLevel lvl,float r) {}
+
+        public void drawForeground(Canvas canvas,GraphStyle gs,GraphLevel lvl,float r) {}
     }
 
-    private static class RingContent extends Content {
+    private class RingGraph extends WheelGraph {
         public float strokeWidth;
 
-        public RingContent(int[] c,float w) {
-            super(RING,0.0f,c);
+        public RingGraph(int[] c,float w) {
+            super(0.0f,c);
             strokeWidth = w;
+        }
+
+        @Override
+        public void drawBackground(Canvas canvas,GraphStyle gs,GraphLevel lvl,float r) {
+            if(color[1]!=0x00000000) {
+                paint.setStyle(Paint.Style.FILL);
+                paint.setAntiAlias(false);
+                paint.setColor(color[1]);
+                canvas.drawCircle(gs.centerX,gs.centerY,r-1.0f,paint);
+            }
+        }
+
+        @Override
+        public void drawForeground(Canvas canvas,GraphStyle gs,GraphLevel lvl,float r) {
+            if(color[0]!=-1 && color[0]!=color[1]) {
+                paint.setStyle(Paint.Style.STROKE);
+                paint.setAntiAlias(true);
+                paint.setStrokeWidth(strokeWidth);
+                paint.setColor(color[0]);
+                canvas.drawCircle(gs.centerX,gs.centerY,r,paint);
+            }
         }
     }
 
-    private static class RulerContent extends Content {
+    private class RulerGraph extends WheelGraph {
         public float strokeWidth;
         public float degrees;
         public float start;
         public float end;
 
-        public RulerContent(float a,int[] c,float w,float d,float s,float e) {
-            super(RULER,a,c);
+        public RulerGraph(float a,int[] c,float w,float d,float s,float e) {
+            super(a,c);
             strokeWidth = w;
             degrees = d;
             start = s;
             end = e;
         }
-    }
 
-    private static class ZodiacContent extends Content {
-        public float textSize;
-
-        public ZodiacContent(float a,int[] c,float s) {
-            super(ZODIAC,a,c);
-            textSize = s;
+        @Override
+        public void drawBackground(Canvas canvas,GraphStyle gs,GraphLevel lvl,float r) {
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setAntiAlias(true);
+            paint.setColor(color[0]);
+            paint.setStrokeWidth(strokeWidth);
+            float sz = lvl.size*gs.scale;
+            float a = 0.0f;
+            for(; a<360.0f; a += degrees) {
+                float f1 = start*gs.scale;
+                float f2 = end*gs.scale;
+                float r3 = r+(end<0.0f? -sz : 0.0f);
+                double d = DTR*(double)(angle+a);
+                float x1 = gs.centerX-(float)Math.cos(-d)*(r3-f1);
+                float y1 = gs.centerY-(float)Math.sin(-d)*(r3-f1);
+                float x2 = gs.centerX-(float)Math.cos(-d)*(r3-f2);
+                float y2 = gs.centerY-(float)Math.sin(-d)*(r3-f2);
+                canvas.drawLine(x1,y1,x2,y2,paint);
+            }
         }
     }
 
-    private static class HousesContent extends Content {
+    private class ZodiacGraph extends WheelGraph {
+        public float textSize;
+
+        public ZodiacGraph(float a,int[] c,float s) {
+            super(a,c);
+            textSize = s;
+        }
+
+        @Override
+        public void drawBackground(Canvas canvas,GraphStyle gs,GraphLevel lvl,float r) {
+            paint.setStyle(Paint.Style.FILL);
+            paint.setAntiAlias(false);
+            RectF rect = new RectF(gs.centerX-r,gs.centerY-r,gs.centerX+r,gs.centerY+r);
+            float a = angle;
+            for(int i = 0; i<12; ++i,a += 30.0f) {
+                paint.setColor(gs.elementColors[i&3]);
+                canvas.drawArc(rect,150.0f-a,30.0f,true,paint);
+            }
+        }
+
+        @Override
+        public void drawForeground(Canvas canvas,GraphStyle gs,GraphLevel lvl,float r) {
+            Horoscope h = horoscope;
+            int oz = h.planets()+12;
+            float sz = lvl.size*gs.scale;
+            float f1 = textSize*gs.scale;
+            float r3 = r-sz*0.5f;
+            float a = angle+105.0f;
+            paint.setStyle(Paint.Style.FILL);
+            paint.setAntiAlias(true);
+            paint.setTypeface(AstroActivity.symbolFont);
+            paint.setTextSize(f1);
+            for(int i = 0; i<12; ++i,a += 30.0f) {
+                String str = Symbol.getUnicode(ASTRO_ARIES+i);
+                if(a>360.0f) a -= 360.0f;
+                if(a<0.0f) a += 360.0f;
+                float x1 = paint.measureText(str)*0.5f,y1,a2;
+                if(a>=110.0f && a<250.0f) {
+                    y1 = -r3-f1*0.275f+f1*zodiacFontAdjustment[i];
+                    a2 = a-180.0f;
+                } else {
+                    y1 = r3-f1*0.275f+f1*zodiacFontAdjustment[i];
+                    a2 = a;
+                }
+//Log.d(APP,TAG+".drawWheelGraph(a2: "+a2+")");
+
+                long id = Symbol.astrologyZodiac(ASTRO_ARIES+i);
+                double d = DTR*((double)a-90.0);
+                float x2 = gs.centerX-(float)Math.cos(-d)*r3;
+                float y2 = gs.centerY-(float)Math.sin(-d)*r3;
+                MapRectF mr = map[oz+i];
+                mr.set(i,id,x2-f1,y2-f1,x2+f1,y2+f1);
+
+                paint.setColor(gs.zodiacColors[i]);
+                canvas.save();
+                canvas.rotate(-a2,gs.centerX,gs.centerY);
+                canvas.drawText(str,gs.centerX-x1,gs.centerY-y1,paint);
+                canvas.restore();
+            }
+        }
+    }
+
+    private class HousesGraph extends WheelGraph {
         public float strokeWidth;
         public float textSize;
         public float arrowSize;
         public float arrowPosition;
 
-        public HousesContent(float a,int[] c,float w,float ts,float as,float ap) {
-            super(HOUSES,a,c);
+        public HousesGraph(float a,int[] c,float w,float ts,float as,float ap) {
+            super(a,c);
             strokeWidth = w;
             textSize = ts;
             arrowSize = as;
             arrowPosition = ap;
         }
+
+        @Override
+        public void drawBackground(Canvas canvas,GraphStyle gs,GraphLevel lvl,float r) {
+            Horoscope h = horoscope;
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setAntiAlias(true);
+            paint.setStrokeWidth(strokeWidth);
+            paint.setColor(color[0]);
+            float sz = lvl.size*gs.scale;
+            float r3 = r-sz;
+            for(int i = 0; i<12; ++i) {
+                double d = DTR*((double)angle+h.houseAbsoluteCusp(i));
+                float x1 = gs.centerX-(float)Math.cos(-d)*r;
+                float y1 = gs.centerY-(float)Math.sin(-d)*r;
+                float x2 = gs.centerX-(float)Math.cos(-d)*r3;
+                float y2 = gs.centerY-(float)Math.sin(-d)*r3;
+                canvas.drawLine(x1,y1,x2,y2,paint);
+            }
+        }
+
+        @Override
+        public void drawForeground(Canvas canvas,GraphStyle gs,GraphLevel lvl,float r) {
+            Horoscope h = horoscope;
+            float f1 = textSize*gs.scale;
+            float f2 = arrowSize*gs.scale;
+            float f3 = arrowPosition*gs.scale;
+            paint.setStyle(Paint.Style.FILL);
+            paint.setAntiAlias(true);
+            paint.setTypeface(AstroActivity.symbolFont);
+            paint.setTextSize(f1);
+            float sz = lvl.size*gs.scale;
+            float x1,y1,x2,y2;
+            int oh = h.planets();
+            String str;
+            for(int i = 0; i<12; ++i) {
+                str = Integer.toString(i+1);
+                float r3 = r-sz+f1*(i<9? 0.6f : 0.8f);
+                double d = DTR*((double)angle+h.houseAbsoluteCusp(i)+(i<9? 4.0 : 5.0));
+                x2 = paint.measureText(str);
+                x1 = gs.centerX-(float)Math.cos(-d)*r3-x2*0.5f;
+                y1 = gs.centerY-(float)Math.sin(-d)*r3+f1*0.3f;
+
+                long id = h.houseSymbolId(i);
+                x2 = x1+x2*0.5f-f1;
+                y2 = y1+(paint.ascent()+paint.descent())*0.5f-f1;
+                MapRectF mr = map[oh+i];
+                mr.set(i,id,x2,y2,x2+f1*2.0f,y2+f1*2.0f);
+
+                paint.setColor(color[1]);
+                canvas.drawText(str,x1,y1,paint);
+            }
+            if(f2<=0.0f) return;
+            paint.setAntiAlias(true);
+            paint.setStrokeWidth(3.0f);
+            paint.setTextSize(f2);
+            float r3 = r+f3;
+            str = "\u227A";
+            for(int i = 0; i<2; ++i) {
+                // Draw lines:
+                double d = DTR*((double)angle+h.houseAbsoluteCusp(i==0? 0 : 9));
+                x1 = gs.centerX-(float)Math.cos(-d)*(r-sz);
+                y1 = gs.centerY-(float)Math.sin(-d)*(r-sz);
+                x2 = gs.centerX-(float)Math.cos(-d)*r3;
+                y2 = gs.centerY-(float)Math.sin(-d)*r3;
+                paint.setStyle(Paint.Style.STROKE);
+                paint.setColor(color[2+i]);
+                canvas.drawLine(x1,y1,x2,y2,paint);
+                // Draw arrows:
+                float a = angle+(float)h.houseAbsoluteCusp(i==0? 0 : 9)+90.0f;
+                x1 = paint.measureText(str)*0.5f;
+                paint.setStyle(Paint.Style.FILL);
+                paint.setColor(color[4+i]);
+                canvas.save();
+                canvas.rotate(-a,gs.centerX,gs.centerY);
+                canvas.drawText(str,gs.centerX-x1,gs.centerY-r3,paint);
+                canvas.restore();
+            }
+        }
     }
 
-    private static class PlanetsContent extends Content {
+    private class PlanetsGraph extends WheelGraph {
         public float planetSize;
         public float planetPosition;
         public float lineMargin;
 
-        public PlanetsContent(float a,int[] c,float ps,float pp,float lm) {
-            super(PLANETS,a,c);
+        public PlanetsGraph(float a,int[] c,float ps,float pp,float lm) {
+            super(a,c);
             planetSize = ps;
             planetPosition = pp;
             lineMargin = lm;
         }
-    }
 
-    private static class AspectsContent extends Content {
-        public float strokeWidth;
-        public float margin;
+        @Override
+        public void drawForeground(Canvas canvas,GraphStyle gs,GraphLevel lvl,float r) {
+            Horoscope h = horoscope;
+            float f1 = planetSize*gs.scale;
+            float f2 = planetPosition*gs.scale;
+            float f3 = lineMargin*gs.scale;
+            float r3 = r-f2+(f2<0.0f? f1 : -f1)*0.5f;
+            int p = h.planets();
+            for(int i = 0; i<p; ++i) {
+                int k = h.planetId(i);
+                if(k==ASTRO_ASCENDANT || k==ASTRO_MC) continue;
+                long id = h.planetSymbolId(i);
+                if(id==-1l) continue;
+                positionPlanet(h,id,gs.centerX,gs.centerY,planetLocations1,i,0.0,f1+2.0f,r3,i,10);
+            }
 
-        public AspectsContent(float a,int[] c,float w,float m) {
-            super(ASPECTS,a,c);
-            strokeWidth = w;
-            margin = m;
+            paint.setStyle(Paint.Style.FILL);
+            paint.setAntiAlias(true);
+            paint.setStrokeWidth(0.5f);
+            paint.setTypeface(AstroActivity.symbolFont);
+//						paint.setColor(0xff000000);//pcon.color[0]);
+            paint.setTextSize(f1);
+
+            for(int i = 0; i<p; ++i) {
+                int k = h.planetId(i);
+                if(k==ASTRO_ASCENDANT || k==ASTRO_MC) continue;
+                String str = Symbol.getUnicode(k);
+
+                r3 = r-f2+(f2<0.0f? -5.0f : 5.0f);
+                double d = DTR*((double)angle+h.planetAbsoluteLongitude(i));
+                float d2 = planetLocations1[i].angle;
+                float x1 = gs.centerX-(float)Math.cos(-d)*(r-f3);
+                float y1 = gs.centerY-(float)Math.sin(-d)*(r-f3);
+                float x2 = gs.centerX-(float)Math.cos(d2)*r3;
+                float y2 = gs.centerY-(float)Math.sin(d2)*r3;
+                paint.setColor(color[0]);
+                canvas.drawLine(x1,y1,x2,y2,paint);
+
+                WheelRectF rect2 = planetLocations1[i];
+                x1 = rect2.left+((rect2.right-rect2.left)-paint.measureText(str))*0.5f+1.0f;
+                y1 = rect2.bottom-1.0f;//+((rect2.bottom-rect2.top)-f1)*0.5f;
+
+                MapRectF mr = map[i];
+
+                paint.setColor(color[1]);
+                canvas.drawText(str,x1,y1,paint);
+            }
         }
     }
 
-    private static class Level {
-        public float size;
-        public Content[] content;
+    private class AspectsGraph extends WheelGraph {
+        public float strokeWidth;
+        public float margin;
 
-        public Level(float s,Content[] c) {
+        public AspectsGraph(float a,int[] c,float w,float m) {
+            super(a,c);
+            strokeWidth = w;
+            margin = m;
+        }
+
+        @Override
+        public void drawForeground(Canvas canvas,GraphStyle gs,GraphLevel lvl,float r) {
+            Horoscope h = horoscope;
+            float f1 = margin*gs.scale;
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setAntiAlias(true);
+            paint.setStrokeWidth(strokeWidth);
+            int p = h.planets();
+            float r3 = r-f1;
+            for(int x = 0; x<p; ++x) {
+                int i = h.planetId(x);
+                if(i==ASTRO_ASCENDANT || i==ASTRO_MC) continue;
+                for(int y = x+1; y<p; ++y) {
+                    int j = h.planetId(y);
+                    if(j==ASTRO_ASCENDANT || j==ASTRO_MC) continue;
+                    int k = h.aspect(x,y);
+//Log.d(APP,"k: "+k+", l: "+l+", a: "+a);
+                    if(k>=CONJUNCTION && k<=OPPOSITION && aspectShow[k&0xffff]
+//									&& (!aspectShow[13] || horoscope.findPattern(x,y))
+                    ) {
+                        double d = DTR*((double)angle+h.planetAbsoluteLongitude(x));
+                        double d2 = DTR*((double)angle+h.planetAbsoluteLongitude(y));
+                        float x1 = gs.centerX-(float)Math.cos(-d)*r3;
+                        float y1 = gs.centerY-(float)Math.sin(-d)*r3;
+                        float x2 = gs.centerX-(float)Math.cos(-d2)*r3;
+                        float y2 = gs.centerY-(float)Math.sin(-d2)*r3;
+                        paint.setColor(gs.aspectColors[k&0xffff]);
+                        canvas.drawLine(x1,y1,x2,y2,paint);
+                    }
+                }
+            }
+        }
+    }
+
+    private static class GraphLevel {
+        public float size;
+        public WheelGraph[] content;
+
+        public GraphLevel(float s,WheelGraph[] c) {
             size = s;
             content = c;
         }
@@ -168,13 +422,19 @@ public class WheelGraphView extends HoroscopeView {
         public float scale;
         public float margin;
         public float padding;
+
         public int[] elementColors;
         public int[] zodiacColors;
         public int[] planetColors;
         public int[] aspectColors;
-        public Level[] levels;
+        public GraphLevel[] levels;
 
-        public GraphStyle(int l,int t,int r,int b,float m,float p,Level[] lvl) {
+        public float size;
+        public float radius;
+        public float centerX;
+        public float centerY;
+
+        public GraphStyle(int l,int t,int r,int b,float m,float p,GraphLevel[] lvl) {
             super(l,t,r,b);
             scale = Math.min(r-l,b-t);
             margin = m;
@@ -184,6 +444,7 @@ public class WheelGraphView extends HoroscopeView {
             planetColors = WheelGraphView.planetColors;
             aspectColors = WheelGraphView.aspectColors;
             levels = lvl;
+            update();
         }
 
         public void setViewport(RectF viewport) {
@@ -194,6 +455,14 @@ public class WheelGraphView extends HoroscopeView {
             x = viewport.right-sz-m;
             y = viewport.top+m;
             set(x,y,x+sz,y+sz);
+            update();
+        }
+
+        private void update() {
+            size = Math.min(right-left,bottom-top);
+            radius = (size*0.5f)-padding*scale*2.0f;
+            centerX = left+(right-left)*0.5f;
+            centerY = top+(bottom-top)*0.5f;
         }
     }
 
@@ -273,8 +542,7 @@ public class WheelGraphView extends HoroscopeView {
     @Override
     protected void onCreate(Context context,AttributeSet attrs,int defStyle,int defStyleRes) {
         super.onCreate(context,attrs,defStyle,defStyleRes);
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB)
-            setLayerType(LAYER_TYPE_SOFTWARE,paint);
+        setLayerType(LAYER_TYPE_SOFTWARE,paint);
     }
 
     @Override
@@ -311,10 +579,10 @@ public class WheelGraphView extends HoroscopeView {
         float y = e2.getY();
         if(graphStyle!=null && graphStyle.contains(x,y)) {
             GraphStyle gs = graphStyle;
-            float xc = gs.left+(gs.right-gs.left)*0.5f;
-            float yc = gs.top+(gs.bottom-gs.top)*0.5f;
+            float xc = gs.centerX;
+            float yc = gs.centerY;
             float d = (float)Math.hypot(xc-x,yc-y);
-            float sx = scaleSX, sy = scaleSY, px = scalePX, py = scalePY;
+            float sx, sy, px, py;
             float sz = Math.min(xc,yc);
             float c = sz*0.25f;
             if(d<c) {
@@ -396,25 +664,25 @@ public class WheelGraphView extends HoroscopeView {
         if((st&_HOROSCOPE_NATAL_)==_HOROSCOPE_NATAL_) {
             map = new MapRectF[p+12+12];
             planetLocations1 = new WheelRectF[p];
-            graphStyle = new GraphStyle(0,0,0,0,0.0f,0.0074f,new Level[] {
-                new Level(0.0555f,new Content[] {
-                    new RingContent(contentEmptyRingColors,2.0f),
-                    new ZodiacContent(-a,contentZodiacColors,0.0444f),
-                    new RulerContent(-a,contentZodiacRulerColors,2.0f,30.0f,0.0f,0.0555f),
+            graphStyle = new GraphStyle(0,0,0,0,0.0f,0.0074f,new GraphLevel[] {
+                new GraphLevel(0.0555f,new WheelGraph[] {
+                    new RingGraph(contentEmptyRingColors,2.0f),
+                    new ZodiacGraph(-a,contentZodiacColors,0.0444f),
+                    new RulerGraph(-a,contentZodiacRulerColors,2.0f,30.0f,0.0f,0.0555f),
                 }),
-                new Level(0.0185f,new Content[] {
-                    new RingContent(contentFilledRingColors,2.0f),
-                    new RulerContent(-a,contentRulerColors,1.0f,2.0f,-0.00185f,-0.0074f),
-                    new RulerContent(-a,contentRuler10Colors,1.0f,10.0f,-0.00185f,-0.0185f),
+                new GraphLevel(0.0185f,new WheelGraph[] {
+                    new RingGraph(contentFilledRingColors,2.0f),
+                    new RulerGraph(-a,contentRulerColors,1.0f,2.0f,-0.00185f,-0.0074f),
+                    new RulerGraph(-a,contentRuler10Colors,1.0f,10.0f,-0.00185f,-0.0185f),
                 }),
-                new Level(0.10185f,new Content[] {
-                    new RingContent(contentFilledRingColors,1.0f),
-                    new HousesContent(-a,contentHouseColors,2.0f,0.0333f,0.12037f,0.0444f),
-                    new PlanetsContent(-a,contentPlanetColors,0.05185f,0.037f,0.0037f),
+                new GraphLevel(0.10185f,new WheelGraph[] {
+                    new RingGraph(contentFilledRingColors,1.0f),
+                    new HousesGraph(-a,contentHouseColors,2.0f,0.0333f,0.12037f,0.0444f),
+                    new PlanetsGraph(-a,contentPlanetColors,0.05185f,0.037f,0.0037f),
                 }),
-                new Level(0.0f,new Content[] {
-                    new RingContent(contentFilledRingColors,1.5f),
-                    new AspectsContent(-a,contentAspectColors,1.5f,0.00926f),
+                new GraphLevel(0.0f,new WheelGraph[] {
+                    new RingGraph(contentFilledRingColors,1.5f),
+                    new AspectsGraph(-a,contentAspectColors,1.5f,0.00926f),
                 }),
             });
         }
@@ -423,38 +691,12 @@ public class WheelGraphView extends HoroscopeView {
     protected void drawWheelGraph(Canvas canvas,GraphStyle gs) {
         if(horoscope==null || gs==null) return;
         gs.setViewport(viewport);
+        Log.d(APP,TAG+".drawWheelGraph(size: "+gs.size+", radius: "+gs.radius+")");
 
         Horoscope h = horoscope;
-//		boolean portrait = main.getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-        int l, c, i, j, k, oh, oz, x, y, p = h.planets();
-        long id;
-        float sz, r, r2, r3, r4, a, a2, f1, f2, f3;
-        float size = Math.min(gs.right-gs.left,gs.bottom-gs.top);
-        float radius = (size*0.5f)-gs.padding*gs.scale*2.0f;
-        float xc = gs.left+(gs.right-gs.left)*0.5f;
-        float yc = gs.top+(gs.bottom-gs.top)*0.5f;
-        float x1, y1, x2, y2;
-        RectF rect = new RectF(), rect2;
-        MapRectF mr;
-        double d, d2;
-        String str;
-
-        Log.d(APP,TAG+".drawWheelGraph(size: "+size+", radius: "+radius+")");
-
-        Level lvl;
-        Content con;
-        RingContent ring;
-        RulerContent ruler;
-        ZodiacContent zcon;
-        HousesContent hcon;
-        PlanetsContent pcon;
-        AspectsContent acon;
-
+        int p = h.planets();
         clearMap(0,p,planetLocations1,h);
-
-        oh = p;
-        oz = p+12;
-        clearMap(oh,12+12);
+        clearMap(p,12+12);
 
         try {
 		/*if(gs.background!=0x00000000) {
@@ -471,304 +713,23 @@ public class WheelGraphView extends HoroscopeView {
                 drawInfoLayer(canvas,gs);
             clipBounds = canvas.getClipBounds();
 
-            // Paint background
-            for(l = 0,r = 0.0f; l<gs.levels.length; ++l,r += sz) {
-                lvl = gs.levels[l];
-                sz = lvl.size*gs.scale;
-                r2 = radius-r;
-                for(c = 0; c<lvl.content.length; ++c) {
-                    con = lvl.content[c];
-                    switch(con.type) {
-                        case RING:
-                            ring = (RingContent)con;
-                            if(ring.color[1]!=0x00000000) {
-                                paint.setStyle(Paint.Style.FILL);
-                                paint.setAntiAlias(false);
-                                paint.setColor(ring.color[1]);
-                                canvas.drawCircle(xc,yc,r2-1.0f,paint);
-                            }
-                            break;
-
-                        case ELEMENTS:
-                        case ZODIAC:
-                            zcon = (ZodiacContent)con;
-                            paint.setStyle(Paint.Style.FILL);
-                            paint.setAntiAlias(false);
-                            rect.set(xc-r2,yc-r2,xc+r2,yc+r2);
-                            for(i = 0,a = zcon.angle; i<12; ++i,a += 30.0f) {
-                                paint.setColor(gs.elementColors[i&3]);
-                                canvas.drawArc(rect,150.0f-a,30.0f,true,paint);
-                            }
-                            break;
-
-                        case HOUSES:
-                            hcon = (HousesContent)con;
-                            paint.setStyle(Paint.Style.STROKE);
-                            paint.setAntiAlias(true);
-                            paint.setStrokeWidth(hcon.strokeWidth);
-                            paint.setColor(hcon.color[0]);
-                            for(i = 0,r3 = r2-sz; i<12; ++i) {
-                                d = DTR*((double)hcon.angle+h.houseAbsoluteCusp(i));
-                                x1 = xc-(float)Math.cos(-d)*r2;
-                                y1 = yc-(float)Math.sin(-d)*r2;
-                                x2 = xc-(float)Math.cos(-d)*r3;
-                                y2 = yc-(float)Math.sin(-d)*r3;
-                                canvas.drawLine(x1,y1,x2,y2,paint);
-                            }
-                            break;
-
-                        case RULER:
-                            ruler = (RulerContent)con;
-                            paint.setStyle(Paint.Style.STROKE);
-                            paint.setAntiAlias(true);
-                            paint.setColor(ruler.color[0]);
-                            paint.setStrokeWidth(ruler.strokeWidth);
-                            for(a = 0.0f; a<360.0f; a += ruler.degrees) {
-                                f1 = ruler.start*gs.scale;
-                                f2 = ruler.end*gs.scale;
-                                r3 = r2+(ruler.end<0.0f? -sz : 0.0f);
-                                d = DTR*(double)(ruler.angle+a);
-                                x1 = xc-(float)Math.cos(-d)*(r3-f1);
-                                y1 = yc-(float)Math.sin(-d)*(r3-f1);
-                                x2 = xc-(float)Math.cos(-d)*(r3-f2);
-                                y2 = yc-(float)Math.sin(-d)*(r3-f2);
-                                canvas.drawLine(x1,y1,x2,y2,paint);
-                            }
-                            break;
+            for(int i = 0; i<=1; ++i) {
+                float r = 0.0f;
+                for(int l = 0; l<gs.levels.length; ++l) {
+                    GraphLevel lvl = gs.levels[l];
+                    float r2 = gs.radius-r;
+                    for(int c = 0; c<lvl.content.length; ++c) {
+                        WheelGraph con = lvl.content[c];
+                        if(i==0) con.drawBackground(canvas,gs,lvl,r2);
+                        else con.drawForeground(canvas,gs,lvl,r2);
                     }
-                }
-            }
-
-            // Paint foreground
-            for(l = 0,r = 0.0f; l<gs.levels.length; ++l,r += sz) {
-                lvl = gs.levels[l];
-                sz = lvl.size*gs.scale;
-                r2 = radius-r;
-                for(c = 0; c<lvl.content.length; ++c) {
-                    con = lvl.content[c];
-                    switch(con.type) {
-                        case RING:
-                            ring = (RingContent)con;
-                            if(ring.color[0]!=-1 && ring.color[0]!=ring.color[1]) {
-                                paint.setStyle(Paint.Style.STROKE);
-                                paint.setAntiAlias(true);
-                                paint.setStrokeWidth(ring.strokeWidth);
-                                paint.setColor(ring.color[0]);
-                                canvas.drawCircle(xc,yc,r2,paint);
-                            }
-                            break;
-
-                        case ZODIAC:
-                            zcon = (ZodiacContent)con;
-                            f1 = zcon.textSize*gs.scale;
-                            r3 = r2-sz*0.5f;
-                            a = zcon.angle+105.0f;
-                            paint.setStyle(Paint.Style.FILL);
-                            paint.setAntiAlias(true);
-                            paint.setTypeface(AstroActivity.symbolFont);
-                            paint.setTextSize(f1);
-                            for(i = 0; i<12; ++i,a += 30.0f) {
-                                str = Symbol.getUnicode(ASTRO_ARIES+i);
-                                if(a>360.0f) a -= 360.0f;
-                                if(a<0.0f) a += 360.0f;
-                                x1 = paint.measureText(str)*0.5f;
-                                if(a>=110.0f && a<250.0f) {
-                                    y1 = -r3-f1*0.275f+f1*zodiacFontAdjustment[i];
-                                    a2 = a-180.0f;
-                                } else {
-                                    y1 = r3-f1*0.275f+f1*zodiacFontAdjustment[i];
-                                    a2 = a;
-                                }
-//Log.d(APP,TAG+".drawWheelGraph(a2: "+a2+")");
-
-                                id = Symbol.astrologyZodiac(ASTRO_ARIES+i);
-                                d = DTR*((double)a-90.0);
-                                r4 = f1*0.5f;
-                                x2 = xc-(float)Math.cos(-d)*r3;
-                                y2 = yc-(float)Math.sin(-d)*r3;
-                                mr = map[oz+i];
-                                mr.set(i,id,x2-f1,y2-f1,x2+f1,y2+f1);
-							/*if(mr.isActive()) {
-								paint.setColor(0x11000000);
-								canvas.drawRoundRect(mr,r4,r4,paint);
-							}*/
-
-                                paint.setColor(gs.zodiacColors[i]);
-                                canvas.save();
-                                canvas.rotate(-a2,xc,yc);
-                                canvas.drawText(str,xc-x1,yc-y1,paint);
-                                canvas.restore();
-                            }
-                            break;
-
-
-                        case HOUSES:
-                            hcon = (HousesContent)con;
-                            f1 = hcon.textSize*gs.scale;
-                            f2 = hcon.arrowSize*gs.scale;
-                            f3 = hcon.arrowPosition*gs.scale;
-                            paint.setStyle(Paint.Style.FILL);
-                            paint.setAntiAlias(true);
-                            paint.setTypeface(AstroActivity.symbolFont);
-                            paint.setTextSize(f1);
-                            for(i = 0; i<12; ++i) {
-                                str = Integer.toString(i+1);
-                                r3 = r2-sz+f1*(i<9? 0.6f : 0.8f);
-                                d = DTR*((double)hcon.angle+h.houseAbsoluteCusp(i)+(i<9? 4.0 : 5.0));
-                                x2 = paint.measureText(str);
-                                x1 = xc-(float)Math.cos(-d)*r3-x2*0.5f;
-                                y1 = yc-(float)Math.sin(-d)*r3+f1*0.3f;
-
-                                id = h.houseSymbolId(i);
-                                x2 = x1+x2*0.5f-f1;
-                                y2 = y1+(paint.ascent()+paint.descent())*0.5f-f1;
-                                mr = map[oh+i];
-                                mr.set(i,id,x2,y2,x2+f1*2.0f,y2+f1*2.0f);
-							/*if(mr.isActive()) {
-								r3 = f1*0.5f;
-								paint.setColor(0x11000000);
-								canvas.drawRoundRect(mr,r3,r3,paint);
-							}*/
-
-                                paint.setColor(hcon.color[1]);
-                                canvas.drawText(str,x1,y1,paint);
-                            }
-                            if(f2<=0.0f) break;
-                            paint.setAntiAlias(true);
-                            paint.setStrokeWidth(3.0f);
-                            paint.setTextSize(f2);
-                            for(i = 0,r3 = r2+f3,str = "\u227A"; i<2; ++i) {
-                                // Draw lines:
-                                d = DTR*((double)hcon.angle+h.houseAbsoluteCusp(i==0? 0 : 9));
-                                x1 = xc-(float)Math.cos(-d)*(r2-sz);
-                                y1 = yc-(float)Math.sin(-d)*(r2-sz);
-                                x2 = xc-(float)Math.cos(-d)*r3;
-                                y2 = yc-(float)Math.sin(-d)*r3;
-                                paint.setStyle(Paint.Style.STROKE);
-                                paint.setColor(hcon.color[2+i]);
-                                canvas.drawLine(x1,y1,x2,y2,paint);
-                                // Draw arrows:
-                                a = hcon.angle+(float)h.houseAbsoluteCusp(i==0? 0 : 9)+90.0f;
-                                x1 = paint.measureText(str)*0.5f;
-                                paint.setStyle(Paint.Style.FILL);
-                                paint.setColor(hcon.color[4+i]);
-                                canvas.save();
-                                canvas.rotate(-a,xc,yc);
-                                canvas.drawText(str,xc-x1,yc-r3,paint);
-                                canvas.restore();
-                            }
-/*						paint.setStyle(Paint.Style.STROKE);
-						paint.setColor(hcon.color[2+i]);
-						for(i=0,r3=r2+hcon.p5; i<2; ++i) {
-							// Draw lines:
-							d = DTR*((double)hcon.angle+h.houseAbsoluteCusp(i==0? 3 : 6));
-							x1 = xc-(float)Math.cos(-d)*r2;
-							y1 = yc-(float)Math.sin(-d)*r2;
-							x2 = xc-(float)Math.cos(-d)*r3;
-							y2 = yc-(float)Math.sin(-d)*r3;
-							canvas.drawLine(x1,y1,x2,y2,paint);
-						}*/
-                            break;
-
-                        case PLANETS:
-                            pcon = (PlanetsContent)con;
-                            f1 = pcon.planetSize*gs.scale;
-                            f2 = pcon.planetPosition*gs.scale;
-                            f3 = pcon.lineMargin*gs.scale;
-                            r3 = r2-f2+(f2<0.0f? f1 : -f1)*0.5f;
-                            for(i = 0; i<p; ++i) {
-                                k = h.planetId(i);
-                                if(k==ASTRO_ASCENDANT || k==ASTRO_MC) continue;
-                                id = h.planetSymbolId(i);
-                                if(id==-1l) continue;
-                                positionPlanet(h,id,xc,yc,planetLocations1,i,0.0,f1+2.0f,r3,i,10);
-                            }
-
-                            paint.setStyle(Paint.Style.FILL);
-                            paint.setAntiAlias(true);
-                            paint.setStrokeWidth(0.5f);
-                            paint.setTypeface(AstroActivity.symbolFont);
-//						paint.setColor(0xff000000);//pcon.color[0]);
-                            paint.setTextSize(f1);
-
-                            for(i = 0; i<p; ++i) {
-                                k = h.planetId(i);
-                                if(k==ASTRO_ASCENDANT || k==ASTRO_MC) continue;
-                                str = Symbol.getUnicode(k);
-
-                                r3 = r2-f2+(f2<0.0f? -5.0f : 5.0f);
-                                d = DTR*((double)pcon.angle+h.planetAbsoluteLongitude(i));
-                                d2 = planetLocations1[i].angle;
-                                x1 = xc-(float)Math.cos(-d)*(r2-f3);
-                                y1 = yc-(float)Math.sin(-d)*(r2-f3);
-                                x2 = xc-(float)Math.cos(d2)*r3;
-                                y2 = yc-(float)Math.sin(d2)*r3;
-                                paint.setColor(pcon.color[0]);
-                                canvas.drawLine(x1,y1,x2,y2,paint);
-
-//debug_output("planetLocations1[x=%d,y=%d,a=%f]",planetLocations1[i].x,planetLocations1[i].y,planetAngles1[i]);
-                                rect2 = planetLocations1[i];
-                                x1 = rect2.left+((rect2.right-rect2.left)-paint.measureText(str))*0.5f+1.0f;
-                                y1 = rect2.bottom-1.0f;//+((rect2.bottom-rect2.top)-f1)*0.5f;
-//							paint.setColor(0xff999999);
-//							canvas.drawRect(rect2.left,rect2.top,rect2.right,rect2.bottom,paint);
-
-                                mr = map[i];
-							/*if(mr.isActive()) {
-								r3 = (mr.bottom-mr.top)*0.25f;
-								paint.setColor(0x11000000);
-								canvas.drawRoundRect(mr,r3,r3,paint);
-							}*/
-
-                                paint.setColor(pcon.color[1]);
-                                canvas.drawText(str,x1,y1,paint);
-                            }
-                            break;
-
-                        case ASPECTS:
-                            acon = (AspectsContent)con;
-                            f1 = acon.margin*gs.scale;
-                            paint.setStyle(Paint.Style.STROKE);
-                            paint.setAntiAlias(true);
-                            paint.setStrokeWidth(acon.strokeWidth);
-                            for(x = 0,r3 = r2-f1; x<p; ++x) {
-                                i = h.planetId(x);
-                                if(i==ASTRO_ASCENDANT || i==ASTRO_MC) continue;
-                                for(y = x+1; y<p; ++y) {
-                                    j = h.planetId(y);
-                                    if(j==ASTRO_ASCENDANT || j==ASTRO_MC) continue;
-                                    k = h.aspect(x,y);
-//Log.d(APP,"k: "+k+", l: "+l+", a: "+a);
-                                    if(k>=CONJUNCTION && k<=OPPOSITION && aspectShow[k&0xffff]
-//									&& (!aspectShow[13] || horoscope.findPattern(x,y))
-                                    ) {
-                                        d = DTR*((double)acon.angle+h.planetAbsoluteLongitude(x));
-                                        d2 = DTR*((double)acon.angle+h.planetAbsoluteLongitude(y));
-                                        x1 = xc-(float)Math.cos(-d)*r3;
-                                        y1 = yc-(float)Math.sin(-d)*r3;
-                                        x2 = xc-(float)Math.cos(-d2)*r3;
-                                        y2 = yc-(float)Math.sin(-d2)*r3;
-                                        paint.setColor(gs.aspectColors[k&0xffff]);
-                                        canvas.drawLine(x1,y1,x2,y2,paint);
-                                    }
-                                }
-                            }
-                            break;
-                    }
+                    r += lvl.size*gs.scale;
                 }
             }
             canvas.restore();
-		/*if(gs.foreground!=0x00000000) {
-			paint.setStyle(Paint.Style.STROKE);
-			paint.setAntiAlias(false);
-			paint.setColor(gs.foreground);
-			canvas.drawRect(gs,paint);
-		}*/
-
         } catch(Exception e) {
             Log.e(APP,TAG+".drawWheelGraph",e);
         }
-
     }
 
     protected void drawInfoLayer(Canvas canvas,GraphStyle gs) {
