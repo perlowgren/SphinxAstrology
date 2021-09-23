@@ -131,6 +131,7 @@
 	<string name="table_planets">Planets</string>
 	<string name="table_houses">Houses</string>
 	<string name="table_aspect_table">Aspect Table</string>
+	<string name="table_distribution">Distribution</string>
 	<string name="table_elements">Elements</string>
 	<string name="table_qualities">Qualities</string>
 	<string name="table_aspects">Aspect List</string>

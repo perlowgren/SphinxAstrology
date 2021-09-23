@@ -6,6 +6,7 @@
 		<item>@string/table_planets</item>
 		<item>@string/table_houses</item>
 		<item>@string/table_aspect_table</item>
+		<item>@string/table_distribution</item>
 		<item>@string/table_elements</item>
 		<item>@string/table_qualities</item>
 		<item>@string/table_aspects</item>

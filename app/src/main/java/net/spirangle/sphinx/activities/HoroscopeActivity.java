@@ -33,6 +33,7 @@ import net.spirangle.sphinx.services.LocationService.LocationServiceCallback;
 import net.spirangle.sphinx.text.CustomHtml;
 import net.spirangle.sphinx.views.*;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -59,7 +60,6 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener, 
     private AspectPatternsView aspectPatterns;
     private ArabicPartsView arabicParts;
     private long id;
-    private Horoscope horoscope;
 
     public static Horoscope loadHoroscope(long id) {
         String lang = Locale.getDefault().getLanguage();
@@ -109,7 +109,6 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener, 
         menuEdit = null;
         menuProfiles = null;
         id = -1;
-        horoscope = null;
 
         activity_layout_id = R.layout.activity_horoscope;
         drawer_layout_id = R.id.drawer_layout;
@@ -189,14 +188,22 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener, 
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
-            this,R.layout.actionbar_spinner_item,
-            android.R.id.text1,getResources().getStringArray(R.array.actionbar_graph_views));
+        String[] items = getResources().getStringArray(R.array.actionbar_graph_views);
+        String[] sorted = new String[items.length];
+        int[] index = new int[items.length];
+        for(int i=0; i<items.length; ++i)
+            sorted[i] = items[i];
+        Arrays.sort(sorted);
+        for(int i=0; i<items.length; ++i)
+            for(int j=0; j<sorted.length; ++j)
+                if(items[i].equals(sorted[j])) {
+                    index[j] = i;
+                    break;
+                }
 
-/*		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-				getSupportActionBar().getThemedContext(),
-				R.array.actionbar_graph_views,
-				R.layout.actionbar_spinner_item);*/
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(
+            this,R.layout.actionbar_spinner_item,
+            android.R.id.text1,sorted);
 
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         toolbarSpinner.setAdapter(adapter);
@@ -204,7 +211,8 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener, 
             @Override
             public void onItemSelected(AdapterView<?> parent,View view,int pos,long id) {
                 int y = 0;
-                switch(pos) {
+                int i = index[pos];
+                switch(i) {
                     case 0:
                         y = wheelGraph.getTop();
                         break;
@@ -215,15 +223,16 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener, 
                     case 3:
                     case 4:
                     case 5:
+                    case 6:
                         y = aspectTable.getTop();
                         break;
-                    case 6:
+                    case 7:
                         y = aspectList.getTop();
                         break;
-                    case 7:
+                    case 8:
                         y = aspectPatterns.getTop();
                         break;
-                    case 8:
+                    case 9:
                         y = arabicParts.getTop();
                         break;
                 }
@@ -236,9 +245,9 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener, 
             }
         });
 
-        menuEdit = (MenuItem)menu.findItem(R.id.menu_edit);
-        menuNew = (MenuItem)menu.findItem(R.id.menu_new);
-        menuProfiles = (MenuItem)menu.findItem(R.id.menu_profiles);
+        menuEdit = menu.findItem(R.id.menu_edit);
+        menuNew = menu.findItem(R.id.menu_new);
+        menuProfiles = menu.findItem(R.id.menu_profiles);
         menuNew.setVisible(id==-1);
         menuEdit.setVisible(id!=-1);
         menuProfiles.setVisible(id==-1);
@@ -350,7 +359,6 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener, 
         }
         textInfo.setText(CustomHtml.fromHtml(info,0,0.0f,null));
 
-        horoscope = h;
         for(int i = 0; i<horoscopeViews.length; ++i)
             horoscopeViews[i].setHoroscope(h);
 

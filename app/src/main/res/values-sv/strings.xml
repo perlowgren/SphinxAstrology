@@ -105,6 +105,7 @@
   <string name="table_planets">Planeter</string>
   <string name="table_houses">Hus</string>
   <string name="table_aspect_table">Aspekter</string>
+  <string name="table_distribution">Distribution</string>
   <string name="table_elements">Element</string>
   <string name="table_qualities">Kvaliteter</string>
   <string name="table_aspects">Aspektlista</string>
