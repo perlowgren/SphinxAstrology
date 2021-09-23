@@ -45,7 +45,7 @@ public class ArabicPartsView extends HoroscopeView {
         long t1 = System.currentTimeMillis();
         drawArabicPartsTable(canvas);
         long t2 = System.currentTimeMillis();
-        Log.d(APP,TAG+".onDraw("+(t2-t1)+")");
+        Log.d(APP,TAG+".onDraw: Time for drawing arabic parts list: "+(t2-t1)+"ms");
     }
 
     protected void drawArabicPartsTable(Canvas canvas) {

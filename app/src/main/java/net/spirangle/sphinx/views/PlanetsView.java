@@ -1,11 +1,13 @@
 package net.spirangle.sphinx.views;
 
 import static net.spirangle.sphinx.config.AstrologyProperties.*;
+import static net.spirangle.sphinx.config.SphinxProperties.APP;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.activities.AstroActivity;
@@ -59,7 +61,6 @@ public class PlanetsView extends HoroscopeView {
             }
             if(hm==MeasureSpec.AT_MOST) h = Math.min(hs,h);
         }
-//Log.d(APP,TAG+".onMeasure(w: "+w+", h: "+h+")");
         setMeasuredDimension(w,h);
     }
 
@@ -83,9 +84,10 @@ public class PlanetsView extends HoroscopeView {
         long t1 = System.currentTimeMillis();
         drawPlanetList(canvas,cellWidth);
         long t2 = System.currentTimeMillis();
+        Log.d(APP,TAG+".onDraw: Time for drawing planet list: "+(t2-t1)+"ms");
         drawHouseList(canvas,cellWidth);
         long t3 = System.currentTimeMillis();
-//Log.d(APP,TAG+".onDraw("+(t2-t1)+")");
+        Log.d(APP,TAG+".onDraw: Time for drawing house list: "+(t3-t2)+"ms");
     }
 
     protected void drawPlanetList(Canvas canvas,float cellWidth) {

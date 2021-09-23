@@ -1,9 +1,12 @@
 package net.spirangle.sphinx.views;
 
+import static net.spirangle.sphinx.config.SphinxProperties.APP;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.activities.AstroActivity;
@@ -51,13 +54,11 @@ public class AspectListView extends HoroscopeView {
             }
             if(hm==MeasureSpec.AT_MOST) h = Math.min(hs,h);
         }
-//Log.d(APP,TAG+".onMeasure(w: "+w+", h: "+h+")");
         setMeasuredDimension(w,h);
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-//Log.d(APP,TAG+".onDraw()");
         super.onDraw(canvas);
         if(horoscope==null) return;
 
@@ -75,7 +76,7 @@ public class AspectListView extends HoroscopeView {
         long t1 = System.currentTimeMillis();
         drawAspectList(canvas,cellWidth);
         long t2 = System.currentTimeMillis();
-//Log.d(APP,TAG+".onDraw("+(t2-t1)+")");
+        Log.d(APP,TAG+".onDraw: Time for drawing aspect list: "+(t2-t1)+"ms");
     }
 
     @Override

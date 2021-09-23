@@ -572,11 +572,9 @@ public class WheelGraphView extends HoroscopeView {
         else if(hm==MeasureSpec.AT_MOST) h = hs; //Can't be bigger than...
         else h = 0; //Be whatever you want
 
-//Log.d(APP,TAG+".onMeasure(w: "+w+", h: "+h+")");
         if(w>0 && (w<h || h==0)) sz = w;
         else if(h>0 && (h<w || w==0)) sz = h;
 
-//Log.d(APP,TAG+".onMeasure("+sz+")");
         setMeasuredDimension(sz,sz);
     }
 
@@ -644,7 +642,7 @@ public class WheelGraphView extends HoroscopeView {
         long t1 = System.currentTimeMillis();
         drawWheelGraph(canvas,graphStyle);
         long t2 = System.currentTimeMillis();
-//Log.d(APP,TAG+".onDraw("+(t2-t1)+")");
+        Log.d(APP,TAG+".onDraw: Time for drawing wheel graph: "+(t2-t1)+"ms");
     }
 
     @Override

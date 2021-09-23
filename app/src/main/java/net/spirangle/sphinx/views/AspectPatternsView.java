@@ -45,7 +45,7 @@ public class AspectPatternsView extends HoroscopeView {
         long t1 = System.currentTimeMillis();
         drawAspectPatternsTable(canvas);
         long t2 = System.currentTimeMillis();
-        Log.d(APP,TAG+".onDraw("+(t2-t1)+")");
+        Log.d(APP,TAG+".onDraw: Time for drawing aspect patterns list: "+(t2-t1)+"ms");
     }
 
     protected void drawAspectPatternsTable(Canvas canvas) {
