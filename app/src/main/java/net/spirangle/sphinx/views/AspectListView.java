@@ -1,12 +1,9 @@
 package net.spirangle.sphinx.views;
 
-import static net.spirangle.sphinx.config.SphinxProperties.APP;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.activities.AstroActivity;
@@ -19,20 +16,24 @@ public class AspectListView extends HoroscopeView {
     private static final String TAG = AspectListView.class.getSimpleName();
 
     private static final int columns = 3;
-    private static final float spacing = 5.0f;
-    private static final float padding = 2.0f;
-    private static final float header = padding+fontSize1+padding;
-    private static final float row = padding+fontSize2+padding;
 
     private int[] index;
 
-    public AspectListView(Context context) { super(context); }
+    public AspectListView(Context context) {
+        super(context);
+    }
 
-    public AspectListView(Context context,AttributeSet attrs) { super(context,attrs); }
+    public AspectListView(Context context,AttributeSet attrs) {
+        super(context,attrs);
+    }
 
-    public AspectListView(Context context,AttributeSet attrs,int defStyle) { super(context,attrs,defStyle); }
+    public AspectListView(Context context,AttributeSet attrs,int defStyle) {
+        super(context,attrs,defStyle);
+    }
 
-    public AspectListView(Context context,AttributeSet attrs,int defStyle,int defStyleRes) { super(context,attrs,defStyle,defStyleRes); }
+    public AspectListView(Context context,AttributeSet attrs,int defStyle,int defStyleRes) {
+        super(context,attrs,defStyle,defStyleRes);
+    }
 
     @Override
     public void onMeasure(int wms,int hms) {
@@ -43,10 +44,10 @@ public class AspectListView extends HoroscopeView {
         int h = hs;
         if(hm!=MeasureSpec.EXACTLY) {
             if(horoscope!=null) {
-                h = (int)(header+spacing);
+                h = (int)(headerHeight+spacing+bottomSpacing);
                 int a = horoscope.aspects();
                 a = a/columns+((a%columns)==0? 0 : 1);
-                h += (int)((float)a*(row+spacing));
+                h += (int)((float)a*(cellHeight+spacing));
             }
             if(hm==MeasureSpec.AT_MOST) h = Math.min(hs,h);
         }
@@ -59,8 +60,20 @@ public class AspectListView extends HoroscopeView {
 //Log.d(APP,TAG+".onDraw()");
         super.onDraw(canvas);
         if(horoscope==null) return;
+
+        paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
+
+        Context context = getContext();
+        final float cellWidth = (width-spacing*(float)(columns+1))/(float)columns;
+        final float[] headerPositions = { spacing };
+        drawHeader(canvas,headerPositions,
+                   context.getString(R.string.table_aspects));
+
+        clearCellMap(0,index.length);
+
         long t1 = System.currentTimeMillis();
-        drawAspectList(canvas);
+        drawAspectList(canvas,cellWidth);
         long t2 = System.currentTimeMillis();
 //Log.d(APP,TAG+".onDraw("+(t2-t1)+")");
     }
@@ -77,93 +90,55 @@ public class AspectListView extends HoroscopeView {
                         index[i++] = h.aspectIndex(p1,p2);
     }
 
-    protected void drawAspectList(Canvas canvas) {
+    protected void drawAspectList(Canvas canvas,float cellWidth) {
         if(horoscope==null) return;
-        Context context = getContext();
-        MapRectF r;
+        Cell r;
         Horoscope h = horoscope;
-        String str;
-        int i, p1, p2, m, n, p = h.planets(), a = h.aspects();
+        String str, str2;
+        int i, j, n;
         long id;
-        float x, y;
-        float x1 = 0.0f, y1 = 0.0f, x2, y2, column, center, right, baseline;
-        float width = viewport.right-viewport.left;
-        float height = viewport.bottom-viewport.top;
+        float x, y, x2;
+        double orb;
 
-//Log.d(APP,TAG+".drawAspectsTable(height: "+height+")");
+        paint.setTypeface(AstroActivity.symbolFont);
 
-        clearMap(0,index.length);
+        x = spacing;
+        y = headerHeight+spacing;
+        for(i = 0; i<index.length; ++i) {
+            n = index[i];
+            id = h.aspectSymbolId(n);
+            r = getNextCell();
+            r.set(getCellIndex(),id,x,y,x+cellWidth,y+cellHeight);
 
-        try {
+            drawCell(canvas,r);
 
-            paint.setStyle(Paint.Style.FILL);
-            paint.setAntiAlias(true);
-            paint.setTypeface(AstroActivity.symbolFont);
+            paint.setColor(textColor);
+            str = Symbol.getUnicode(h.planetId(h.aspectPlanet1(n)));
+            drawCellTextCenter(canvas,r,str,cellWidth*0.15f,fontSizeSymbol);
 
-            x = spacing;
-            y = 0.0f;
-            paint.setTextSize(fontSize1);
-            paint.setColor(titleBackground);
-            canvas.drawRect(0.0f,0.0f,width,header,paint);
-            paint.setColor(titleColor);
-            str = context.getString(R.string.table_aspects);
-            baseline = (header-fontSize1)*0.5f-paint.ascent();
-            canvas.drawText(str,x,y+baseline,paint);
+            paint.setColor(aspectColors[h.aspect(n)&0xffff]);
+            str = Symbol.getUnicode(h.aspect(n));
+            drawCellTextCenter(canvas,r,str,cellWidth*0.35f,fontSizeSymbol);
 
-            x = spacing;
-            y = header+spacing;
-            column = (width-spacing*(float)(columns+1))/(float)columns;
-            for(i = 0,x1 = x,y1 = y,m = 0; i<index.length; ++i) {
-                n = index[i];
-                id = h.aspectSymbolId(n);
-//Log.d(APP,TAG+".drawAspectsTable(id: "+id+")");
-                r = map[m];
-                r.set(m,id,x1,y1,x1+column,y1+row);
-                if(r.isActive()) {
-                    paint.setColor(activeBoxColor);
-                    canvas.drawRect(r,paint);
-                } else {
-                    paint.setStyle(Paint.Style.STROKE);
-                    paint.setColor(boxColor);
-                    canvas.drawRect(r,paint);
-                    paint.setStyle(Paint.Style.FILL);
-                }
-                ++m;
+            paint.setColor(textColor);
+            str = Symbol.getUnicode(h.planetId(h.aspectPlanet2(n)));
+            drawCellTextCenter(canvas,r,str,cellWidth*0.55f,fontSizeSymbol);
 
-                paint.setColor(textColor);
-                paint.setTextSize(fontSize2);
-                str = Symbol.getUnicode(h.planetId(h.aspectPlanet1(n)));
-                center = padding+7.0f+(fontSize2-paint.measureText(str))*0.5f;
-                baseline = (row-fontSize2)*0.5f-paint.ascent();
-                canvas.drawText(str,x1+center,y1+baseline,paint);
+            paint.setTextSize(fontSizeText);
+            orb = h.aspectOrb(n);
+            if(orb<0.0d) orb = -orb;
+            str = Coordinate.formatHM(orb,'°',360,"");
+            j = str.indexOf('°');
+            str2 = str.substring(0,j+1);
+            x2 = cellWidth*0.82f-paint.measureText(str2);
+            drawCellText(canvas,r,str,x2,fontSizeText);
 
-                paint.setColor(aspectColors[h.aspect(n)&0xffff]);
-                str = Symbol.getUnicode(h.aspect(n));
-                center = padding+7.0f+(fontSize2-paint.measureText(str))*0.5f;
-                canvas.drawText(str,x1+fontSize2+center,y1+baseline,paint);
-
-                paint.setColor(textColor);
-                str = Symbol.getUnicode(h.planetId(h.aspectPlanet2(n)));
-                center = padding+7.0f+(fontSize2-paint.measureText(str))*0.5f;
-                canvas.drawText(str,x1+fontSize2+fontSize2+center,y1+baseline,paint);
-
-                paint.setTextSize(fontSize4);
-                str = Coordinate.formatHM(h.aspectOrb(n),'°',360,"");
-                right = column-padding-7.0f-paint.measureText(str);
-                baseline = (row-fontSize4)*0.5f-paint.ascent();
-                canvas.drawText(str,x1+right,y1+baseline,paint);
-
-                y1 += row+spacing;
-                if(y1+row+spacing>height) {
-                    y1 = y;
-                    x1 += column+spacing;
-                }
+            y += cellHeight+spacing;
+            if(y+cellHeight+spacing>height) {
+                x += cellWidth+spacing;
+                y = headerHeight+spacing;
             }
-
-        } catch(Exception e) {
-            Log.e(APP,TAG+".drawChartGraph",e);
         }
-
     }
 }
 

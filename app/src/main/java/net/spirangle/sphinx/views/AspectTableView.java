@@ -1,12 +1,9 @@
 package net.spirangle.sphinx.views;
 
-import static net.spirangle.sphinx.config.SphinxProperties.APP;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.activities.AstroActivity;
@@ -17,18 +14,21 @@ import net.spirangle.sphinx.astro.Symbol;
 public class AspectTableView extends HoroscopeView {
     private static final String TAG = AspectTableView.class.getSimpleName();
 
-    private static final float spacing = 5.0f;
-    private static final float padding = 2.0f;
-    private static final float header = padding+fontSize1+padding;
-    private static final float box = padding+fontSize3+padding;
+    public AspectTableView(Context context) {
+        super(context);
+    }
 
-    public AspectTableView(Context context) { super(context); }
+    public AspectTableView(Context context,AttributeSet attrs) {
+        super(context,attrs);
+    }
 
-    public AspectTableView(Context context,AttributeSet attrs) { super(context,attrs); }
+    public AspectTableView(Context context,AttributeSet attrs,int defStyle) {
+        super(context,attrs,defStyle);
+    }
 
-    public AspectTableView(Context context,AttributeSet attrs,int defStyle) { super(context,attrs,defStyle); }
-
-    public AspectTableView(Context context,AttributeSet attrs,int defStyle,int defStyleRes) { super(context,attrs,defStyle,defStyleRes); }
+    public AspectTableView(Context context,AttributeSet attrs,int defStyle,int defStyleRes) {
+        super(context,attrs,defStyle,defStyleRes);
+    }
 
     @Override
     public void onMeasure(int wms,int hms) {
@@ -39,9 +39,9 @@ public class AspectTableView extends HoroscopeView {
         int h = hs;
         if(hm!=MeasureSpec.EXACTLY) {
             if(horoscope!=null) {
-                h = (int)(header+spacing);
+                h = (int)(headerHeight+spacing+bottomSpacing);
                 int p = horoscope.planets();
-                h += (int)((float)p*box+spacing);
+                h += (int)((float)p*aspectCellHeight+spacing);
             }
             if(hm==MeasureSpec.AT_MOST) h = Math.min(hs,h);
         }
@@ -54,93 +54,86 @@ public class AspectTableView extends HoroscopeView {
 //Log.d(APP,TAG+".onDraw()");
         super.onDraw(canvas);
         if(horoscope==null) return;
+
+        paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
+
+        Context context = getContext();
+        final float distributionX = (viewport.right-viewport.left)-150.0f*density;
+        final float[] headerPositions = { spacing,distributionX+spacing };
+        drawHeader(canvas,headerPositions,
+                   context.getString(R.string.table_aspect_table),
+                   context.getString(R.string.table_distribution));
+
+        clearCellMap(0,horoscope.planets()+horoscope.aspects());
+
         long t1 = System.currentTimeMillis();
         drawAspectTable(canvas);
         long t2 = System.currentTimeMillis();
+        drawDistributionTable(canvas,distributionX);
+        long t3 = System.currentTimeMillis();
 //Log.d(APP,TAG+".onDraw("+(t2-t1)+")");
     }
 
     protected void drawAspectTable(Canvas canvas) {
         if(horoscope==null) return;
-        Context context = getContext();
-        MapRectF r;
+        Cell r;
         Horoscope h = horoscope;
         String str;
-        int i, p1, p2, m, n, p = h.planets(), a = h.aspects();
+        int p1, p2, n, p = h.planets(), a = h.aspects();
         long id;
-        float x, y;
-        float x1 = 0.0f, y1 = 0.0f, x2, y2, column, center, right, baseline;
-        float width = viewport.right-viewport.left;
-        float height = viewport.bottom-viewport.top;
+        float x, y, center, baseline;
+        final float ach = aspectCellHeight;
+        final float acp = aspectCellPadding;
 
-//Log.d(APP,TAG+".drawAspectsTable(height: "+height+")");
+        paint.setTypeface(AstroActivity.symbolFont);
+        paint.setTextSize(fontSizeAspect);
 
-        clearMap(0,a+p);
+        baseline = (ach-fontSizeAspect)*0.5f-paint.ascent();
+        for(p1 = 0,x = spacing; p1<p; ++p1) {
+            n = h.planetId(p1);
+            id = h.planetSymbolId(p1);
 
-        try {
+            if(p1>0 && p1<p-1) x += ach;
+            y = headerHeight+spacing+p1*ach;
 
-            paint.setStyle(Paint.Style.FILL);
-            paint.setAntiAlias(true);
-            paint.setTypeface(AstroActivity.symbolFont);
-
-            x = spacing;
-            y = 0.0f;
-            paint.setTextSize(fontSize1);
-            paint.setColor(titleBackground);
-            canvas.drawRect(0.0f,0.0f,width,header,paint);
-            paint.setColor(titleColor);
-            str = context.getString(R.string.table_aspect_table);
-            baseline = (header-fontSize1)*0.5f-paint.ascent();
-            canvas.drawText(str,x,y+baseline,paint);
-            str = context.getString(R.string.table_elements);
-            canvas.drawText(str,x+120.0f,y+baseline,paint);
-
-            paint.setTextSize(fontSize3);
-            baseline = (box-fontSize3)*0.5f-paint.ascent();
-            x = spacing;
-            y = header+spacing;
-            for(p1 = 0,x1 = x; p1<p; ++p1) {
-                n = h.planetId(p1);
-                id = h.planetSymbolId(p1);
-
-                if(p1>0 && p1<p-1) x1 += box;
-                y1 = y+p1*box;
-
-                if(id!=-1l) {
-                    r = map[a+p1];
-                    r.set(a+p1,id,x1,y1,x1+box,y1+box);
-                    if(r.isActive()) {
-                        paint.setColor(0x11000000);
-                        canvas.drawRect(r,paint);
-                    }
-                }
-
-                paint.setColor(0xff000000);
-                str = Symbol.getUnicode(n);
-                center = padding+(box-paint.measureText(str))*0.5f;
-                canvas.drawText(str,x1+center,y1+baseline,paint);
-
-                if(p1==0) canvas.drawLine(x1,y1+box,x1,y1+(p-p1)*box,paint);
-                if(p1<p-2) canvas.drawLine(x1+box,y1+box,x1+box,y1+(p-p1)*box,paint);
-
-                canvas.drawLine(x,y1+box,x1+(p1<p-2? box : 0.0f),y1+box,paint);
-                if(p1==p-2) canvas.drawLine(x,y1+box+box,x1,y1+box+box,paint);
-                if(p1<p-2) {
-                    for(p2 = p1+1,y1 += box; p2<p; ++p2,y1 += box) {
-                        n = h.aspect(p1,p2);
-                        if(n!=-1) {
-                            paint.setColor(aspectColors[n&0xffff]);
-                            str = Symbol.getUnicode(n);
-                            center = padding+(box-paint.measureText(str))*0.5f;
-                            canvas.drawText(str,x1+center,y1+baseline,paint);
-                        }
-                    }
+            if(id!=-1L) {
+                r = getCell(a+p1);
+                r.set(a+p1,id,x,y,x+ach,y+ach);
+                if(r.isActive()) {
+                    paint.setColor(0x11000000);
+                    canvas.drawRect(r,paint);
                 }
             }
 
-        } catch(Exception e) {
-            Log.e(APP,TAG+".drawChartGraph",e);
+            paint.setColor(0xff000000);
+            str = Symbol.getUnicode(n);
+            center = acp+(ach-paint.measureText(str))*0.5f;
+            canvas.drawText(str,x+center,y+baseline,paint);
+
+            if(p1==0) canvas.drawLine(x,y+ach,x,y+(p-p1)*ach,paint);
+            if(p1<p-2) canvas.drawLine(x+ach,y+ach,x+ach,y+(p-p1)*ach,paint);
+
+            canvas.drawLine(spacing,y+ach,x+(p1<p-2? ach : 0.0f),y+ach,paint);
+            if(p1==p-2) canvas.drawLine(spacing,y+ach+ach,x,y+ach+ach,paint);
+            if(p1<p-2) {
+                for(p2 = p1+1,y += ach; p2<p; ++p2,y += ach) {
+                    n = h.aspect(p1,p2);
+                    if(n!=-1) {
+                        paint.setColor(aspectColors[n&0xffff]);
+                        str = Symbol.getUnicode(n);
+                        center = acp+(ach-paint.measureText(str))*0.5f;
+                        canvas.drawText(str,x+center,y+baseline,paint);
+                    }
+                }
+            }
         }
+    }
+
+    protected void drawDistributionTable(Canvas canvas,float x) {
+        if(horoscope==null) return;
+
+        paint.setTypeface(AstroActivity.sansFont);
 
     }
 }

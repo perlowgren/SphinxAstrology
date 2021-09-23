@@ -62,7 +62,7 @@ public class WheelGraphView extends HoroscopeView {
         "\uD83C\uDF14",
     };
 
-    public class WheelRectF extends MapRectF {
+    public class WheelCell extends Cell {
         public float angle = 0.0f;
     }
 
@@ -197,7 +197,7 @@ public class WheelGraphView extends HoroscopeView {
                 double d = DTR*((double)a-90.0);
                 float x2 = gs.centerX-(float)Math.cos(-d)*r3;
                 float y2 = gs.centerY-(float)Math.sin(-d)*r3;
-                MapRectF mr = map[oz+i];
+                Cell mr = getCell(oz+i);
                 mr.set(i,id,x2-f1,y2-f1,x2+f1,y2+f1);
 
                 paint.setColor(gs.zodiacColors[i]);
@@ -267,7 +267,7 @@ public class WheelGraphView extends HoroscopeView {
                 long id = h.houseSymbolId(i);
                 x2 = x1+x2*0.5f-f1;
                 y2 = y1+(paint.ascent()+paint.descent())*0.5f-f1;
-                MapRectF mr = map[oh+i];
+                Cell mr = getCell(oh+i);
                 mr.set(i,id,x2,y2,x2+f1*2.0f,y2+f1*2.0f);
 
                 paint.setColor(color[1]);
@@ -352,11 +352,11 @@ public class WheelGraphView extends HoroscopeView {
                 paint.setColor(color[0]);
                 canvas.drawLine(x1,y1,x2,y2,paint);
 
-                WheelRectF rect2 = planetLocations1[i];
+                WheelCell rect2 = planetLocations1[i];
                 x1 = rect2.left+((rect2.right-rect2.left)-paint.measureText(str))*0.5f+1.0f;
                 y1 = rect2.bottom-1.0f;//+((rect2.bottom-rect2.top)-f1)*0.5f;
 
-                MapRectF mr = map[i];
+                Cell mr = getCell(i);
 
                 paint.setColor(color[1]);
                 canvas.drawText(str,x1,y1,paint);
@@ -521,8 +521,8 @@ public class WheelGraphView extends HoroscopeView {
     };
 
     private double ascendant;
-    private WheelRectF[] planetLocations1 = null;
-    private WheelRectF[] planetLocations2 = null;
+    private WheelCell[] planetLocations1 = null;
+    private WheelCell[] planetLocations2 = null;
     private GraphStyle graphStyle;
 
     private Rect clipBounds = null;
@@ -531,13 +531,21 @@ public class WheelGraphView extends HoroscopeView {
     private float scalePX = 0.0f;
     private float scalePY = 0.0f;
 
-    public WheelGraphView(Context context) { super(context); }
+    public WheelGraphView(Context context) {
+        super(context);
+    }
 
-    public WheelGraphView(Context context,AttributeSet attrs) { super(context,attrs); }
+    public WheelGraphView(Context context,AttributeSet attrs) {
+        super(context,attrs);
+    }
 
-    public WheelGraphView(Context context,AttributeSet attrs,int defStyle) { super(context,attrs,defStyle); }
+    public WheelGraphView(Context context,AttributeSet attrs,int defStyle) {
+        super(context,attrs,defStyle);
+    }
 
-    public WheelGraphView(Context context,AttributeSet attrs,int defStyle,int defStyleRes) { super(context,attrs,defStyle,defStyleRes); }
+    public WheelGraphView(Context context,AttributeSet attrs,int defStyle,int defStyleRes) {
+        super(context,attrs,defStyle,defStyleRes);
+    }
 
     @Override
     protected void onCreate(Context context,AttributeSet attrs,int defStyle,int defStyleRes) {
@@ -604,7 +612,7 @@ public class WheelGraphView extends HoroscopeView {
                 scaleSY = sy;
                 scalePX = px;
                 scalePY = py;
-                active = null;
+                deactivateCell();
                 invalidate();
                 return true;
             }
@@ -628,6 +636,11 @@ public class WheelGraphView extends HoroscopeView {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if(horoscope==null || graphStyle==null) return;
+
+        int p = horoscope.planets();
+        clearMap(0,p,planetLocations1,horoscope);
+        clearCellMap(p,12+12);
+
         long t1 = System.currentTimeMillis();
         drawWheelGraph(canvas,graphStyle);
         long t2 = System.currentTimeMillis();
@@ -635,13 +648,13 @@ public class WheelGraphView extends HoroscopeView {
     }
 
     @Override
-    public MapRectF getMapRect(float x,float y) {
+    public Cell getCell(float x,float y) {
         if(scaleSX!=1.0f || scaleSY!=1.0f) {
             if(clipBounds==null) return null;
             x = x/scaleSX+clipBounds.left;
             y = y/scaleSY+clipBounds.top;
         }
-        return super.getMapRect(x,y);
+        return super.getCell(x,y);
     }
 
     @Override
@@ -653,17 +666,17 @@ public class WheelGraphView extends HoroscopeView {
 
     private void createGraphStyle(Horoscope h1,Horoscope h2,int st) {
         ascendant = 0.0;
-        map = null;
         planetLocations1 = null;
         planetLocations2 = null;
         graphStyle = null;
+        createCellMap(0);
         if(h1==null) return;
         int p = h1.planets();
         float a = (float)h1.houseAbsoluteCusp(0);
         ascendant = h1.houseAbsoluteCusp(0);
         if((st&_HOROSCOPE_NATAL_)==_HOROSCOPE_NATAL_) {
-            map = new MapRectF[p+12+12];
-            planetLocations1 = new WheelRectF[p];
+            createCellMap(p+12+12);
+            planetLocations1 = new WheelCell[p];
             graphStyle = new GraphStyle(0,0,0,0,0.0f,0.0074f,new GraphLevel[] {
                 new GraphLevel(0.0555f,new WheelGraph[] {
                     new RingGraph(contentEmptyRingColors,2.0f),
@@ -692,11 +705,6 @@ public class WheelGraphView extends HoroscopeView {
         if(horoscope==null || gs==null) return;
         gs.setViewport(viewport);
         Log.d(APP,TAG+".drawWheelGraph(size: "+gs.size+", radius: "+gs.radius+")");
-
-        Horoscope h = horoscope;
-        int p = h.planets();
-        clearMap(0,p,planetLocations1,h);
-        clearMap(p,12+12);
 
         try {
 		/*if(gs.background!=0x00000000) {
@@ -734,15 +742,12 @@ public class WheelGraphView extends HoroscopeView {
 
     protected void drawInfoLayer(Canvas canvas,GraphStyle gs) {
         Horoscope h = horoscope;
-        float width = viewport.right-viewport.left;
-        float height = viewport.bottom-viewport.top;
-        float s = Math.min(width,height);
-        float textSize1 = s*0.04f;
-        float textSize2 = s*0.035f;
-        float textSize3 = s*0.03f;
-        float lineHeight1 = textSize1+s*0.003f;
-        float lineHeight2 = textSize2+s*0.003f;
-        float margin1 = s*0.01f;
+        float textSize1 = 16.0f*density;//s*0.04f;
+        float textSize2 = 14.0f*density;//s*0.035f;
+        float textSize3 = 12.0f*density;//s*0.03f;
+        float lineHeight1 = textSize1+1.33f*density;//s*0.003f;
+        float lineHeight2 = textSize2+1.33f*density;//s*0.003f;
+        float margin1 = 4.0f*density;//s*0.01f;
         float x1, y1;
         String str;
         int i/*,d*/, n, m;
@@ -753,15 +758,15 @@ public class WheelGraphView extends HoroscopeView {
         paint.setAntiAlias(true);
         paint.setColor(0xff000000);
 
-        paint.setTextSize(textSize1/*24.0f*/);
+        paint.setTextSize(textSize2/*24.0f*/);
         x1 = viewport.left+margin1;
         y1 = viewport.top+margin1-paint.ascent();
         str = h.getFormalDateString();
         canvas.drawText(str,x1,y1,paint);
         paint.setTextSize(textSize2/*20.0f*/);
         str = h.getTimeAndTimeZoneString();
-        canvas.drawText(str,x1,y1+lineHeight1,paint);
-        y1 += lineHeight1+lineHeight2;
+        canvas.drawText(str,x1,y1+textSize2,paint);
+        y1 += lineHeight2+lineHeight2;
 
         x = h.moonPhase();
         z = h.moonPhaseDegreeDays();
@@ -781,7 +786,7 @@ public class WheelGraphView extends HoroscopeView {
         n = (int)(y*24.0);
         m = (int)Math.abs(y*1440.0)%60;
         paint.setTextSize(textSize1/*24.0f*/);
-        canvas.drawText(moonPhasesUnicode[i],x1,y1+s*0.012f,paint);
+        canvas.drawText(moonPhasesUnicode[i],x1,y1+4.8f*density/*s*0.012f*/,paint);
         paint.setTextSize(textSize3/*16.0f*/);
 		/*if(d>0) str = String.format(Locale.ENGLISH,"%1$+dd %2$d:%3$02d",d,n,m);
 		else */
@@ -795,9 +800,9 @@ public class WheelGraphView extends HoroscopeView {
         canvas.drawText(str,x1-paint.measureText(str),y1,paint);
     }
 
-    private void positionPlanet(Horoscope h,long id,float xc,float yc,WheelRectF[] pl,int p,double a,float sz,float r,int endp,int iter) {
+    private void positionPlanet(Horoscope h,long id,float xc,float yc,WheelCell[] pl,int p,double a,float sz,float r,int endp,int iter) {
 //Log.d(APP,TAG+".positionPlanet(p: "+p+", pa: "+pa[p]+", endp: "+endp+", iter: "+iter+")");
-        WheelRectF r1 = pl[p];
+        WheelCell r1 = pl[p];
         float sz2 = sz*0.5f;
         float sz3 = sz*0.1f;
         double a1 = (double)r1.angle+a;
@@ -821,10 +826,10 @@ public class WheelGraphView extends HoroscopeView {
         }
     }
 
-    private int intersectingPlanet(Horoscope h,WheelRectF[] pl,int p,WheelRectF r1,int startp,int endp) {
+    private int intersectingPlanet(Horoscope h,WheelCell[] pl,int p,WheelCell r1,int startp,int endp) {
 //Log.d(APP,TAG+".intersectingPlanet(p: "+p+", startp: "+startp+", endp: "+endp+")");
         int i, pid;
-        WheelRectF r2;
+        WheelCell r2;
         for(i = startp; i<=endp; ++i) {
             if(i==p) continue;
             pid = h.planetId(p);
@@ -836,16 +841,16 @@ public class WheelGraphView extends HoroscopeView {
         return -1;
     }
 
-    private void clearMap(int o,int l,WheelRectF[] pl,Horoscope h) {
-        int i;
-        WheelRectF r;
+    private void clearMap(int offset,int length,WheelCell[] pl,Horoscope h) {
+        final Cell[] cellMap = getCellMap();
+        WheelCell cell;
         if(pl!=null)
-            for(i = 0; i<l; ++i) {
-                r = pl[i];
-                if(r==null) pl[i] = r = new WheelRectF();
-                else r.set(0,-1l,0.0f,0.0f,0.0f,0.0f);
-                r.angle = (float)(DTR*(ascendant-h.planetAbsoluteLongitude(i)));
-                map[o+i] = r;
+            for(int i = 0; i<length; ++i) {
+                cell = pl[i];
+                if(cell==null) pl[i] = cell = new WheelCell();
+                else cell.set(0,-1l,0.0f,0.0f,0.0f,0.0f);
+                cell.angle = (float)(DTR*(ascendant-h.planetAbsoluteLongitude(i)));
+                cellMap[offset+i] = cell;
             }
     }
 }

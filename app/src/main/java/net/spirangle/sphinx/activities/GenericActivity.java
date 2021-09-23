@@ -66,6 +66,7 @@ public abstract class GenericActivity extends AppCompatActivity implements OnNav
     protected static final int ACTIONBAR_TITLE       = 0x2;
     protected static final int NAVIGATION_ICON_BACK  = 0x4;
 
+    public static Typeface sansFont = null;
     public static Typeface monoFont = null;
     public static Typeface iconFont = null;
     public static Typeface symbolFont = null;
@@ -209,6 +210,8 @@ public abstract class GenericActivity extends AppCompatActivity implements OnNav
     public void onInit() {
         setLanguage(null);
 
+        if(sansFont==null)
+            sansFont = Typeface.create("sans",Typeface.NORMAL);
         if(monoFont==null)
             monoFont = Typeface.createFromAsset(getAssets(),"ProFont.ttf");
         if(iconFont==null)

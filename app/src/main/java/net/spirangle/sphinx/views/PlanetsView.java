@@ -1,13 +1,11 @@
 package net.spirangle.sphinx.views;
 
 import static net.spirangle.sphinx.config.AstrologyProperties.*;
-import static net.spirangle.sphinx.config.SphinxProperties.APP;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.activities.AstroActivity;
@@ -23,10 +21,6 @@ public class PlanetsView extends HoroscopeView {
     private static final int[] houseIds = {ASTRO_ASCENDANT,ASTRO_2ND_HOUSE,ASTRO_3RD_HOUSE,ASTRO_MC,ASTRO_11TH_HOUSE,ASTRO_12TH_HOUSE};
 
     private static final int columns = 3;
-    private static final float spacing = 5.0f;
-    private static final float padding = 2.0f;
-    private static final float header = padding+fontSize1+padding;
-    private static final float row = padding+fontSize2+padding;
 
     public PlanetsView(Context context) {
         super(context);
@@ -53,15 +47,15 @@ public class PlanetsView extends HoroscopeView {
         int h = hs;
         if(hm!=MeasureSpec.EXACTLY) {
             if(horoscope!=null) {
-                h = (int)(header+spacing);
+                h = (int)(headerHeight+spacing+bottomSpacing);
                 int p = horoscope.planets();
                 for(int i = p-1, n; i>=0; --i) {
                     n = horoscope.planetId(i);
                     if(n==ASTRO_ASCENDANT || n==ASTRO_MC) --p;
                 }
                 p = p/(columns-1)+((p%(columns-1))==0? 0 : 1);
-                if(p<6) p = 6;
-                h += (int)((float)p*(row+spacing));
+                if(p<houses.length) p = houses.length;
+                h += (int)((float)p*(cellHeight+spacing));
             }
             if(hm==MeasureSpec.AT_MOST) h = Math.min(hs,h);
         }
@@ -73,201 +67,115 @@ public class PlanetsView extends HoroscopeView {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if(horoscope==null) return;
+
+        paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
+
+        Context context = getContext();
+        final float cellWidth = (width-spacing*(float)(columns+1))/(float)columns;
+        final float[] headerPositions = { spacing,spacing+cellWidth+spacing+cellWidth+spacing };
+        drawHeader(canvas,headerPositions,
+                   context.getString(R.string.table_planets),
+                   context.getString(R.string.table_houses));
+
+        clearCellMap(0,horoscope.planets()+houses.length);
+
         long t1 = System.currentTimeMillis();
-        drawPlanetList(canvas);
+        drawPlanetList(canvas,cellWidth);
         long t2 = System.currentTimeMillis();
+        drawHouseList(canvas,cellWidth);
+        long t3 = System.currentTimeMillis();
 //Log.d(APP,TAG+".onDraw("+(t2-t1)+")");
     }
 
-    protected void drawPlanetList(Canvas canvas) {
+    protected void drawPlanetList(Canvas canvas,float cellWidth) {
         if(horoscope==null) return;
-        Context context = getContext();
-        MapRectF r;
-        Horoscope h = horoscope;
-        String str;
-        int i, j, m = 0, n, z, p = h.planets(), sign;
-        long id;
-        float x, y;
-        float x1 = 0.0f, y1 = 0.0f, x2, y2, column, center, right, baseline;
-        float width = viewport.right-viewport.left;
-        float height = viewport.bottom-viewport.top;
+        final Horoscope h = horoscope;
+        final int p = h.planets();
 
-        clearMap(0,p+houses.length);
+        paint.setTypeface(AstroActivity.symbolFont);
 
-        try {
+        float x = spacing;
+        float y = headerHeight+spacing;
+        for(int i = 0; i<p; ++i) {
+            int n = h.planetId(i);
+            long id = h.planetSymbolId(i);
+            if(n==ASTRO_ASCENDANT || n==ASTRO_MC || id==-1L) continue;
+            Cell r = getNextCell();
+            r.set(getCellIndex(),id,x,y,x+cellWidth,y+cellHeight);
 
-            paint.setStyle(Paint.Style.FILL);
-            paint.setAntiAlias(true);
-            paint.setTypeface(AstroActivity.symbolFont);
+            drawCell(canvas,r);
 
-            column = (width-spacing*(float)(columns+1))/(float)columns;
+            paint.setColor(textColor);
+            drawCellTextCenter(canvas,r,Symbol.getUnicode(n),padding+fontSizeSymbol*0.5f,fontSizeSymbol);
 
-            x = spacing;
-            y = 0.0f;
-            paint.setTextSize(fontSize1);
-            paint.setColor(titleBackground);
-            canvas.drawRect(0.0f,0.0f,width,header,paint);
-            paint.setColor(titleColor);
-            str = context.getString(R.string.table_planets);
-            baseline = (header-fontSize1)*0.5f-paint.ascent();
-            canvas.drawText(str,x,y+baseline,paint);
-            str = context.getString(R.string.table_houses);
-            canvas.drawText(str,x+column+spacing+column+spacing,y+baseline,paint);
-
-            paint.setTextSize(fontSize2);
-            x = spacing;
-            y = header+spacing;
-//Log.d(APP,TAG+".onDraw(PFS: "+PFS+", ascent+descent: "+(-paint.ascent()+paint.descent())+")");
-            for(i = 0,x1 = x,y1 = y; i<p; ++i) {
-                n = h.planetId(i);
-                id = h.planetSymbolId(i);
-                if(n==ASTRO_ASCENDANT || n==ASTRO_MC || id==-1l) continue;
-                r = map[m];
-                r.set(m,id,x1,y1,x1+column,y1+row);
-                if(r.isActive()) {
-                    paint.setColor(activeBoxColor);
-                    canvas.drawRect(r,paint);
-                } else {
-                    paint.setStyle(Paint.Style.STROKE);
-                    paint.setColor(boxColor);
-                    canvas.drawRect(r,paint);
-                    paint.setStyle(Paint.Style.FILL);
-                }
-                ++m;
-
-                x2 = x1+(column-(fontSize2+65.0f+12.0f+fontSize2+30.0f))*0.5f;
-
+            paint.setTextSize(fontSizeText);
+            String str = Coordinate.formatHM(h.planetLongitude(i),'°',30,"");
+            int j = str.indexOf('°');
+            String str2 = str.substring(0,j+1);
+            float x2 = cellWidth*0.42f-paint.measureText(str2);
+            drawCellText(canvas,r,str,x2,fontSizeText);
+            if(h.planetIsRetrograde(i)) {
+                x2 += paint.measureText(str);
+                paint.setColor(textColorRetrograde);
+                drawCellText(canvas,r,"R",x2,fontSizeSmall,fontSizeText);
                 paint.setColor(textColor);
-                paint.setTextSize(fontSize2);
-                str = Symbol.getUnicode(n);
-                baseline = (row-fontSize2)*0.5f-paint.ascent();
-                canvas.drawText(str,x2,y1+baseline,paint);
-
-                x2 += fontSize2+65.0f;
-                paint.setTextSize(fontSize4);
-                str = Coordinate.formatHM(h.planetLongitude(i),'°',30,"");
-                baseline = (row-fontSize4)*0.5f-paint.ascent();
-                canvas.drawText(str,x2-paint.measureText(str),y1+baseline,paint);
-
-                if(h.planetIsRetrograde(i)) {
-                    paint.setTextSize(fontSize5);
-                    str = "R";
-                    canvas.drawText(str,x2+2.0f,y1+baseline,paint);
-                }
-
-                x2 += 12.0f;
-                paint.setTextSize(fontSize2);
-                sign = h.planetSign(i);
-                paint.setColor(zodiacColors[(sign&0xf)]);
-                str = Symbol.getUnicode(sign);
-                baseline = (row-fontSize2)*0.5f-paint.ascent();
-                canvas.drawText(str,x2,y1+baseline,paint);
-
-                x2 += fontSize2+30.0f;
-                paint.setTextSize(fontSize4);
-                paint.setColor(textColor);
-                str = String.valueOf(1+h.planetHouse(i)-ASTRO_ASCENDANT);
-                baseline = (row-fontSize4)*0.5f-paint.ascent();
-                canvas.drawText(str,x2-paint.measureText(str),y1+baseline,paint);
-
-                y1 += row+spacing;
-                if(y1+row+spacing>height) {
-                    x1 += column+spacing;
-                    y1 = y;
-                }
             }
 
-            paint.setTextSize(fontSize2);
-            x = width-spacing-column;
-            y = header+spacing;
-            for(i = 0,x1 = x,y1 = y; i<houses.length; ++i) {
-                j = houses[i];
-                n = houseIds[i];
-                z = h.houseSign(i);
-                id = h.houseSymbolId(j);
-                if(id==-1l) continue;
-                r = map[m];
-                r.set(m,id,x1,y1,x1+column,y1+row);
-                if(r.isActive()) {
-                    paint.setColor(activeBoxColor);
-                    canvas.drawRect(r,paint);
-                } else {
-                    paint.setStyle(Paint.Style.STROKE);
-                    paint.setColor(boxColor);
-                    canvas.drawRect(r,paint);
-                    paint.setStyle(Paint.Style.FILL);
-                }
-                ++m;
+            int sign = h.planetSign(i);
+            paint.setColor(zodiacColors[sign&0xf]);
+            drawCellTextCenter(canvas,r,Symbol.getUnicode(sign),cellWidth*0.72f,fontSizeSymbol);
+            paint.setColor(textColor);
 
-                x2 = x1+(column-(40.0f+65.0f+12.0f+fontSize2))*0.5f;
+            String str3 = String.valueOf(1+h.planetHouse(i)-ASTRO_ASCENDANT);
+            drawCellTextLeft(canvas,r,str3,cellWidth-padding,fontSizeText);
 
-                paint.setColor(textColor);
-                paint.setTextSize(fontSize2);
-                if(n==ASTRO_ASCENDANT || n==ASTRO_MC) str = Symbol.getUnicode(n);
-                else str = Integer.toString(Symbol.Attribute.valueOf(n));
-                baseline = (row-fontSize2)*0.5f-paint.ascent();
-                canvas.drawText(str,x2,y1+baseline,paint);
-
-                x2 += 40.0f+65.0f;
-                paint.setTextSize(fontSize4);
-                str = Coordinate.formatHM(h.houseCusp(i),'°',30,"");
-                baseline = (row-fontSize4)*0.5f-paint.ascent();
-                canvas.drawText(str,x2-paint.measureText(str),y1+baseline,paint);
-
-                x2 += 12.0f;
-                paint.setTextSize(fontSize2);
-                sign = h.houseSign(i);
-                paint.setColor(zodiacColors[(sign&0xf)]);
-                str = Symbol.getUnicode(sign);
-                baseline = (row-fontSize2)*0.5f-paint.ascent();
-                canvas.drawText(str,x2,y1+baseline,paint);
-
-                y1 += row+spacing;
+            y += cellHeight+spacing;
+            if(y+cellHeight>height) {
+                x += cellWidth+spacing;
+                y = headerHeight+spacing;
             }
-
-
-/*		for(i=0,x=370.0f,y=10.0f-paint.ascent(); i<houses.length; ++i) {
-			j   = houses[i];
-			n   = houseIds[i];
-			z   = h.houseSign(i);
-			id  = h.houseSymbolId(j);
-			if(id==-1l) continue;
-			r   = map[m];
-			r.set(m,id,x-padding,y+paint.ascent()-padding,x+145.0f+padding,y+paint.descent()+padding);
-			if(r.isActive()) {
-				paint.setColor(activeBoxColor);
-				canvas.drawRect(r,paint);
-			} else {
-				paint.setStyle(Paint.Style.STROKE);
-				paint.setColor(boxColor);
-				canvas.drawRect(r,paint);
-				paint.setStyle(Paint.Style.FILL);
-			}
-			++m;
-
-			paint.setColor(textColor);
-			paint.setTextSize(PFS);
-			if(n==ASTRO_ASCENDANT || n==ASTRO_MC) str = Symbol.getUnicode(n);
-			else str = Integer.toString(Symbol.Attribute.valueOf(n));
-			canvas.drawText(str,x,y,paint);
-
-			paint.setTextSize(DFS);
-			str = Coordinate.formatHM(h.houseCusp(j),'°',30,"");
-			canvas.drawText(str,x+100.0f-paint.measureText(str),y,paint);
-
-			paint.setTextSize(PFS);
-			sign = h.houseSign(j);
-			paint.setColor(zodiacColors[(sign&0xf)]);
-			str = Symbol.getUnicode(sign);
-			canvas.drawText(str,x+115.0f,y,paint);
-
-			y += 6.0f+PFS;
-		}*/
-
-        } catch(Exception e) {
-            Log.e(APP,TAG+".drawChartGraph",e);
         }
+    }
 
+    protected void drawHouseList(Canvas canvas,float cellWidth) {
+        if(horoscope==null) return;
+        final Horoscope h = horoscope;
+
+        paint.setTypeface(AstroActivity.symbolFont);
+
+        float x = width-spacing-cellWidth;
+        float y = headerHeight+spacing;
+        for(int i = 0; i<houses.length; ++i) {
+            int n = houseIds[i];
+            long id = h.houseSymbolId(houses[i]);
+            if(id==-1L) continue;
+            Cell r = getNextCell();
+            r.set(getCellIndex(),id,x,y,x+cellWidth,y+cellHeight);
+
+            drawCell(canvas,r);
+
+            paint.setColor(textColor);
+            if(n==ASTRO_ASCENDANT || n==ASTRO_MC) {
+                drawCellTextCenter(canvas,r,Symbol.getUnicode(n),padding+fontSizeSymbol*0.5f,fontSizeSymbol);
+            } else {
+                drawCellText(canvas,r,Integer.toString(Symbol.Attribute.valueOf(n)),padding,fontSizeSymbol);
+            }
+
+            paint.setTextSize(fontSizeText);
+            String str = Coordinate.formatHM(h.houseCusp(i),'°',30,"");
+            int j = str.indexOf('°');
+            String str2 = str.substring(0,j+1);
+            float x2 = cellWidth*0.42f-paint.measureText(str2);
+            drawCellText(canvas,r,str,x2,fontSizeText);
+
+            int sign = h.houseSign(houses[i]);
+            paint.setColor(zodiacColors[sign&0xf]);
+            drawCellTextCenter(canvas,r,Symbol.getUnicode(sign),cellWidth*0.72f,fontSizeSymbol);
+            paint.setColor(textColor);
+
+            y += cellHeight+spacing;
+        }
     }
 }
 
