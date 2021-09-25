@@ -8,8 +8,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import net.spirangle.sphinx.R;
 import net.spirangle.sphinx.activities.AstroActivity;
-import net.spirangle.sphinx.astro.Coordinate;
 import net.spirangle.sphinx.astro.Horoscope;
 import net.spirangle.sphinx.astro.Symbol;
 
@@ -34,13 +34,37 @@ public class AspectPatternsView extends HoroscopeView {
     }
 
     @Override
+    public void onMeasure(int wms,int hms) {
+        super.onMeasure(wms,hms);
+        int w = MeasureSpec.getSize(wms);
+        int hm = MeasureSpec.getMode(hms);
+        int hs = MeasureSpec.getSize(hms);
+        int h = hs;
+        if(hm!=MeasureSpec.EXACTLY) {
+            if(horoscope!=null) {
+                h = (int)(headerHeight+spacing+bottomSpacing);
+                int a = horoscope.aspectPatterns();
+                h += (int)((float)a*(cellHeight+spacing));
+            }
+            if(hm==MeasureSpec.AT_MOST) h = Math.min(hs,h);
+        }
+        setMeasuredDimension(w,h);
+    }
+
+    @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if(horoscope==null) return;
 
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
-        paint.setTypeface(AstroActivity.sansFont);
+
+        Context context = getContext();
+        final float[] headerPositions = { spacing };
+        drawHeader(canvas,headerPositions,
+                   context.getString(R.string.table_aspect_patterns));
+
+        clearCellMap(0,horoscope.aspectPatterns());
 
         long t1 = System.currentTimeMillis();
         drawAspectPatternsTable(canvas);
@@ -50,56 +74,31 @@ public class AspectPatternsView extends HoroscopeView {
 
     protected void drawAspectPatternsTable(Canvas canvas) {
         if(horoscope==null) return;
-        Cell r;
         Horoscope h = horoscope;
-        String str;
-        int i, n, p = h.planets(), sign;
-        long id;
-        float x, y, fs = 30.0f, dfs = 26.0f, rfs = 16.0f;
-        float padding = 2.0f;
-
-        int[] houses = {0,1,2,9,10,11};
-
-        clearCellMap(0,p+houses.length);
+        final int p = h.aspectPatterns();
+        final float cellWidth = width-spacing*2;
 
         paint.setTypeface(AstroActivity.symbolFont);
-        paint.setTextSize(fs);
-        for(i = 0,x = 20.0f,y = 10.0f-paint.ascent(); i<p; ++i) {
-            n = h.planetId(i);
-            id = h.planetSymbolId(i);
-            if(id==-1l) continue;
-            r = getNextCell();
-            r.set(getCellIndex(),id,x-padding,y+paint.ascent()-padding,x+145.0f+padding,y+paint.descent()+padding);
-            paint.setColor(r.isActive()? 0xffd0d0d0 : 0xfff0f0f0);
-            canvas.drawRect(r,paint);
 
-            paint.setColor(0xff000000);
-            paint.setTextSize(fs);
-            str = Symbol.getUnicode(n);
-            canvas.drawText(str,x,y,paint);
+        float x = spacing;
+        float y = headerHeight+spacing;
+        for(int i = 0; i<p; ++i) {
+            int n = h.aspectPattern(i);
+            long id = h.aspectPatternSymbolId(i);
+            Cell r = getNextCell();
+            r.set(getCellIndex(),id,x,y,x+cellWidth,y+cellHeight);
 
-            paint.setTextSize(dfs);
-            str = Coordinate.formatHM(h.planetLongitude(i),'°',30,"");
-            canvas.drawText(str,x+100.0f-paint.measureText(str),y,paint);
+            drawCell(canvas,r);
 
-            if(h.planetIsRetrograde(i)) {
-                paint.setTextSize(rfs);
-                str = "R";
-                canvas.drawText(str,x+100.0f,y,paint);
-            }
+            drawCellText(canvas,r,Symbol.astrologyAspectPatternName(n),padding,fontSizeText);
 
-            paint.setTextSize(fs);
-            sign = h.planetSign(i);
-            paint.setColor(zodiacColors[(sign&0xf)]);
-            str = Symbol.getUnicode(sign);
-            canvas.drawText(str,x+115.0f,y,paint);
+            int[] app = h.aspectPatternPlanets(i);
+            StringBuilder sb = new StringBuilder();
+            for(int j = 0; j<app.length; ++j)
+                sb.append(Symbol.getUnicode(app[j]));
+            drawCellText(canvas,r,sb.toString(),cellWidth*0.4f,fontSizeSymbol);
 
-            if(y+15.0f+fs<height) y += 6.0f+fs;
-            else {
-                y = 10.0f-paint.ascent();
-                x += 180.0f;
-                if(x>=225.0f) break;
-            }
+            y += cellHeight+spacing;
         }
     }
 }
