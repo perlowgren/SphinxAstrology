@@ -297,7 +297,7 @@ public class Horoscope implements Parcelable {
         }
     }
 
-    protected long id = -1l;
+    protected long id = -1L;
     protected Key profileKey = null;
     protected String name = null;
     protected Calendar time = null;
@@ -762,12 +762,16 @@ public class Horoscope implements Parcelable {
         return 0;
     }
 
-    public static final Parcelable.Creator<Horoscope> CREATOR = new Parcelable.Creator<Horoscope>() {
+    public static final Creator<Horoscope> CREATOR = new Creator<Horoscope>() {
         @Override
-        public Horoscope createFromParcel(Parcel in) { return new Horoscope(in); }
+        public Horoscope createFromParcel(Parcel in) {
+            return new Horoscope(in);
+        }
 
         @Override
-        public Horoscope[] newArray(int size) { return new Horoscope[size]; }
+        public Horoscope[] newArray(int size) {
+            return new Horoscope[size];
+        }
     };
 
 	/*private void makePlanets(int n,int[] i1,int[] i2) {

@@ -264,10 +264,7 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
                     j = h.planetId(p2.index);
                     if(j==ASTRO_ASCENDANT || j==ASTRO_MC) continue;
                     a = h.aspect(p1.index,p2.index);
-//Log.d(APP,"k: "+k+", l: "+l+", a: "+a);
-                    if(a>=CONJUNCTION && a<=OPPOSITION && aspectShow[a&0xffff]
-//									&& (!aspectShow[13] || horoscope.findPattern(x,y))
-                    ) {
+                    if(a>=CONJUNCTION && a<=OPPOSITION && aspectShow[a&0xffff]) {
                         p2 = planets[y];
                         x1 = xc-(float)Math.cos(-(double)p1.longitude)*r4;
                         y1 = yc-(float)Math.sin(-(double)p1.longitude)*r4;
@@ -289,19 +286,6 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
             float x1 = x, y1 = y, x2, y2;
             float baseline, center;
             float column = (width-x)/2.0f, row = (height-y)/5.0f;
-/*			paint.setStyle(Paint.Style.STROKE);
-			paint.setAntiAlias(false);
-			paint.setColor(lineColor);
-			y1 = row+vsp2;
-			canvas.drawLine(0,y1,width,y1,paint);
-			y1 += row+vspacing;
-			canvas.drawLine(0,y1,width,y1,paint);
-			x1 = column+hsp2;
-			canvas.drawLine(x1,row+vsp2,x1,height,paint);
-			x1 += column+hspacing;
-			canvas.drawLine(x1,0,x1,height,paint);
-			x1 += column+hspacing;
-			canvas.drawLine(x1,0,x1,height,paint);*/
 
             paint.setStyle(Paint.Style.FILL);
             paint.setAntiAlias(true);
@@ -399,8 +383,6 @@ public class SphinxWidgetProvider extends AppWidgetProvider {
             Intent intent = new Intent(context,SplashActivity.class);
             intent.putExtra(EXTRA_RADIX1,wd.horoscope);
             intent.putExtra(EXTRA_GRAPH,0);
-//			startActivityForResult(intent,ACTIVITY_HOROSCOPE);
-//			Intent intent = new Intent(context,ExampleActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context,ACTIVITY_HOROSCOPE,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
             wd.views = new RemoteViews(context.getPackageName(),R.layout.widget_astro_clock);
