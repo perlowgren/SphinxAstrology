@@ -280,6 +280,7 @@ public class Horoscope implements Parcelable {
         public final int index;
         public final int type;
         public final int[] planets;
+        public final long symbolId;
 
         private AspectPattern(int n,int t,int[] p) {
             int[] p1 = new int[p.length];
@@ -288,6 +289,11 @@ public class Horoscope implements Parcelable {
             index = n;
             type = _ASTRO_ASPECT_PATTERN_[t];
             planets = p1;
+            symbolId = getSymbolId();
+        }
+
+        private long getSymbolId() {
+            return Symbol.astrologyAspectPattern(index);
         }
     }
 
@@ -667,6 +673,8 @@ public class Horoscope implements Parcelable {
     public int aspectPattern(int i) { return aspectPatterns[i].type; }
 
     public int[] aspectPatternPlanets(int i) { return aspectPatterns[i].planets; }
+
+    public long aspectPatternSymbolId(int i) { return aspectPatterns[i].symbolId; }
 
     public int aspectShape() { return -1; }
 
