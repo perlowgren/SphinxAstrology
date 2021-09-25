@@ -1,62 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/nav_graph"
-        app:startDestination="@id/splashActivity">
-  <activity
-          android:id="@+id/splashActivity"
-          android:name="net.spirangle.sphinx.activities.SplashActivity"
-          android:label="SplashActivity">
-    <action
-            android:id="@+id/action_global_horoscopeActivity"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/nav_graph"
+            app:startDestination="@id/splashActivity">
+  <activity android:id="@+id/splashActivity"
+            android:name="net.spirangle.sphinx.activities.SplashActivity"
+            android:label="SplashActivity">
+    <action android:id="@+id/action_global_horoscopeActivity"
             app:destination="@id/horoscopeActivity" />
   </activity>
-  <activity
-          android:id="@+id/horoscopeActivity"
-          android:name="net.spirangle.sphinx.activities.HoroscopeActivity"
-          android:label="HoroscopeActivity">
-    <action
-            android:id="@+id/action_global_profile"
+  <activity android:id="@+id/horoscopeActivity"
+            android:name="net.spirangle.sphinx.activities.HoroscopeActivity"
+            android:label="HoroscopeActivity">
+    <action android:id="@+id/action_global_arabic_parts"
+            app:destination="@id/arabicPartsActivity" />
+    <action android:id="@+id/action_global_profile"
             app:destination="@id/profilesActivity" />
-    <action
-            android:id="@+id/action_global_settings"
+    <action android:id="@+id/action_global_settings"
             app:destination="@id/settingsActivity" />
-    <action
-            android:id="@+id/action_global_texts"
+    <action android:id="@+id/action_global_texts"
             app:destination="@id/textActivity" />
-    <action
-            android:id="@+id/action_global_help"
+    <action android:id="@+id/action_global_help"
             app:destination="@id/helpActivity" />
   </activity>
-  <activity
-          android:id="@+id/profilesActivity"
-          android:name="net.spirangle.sphinx.activities.ProfilesActivity"
-          android:label="ProfilesActivity">
-    <action
-            android:id="@+id/action_global_horoscope"
+  <activity android:id="@+id/arabicPartsActivity"
+            android:name="net.spirangle.sphinx.activities.ArabicPartsActivity"
+            android:label="ArabicPartsActivity">
+    <action android:id="@+id/action_global_horoscope"
             app:destination="@id/horoscopeActivity" />
-    <action
-            android:id="@+id/action_global_editProfile"
+    <action android:id="@+id/action_global_profile"
+            app:destination="@id/profilesActivity" />
+    <action android:id="@+id/action_global_settings"
+            app:destination="@id/settingsActivity" />
+    <action android:id="@+id/action_global_texts"
+            app:destination="@id/textActivity" />
+    <action android:id="@+id/action_global_help"
+            app:destination="@id/helpActivity" />
+  </activity>
+  <activity android:id="@+id/profilesActivity"
+            android:name="net.spirangle.sphinx.activities.ProfilesActivity"
+            android:label="ProfilesActivity">
+    <action android:id="@+id/action_global_horoscope"
+            app:destination="@id/horoscopeActivity" />
+    <action android:id="@+id/action_global_editProfile"
             app:destination="@id/editProfileActivity" />
   </activity>
-  <activity
-          android:id="@+id/editProfileActivity"
-          android:name="net.spirangle.sphinx.activities.EditProfileActivity"
-          android:label="EditProfileActivity">
-    <action
-            android:id="@+id/action_global_profile"
+  <activity android:id="@+id/editProfileActivity"
+            android:name="net.spirangle.sphinx.activities.EditProfileActivity"
+            android:label="EditProfileActivity">
+    <action android:id="@+id/action_global_profile"
             app:destination="@id/profilesActivity" />
   </activity>
-  <activity
-          android:id="@+id/settingsActivity"
-          android:name="net.spirangle.sphinx.activities.SettingsActivity"
-          android:label="SettingsActivity" />
-  <activity
-          android:id="@+id/helpActivity"
-          android:name="net.spirangle.sphinx.activities.HelpActivity"
-          android:label="HelpActivity" />
-  <activity
-          android:id="@+id/textActivity"
-          android:name="net.spirangle.sphinx.activities.TextActivity"
-          android:label="TextActivity" />
+  <activity android:id="@+id/settingsActivity"
+            android:name="net.spirangle.sphinx.activities.SettingsActivity"
+            android:label="SettingsActivity" />
+  <activity android:id="@+id/helpActivity"
+            android:name="net.spirangle.sphinx.activities.HelpActivity"
+            android:label="HelpActivity" />
+  <activity android:id="@+id/textActivity"
+            android:name="net.spirangle.sphinx.activities.TextActivity"
+            android:label="TextActivity" />
 </navigation>

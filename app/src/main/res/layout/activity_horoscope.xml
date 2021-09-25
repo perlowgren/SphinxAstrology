@@ -1,120 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:id="@+id/drawer_layout"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:fitsSystemWindows="true"
->
-	<LinearLayout
-		android:orientation="vertical"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-	>
-		<androidx.appcompat.widget.Toolbar
-			android:id="@+id/toolbar"
-			android:layout_width="match_parent"
-			android:layout_height="?attr/actionBarSize"
-			android:theme="@style/SphinxTheme.Toolbar"
-			style="@style/SphinxActionBar"
-		>
-			<androidx.appcompat.widget.AppCompatSpinner
-				android:id="@+id/toolbar_spinner"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-			/>
-		</androidx.appcompat.widget.Toolbar>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                           xmlns:app="http://schemas.android.com/apk/res-auto"
+                                           android:id="@+id/drawer_layout"
+                                           android:layout_width="match_parent"
+                                           android:layout_height="match_parent"
+                                           android:fitsSystemWindows="true">
 
-		<RelativeLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-		>
-			<LinearLayout
-				android:orientation="vertical"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-			>
-				<TextView
-					android:id="@+id/text_info"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text=""
-					android:singleLine="true"
-					android:ellipsize="end"
-					android:background="@color/label_background"
-				/>
-				<ScrollView
-					android:id="@+id/scroll_view"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:scrollbars = "vertical"
-					android:fillViewport="true"
-				>
-					<LinearLayout
-						android:orientation="vertical"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-					>
-						<net.spirangle.sphinx.views.WheelGraphView
-							android:id="@+id/wheel_graph_view"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							style="@style/SphinxGraphView"
-						/>
-						<net.spirangle.sphinx.views.PlanetsView
-							android:id="@+id/planets_view"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-						/>
-						<net.spirangle.sphinx.views.AspectTableView
-							android:id="@+id/aspect_table_view"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-						/>
-						<net.spirangle.sphinx.views.AspectListView
-							android:id="@+id/aspect_list_view"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-						/>
-						<net.spirangle.sphinx.views.AspectPatternsView
-							android:id="@+id/aspect_patterns_view"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-						/>
-						<net.spirangle.sphinx.views.ArabicPartsView
-							android:id="@+id/arabic_parts_view"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-						/>
-					</LinearLayout>
-				</ScrollView>
-			</LinearLayout>
+  <LinearLayout android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-			<RelativeLayout
-				android:id="@+id/loading_panel"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:background="@color/loading_background"
-				android:gravity="center"
-				android:visibility="gone"
-			>
-				<ProgressBar
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:indeterminate="true"
-					style="?android:attr/progressBarStyle"
-				/>
-			</RelativeLayout>
-		</RelativeLayout>
-	</LinearLayout>
+    <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
+                                       android:layout_width="match_parent"
+                                       android:layout_height="?attr/actionBarSize"
+                                       android:theme="@style/SphinxTheme.Toolbar"
+                                       style="@style/SphinxActionBar">
 
-	<com.google.android.material.navigation.NavigationView
-			android:id="@+id/navigation_view"
-		android:layout_width="wrap_content"
-		android:layout_height="match_parent"
-		android:layout_gravity="start"
-		app:headerLayout="@layout/drawer_header"
-		app:menu="@menu/menu_drawer_horoscope"
-	/>
+      <androidx.appcompat.widget.AppCompatSpinner android:id="@+id/toolbar_spinner"
+                                                  android:layout_width="wrap_content"
+                                                  android:layout_height="wrap_content" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+      <LinearLayout android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+        <TextView android:id="@+id/text_info"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text=""
+                  android:singleLine="true"
+                  android:ellipsize="end"
+                  android:background="@color/label_background" />
+
+        <ScrollView android:id="@+id/scroll_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical"
+                    android:fillViewport="true">
+
+          <LinearLayout android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+            <net.spirangle.sphinx.views.WheelGraphView android:id="@+id/wheel_graph_view"
+                                                       android:layout_width="wrap_content"
+                                                       android:layout_height="wrap_content"
+                                                       style="@style/SphinxGraphView" />
+
+            <net.spirangle.sphinx.views.PlanetsView android:id="@+id/planets_view"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content" />
+
+            <net.spirangle.sphinx.views.AspectTableView android:id="@+id/aspect_table_view"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content" />
+
+            <net.spirangle.sphinx.views.AspectListView android:id="@+id/aspect_list_view"
+                                                       android:layout_width="match_parent"
+                                                       android:layout_height="wrap_content" />
+
+            <net.spirangle.sphinx.views.AspectPatternsView android:id="@+id/aspect_patterns_view"
+                                                           android:layout_width="match_parent"
+                                                           android:layout_height="wrap_content" />
+
+            <net.spirangle.sphinx.views.ArabicPartsView android:id="@+id/arabic_parts_view"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content" />
+          </LinearLayout>
+        </ScrollView>
+      </LinearLayout>
+
+      <RelativeLayout android:id="@+id/loading_panel"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:background="@color/loading_background"
+                      android:gravity="center"
+                      android:visibility="gone">
+
+        <ProgressBar android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:indeterminate="true"
+                     style="?android:attr/progressBarStyle" />
+      </RelativeLayout>
+    </RelativeLayout>
+  </LinearLayout>
+
+  <com.google.android.material.navigation.NavigationView android:id="@+id/navigation_view"
+                                                         android:layout_width="wrap_content"
+                                                         android:layout_height="match_parent"
+                                                         android:layout_gravity="start"
+                                                         app:headerLayout="@layout/drawer_header"
+                                                         app:menu="@menu/menu_drawer_horoscope" />
 </androidx.drawerlayout.widget.DrawerLayout>

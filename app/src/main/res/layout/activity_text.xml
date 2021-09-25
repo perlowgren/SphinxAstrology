@@ -1,85 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:orientation="vertical"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
->
-	<androidx.appcompat.widget.Toolbar
-		android:id="@+id/toolbar"
-		android:layout_width="match_parent"
-		android:layout_height="?attr/actionBarSize"
-		android:theme="@style/SphinxTheme.Toolbar"
-		style="@style/SphinxActionBar"
-	>
-		<!--android.support.v7.widget.SearchView
-			android:id="@+id/profiles_ab_search"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			style="@style/SphinxActionBarSearch"
-		/-->
-	</androidx.appcompat.widget.Toolbar>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
 
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-	>
-		<TextView
-			android:id="@android:id/empty"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:visibility="gone"
-			android:text="@string/list_text_empty"
-		/>
-		<ListView
-			android:id="@+id/listview"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-		/>
-		<LinearLayout
-			android:id="@+id/text_layout"
-			android:orientation="vertical"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:visibility="gone"
-		>
-			<TextView
-				android:id="@+id/text_writer"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				style="@style/SphinxTextView.Title"
-			/>
-			<ScrollView
-				android:id="@+id/text_scroll"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:scrollbars="vertical"
-			>
-				<TextView
-					android:id="@+id/text"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					style="@style/SphinxTextView.Markdown"
-				/>
-			</ScrollView>
-		</LinearLayout>
+  <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="?attr/actionBarSize"
+                                     android:theme="@style/SphinxTheme.Toolbar"
+                                     style="@style/SphinxActionBar">
+    <!--android.support.v7.widget.SearchView
+      android:id="@+id/profiles_ab_search"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="@style/SphinxActionBarSearch"
+    /-->
+  </androidx.appcompat.widget.Toolbar>
 
-		<RelativeLayout
-			android:id="@+id/loading_panel"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:background="@color/loading_background"
-			android:gravity="center"
-			android:visibility="gone"
-		>
-			<ProgressBar
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:indeterminate="true"
-				style="?android:attr/progressBarStyle"
-			/>
-		</RelativeLayout>
-	</RelativeLayout>
+  <RelativeLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+
+    <TextView android:id="@android:id/empty"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:visibility="gone"
+              android:text="@string/list_text_empty" />
+
+    <ListView android:id="@+id/listview"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" />
+
+    <LinearLayout android:id="@+id/text_layout"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:visibility="gone">
+
+      <TextView android:id="@+id/text_writer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/SphinxTextView.Title" />
+
+      <ScrollView android:id="@+id/text_scroll"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:scrollbars="vertical">
+
+        <TextView android:id="@+id/text"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  style="@style/SphinxTextView.Markdown" />
+      </ScrollView>
+    </LinearLayout>
+
+    <RelativeLayout android:id="@+id/loading_panel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/loading_background"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+      <ProgressBar android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:indeterminate="true"
+                   style="?android:attr/progressBarStyle" />
+    </RelativeLayout>
+  </RelativeLayout>
 </LinearLayout>
 

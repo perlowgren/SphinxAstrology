@@ -1,51 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
->
-	<item
-		android:id="@+id/menu_delete"
-		android:icon="@drawable/ic_ab_trash"
-		android:title="@string/menu_delete"
-		android:orderInCategory="1"
-		app:showAsAction="always"
-	/>
-	<item
-		android:id="@+id/menu_preview"
-		android:icon="@drawable/ic_ab_eye"
-		android:title="@string/menu_preview"
-		android:orderInCategory="2"
-		app:showAsAction="always"
-	/>
-	<item
-		android:id="@+id/menu_save"
-		android:icon="@drawable/ic_ab_ok"
-		android:title="@string/menu_save"
-		android:orderInCategory="3"
-		app:showAsAction="always"
-	/>
-	<group
-		android:id="@+id/menu_group"
-		android:checkableBehavior="none"
-	>
-		<item
-			android:id="@+id/menu_help_text"
-			android:title="@string/menu_help_text"
-			android:orderInCategory="101"
-			app:showAsAction="never"
-		/>
-		<item
-			android:id="@+id/menu_help_syntax"
-			android:title="@string/menu_help_syntax"
-			android:orderInCategory="102"
-			app:showAsAction="never"
-		/>
-		<item
-			android:id="@+id/menu_help_links"
-			android:title="@string/menu_help_links"
-			android:orderInCategory="103"
-			app:showAsAction="never"
-		/>
-	</group>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+  <item android:id="@+id/menu_delete"
+        android:icon="@drawable/ic_ab_trash"
+        android:title="@string/menu_delete"
+        android:orderInCategory="1"
+        app:showAsAction="always" />
+  <item android:id="@+id/menu_preview"
+        android:icon="@drawable/ic_ab_eye"
+        android:title="@string/menu_preview"
+        android:orderInCategory="2"
+        app:showAsAction="always" />
+  <item android:id="@+id/menu_save"
+        android:icon="@drawable/ic_ab_ok"
+        android:title="@string/menu_save"
+        android:orderInCategory="3"
+        app:showAsAction="always" />
+  <group android:id="@+id/menu_group"
+         android:checkableBehavior="none">
+    <item android:id="@+id/menu_help_text"
+          android:title="@string/menu_help_text"
+          android:orderInCategory="101"
+          app:showAsAction="never" />
+    <item android:id="@+id/menu_help_syntax"
+          android:title="@string/menu_help_syntax"
+          android:orderInCategory="102"
+          app:showAsAction="never" />
+    <item android:id="@+id/menu_help_links"
+          android:title="@string/menu_help_links"
+          android:orderInCategory="103"
+          app:showAsAction="never" />
+  </group>
 </menu>
 

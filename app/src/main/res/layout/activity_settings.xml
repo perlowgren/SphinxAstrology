@@ -1,75 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:orientation="vertical"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:fitsSystemWindows="true"
->
-	<androidx.appcompat.widget.Toolbar
-		android:id="@+id/toolbar"
-		android:layout_width="match_parent"
-		android:layout_height="?attr/actionBarSize"
-		android:theme="@style/SphinxTheme.Toolbar"
-		style="@style/SphinxActionBar"
-	>
-	</androidx.appcompat.widget.Toolbar>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fitsSystemWindows="true">
 
-	<LinearLayout
-		android:orientation="vertical"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-	>
-		<ScrollView
-			android:layout_width="match_parent"
-			android:layout_height="0dp"
-			android:layout_weight="1"
-			android:scrollbars = "vertical"
-			android:scrollbarStyle="insideInset"
-		>
-			<LinearLayout
-				android:orientation="vertical"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-			>
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="Settings not yet implemented"
-				/>
+  <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="?attr/actionBarSize"
+                                     android:theme="@style/SphinxTheme.Toolbar"
+                                     style="@style/SphinxActionBar"></androidx.appcompat.widget.Toolbar>
 
-				<EditText
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:hint="Some value"
-				/>
+  <LinearLayout android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-				<EditText
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:hint="Another value"
-				/>
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:scrollbars="vertical"
+                android:scrollbarStyle="insideInset">
 
-				<CheckBox
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="Use this setting"
-				/>
+      <LinearLayout android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-				<CheckBox
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="Use this setting too"
-				/>
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="Settings not yet implemented" />
 
-				<CheckBox
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="And this"
-				/>
-			</LinearLayout>
-		</ScrollView>
-	</LinearLayout>
+        <EditText android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="Some value" />
+
+        <EditText android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="Another value" />
+
+        <CheckBox android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="Use this setting" />
+
+        <CheckBox android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="Use this setting too" />
+
+        <CheckBox android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="And this" />
+      </LinearLayout>
+    </ScrollView>
+  </LinearLayout>
 </LinearLayout>
 

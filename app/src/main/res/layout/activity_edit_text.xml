@@ -1,141 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:orientation="vertical"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:fitsSystemWindows="true"
->
-	<androidx.appcompat.widget.Toolbar
-		android:id="@+id/toolbar"
-		android:layout_width="match_parent"
-		android:layout_height="?attr/actionBarSize"
-		android:theme="@style/SphinxTheme.Toolbar"
-		style="@style/SphinxActionBar"
-	>
-	</androidx.appcompat.widget.Toolbar>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fitsSystemWindows="true">
 
-	<LinearLayout
-		android:orientation="vertical"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-	>
-		<TextView
-			android:id="@+id/title"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			style="@style/SphinxTextView.Title"
-		/>
+  <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="?attr/actionBarSize"
+                                     android:theme="@style/SphinxTheme.Toolbar"
+                                     style="@style/SphinxActionBar"></androidx.appcompat.widget.Toolbar>
 
-		<LinearLayout
-			android:id="@+id/edit_layout"
-			android:orientation="vertical"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:visibility="visible"
-		>
-			<LinearLayout
-				android:orientation="horizontal"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				style="@style/SphinxToolPanel"
-			>
-				<Button
-					android:id="@+id/button_bold"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_vertical|left"
-					android:text="@string/icon_bold"
-					android:onClick="setTextStyle"
-					style="@style/SphinxUnicodeToolButton"
-				/>
-				<Button
-					android:id="@+id/button_italic"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_vertical|left"
-					android:text="@string/icon_italic"
-					android:onClick="setTextStyle"
-					style="@style/SphinxUnicodeToolButton"
-				/>
-				<Button
-					android:id="@+id/button_underline"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_vertical|left"
-					android:text="@string/icon_underline"
-					android:onClick="setTextStyle"
-					style="@style/SphinxUnicodeToolButton"
-				/>
-				<!--Button
-					android:id="@+id/button_strike"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_vertical|left"
-					android:text="@string/icon_strike"
-					android:onClick="setTextStyle"
-					style="@style/SphinxUnicodeToolButton"
-				/-->
-				<Button
-					android:id="@+id/button_link"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_vertical|left"
-					android:text="@string/icon_link"
-					android:onClick="setTextStyle"
-					style="@style/SphinxUnicodeToolButton"
-				/>
-				<Button
-					android:id="@+id/button_picture"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_vertical|left"
-					android:text="@string/icon_picture"
-					android:onClick="setTextStyle"
-					style="@style/SphinxUnicodeToolButton"
-				/>
-				<Button
-					android:id="@+id/button_ol"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_vertical|left"
-					android:text="@string/icon_ol"
-					android:onClick="setTextStyle"
-					style="@style/SphinxUnicodeToolButton"
-				/>
-				<Button
-					android:id="@+id/button_ul"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:layout_gravity="center_vertical|left"
-					android:text="@string/icon_ul"
-					android:onClick="setTextStyle"
-					style="@style/SphinxUnicodeToolButton"
-				/>
-			</LinearLayout>
-			<EditText
-				android:id="@+id/edit"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:scrollbars="vertical"
-				style="@style/SphinxEditText.Markdown"
-			/>
-		</LinearLayout>
-		<ScrollView
-			android:id="@+id/preview_scroll"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:scrollbars="vertical"
-			android:visibility="gone"
-		>
-			<TextView
-				android:id="@+id/preview"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				style="@style/SphinxTextView.Markdown"
-			/>
-		</ScrollView>
-	</LinearLayout>
+  <LinearLayout android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView android:id="@+id/title"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              style="@style/SphinxTextView.Title" />
+
+    <LinearLayout android:id="@+id/edit_layout"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:visibility="visible">
+
+      <LinearLayout android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/SphinxToolPanel">
+
+        <Button android:id="@+id/button_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|left"
+                android:text="@string/icon_bold"
+                android:onClick="setTextStyle"
+                style="@style/SphinxUnicodeToolButton" />
+
+        <Button android:id="@+id/button_italic"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|left"
+                android:text="@string/icon_italic"
+                android:onClick="setTextStyle"
+                style="@style/SphinxUnicodeToolButton" />
+
+        <Button android:id="@+id/button_underline"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|left"
+                android:text="@string/icon_underline"
+                android:onClick="setTextStyle"
+                style="@style/SphinxUnicodeToolButton" />
+        <!--Button
+          android:id="@+id/button_strike"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_gravity="center_vertical|left"
+          android:text="@string/icon_strike"
+          android:onClick="setTextStyle"
+          style="@style/SphinxUnicodeToolButton"
+        /-->
+        <Button android:id="@+id/button_link"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|left"
+                android:text="@string/icon_link"
+                android:onClick="setTextStyle"
+                style="@style/SphinxUnicodeToolButton" />
+
+        <Button android:id="@+id/button_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|left"
+                android:text="@string/icon_picture"
+                android:onClick="setTextStyle"
+                style="@style/SphinxUnicodeToolButton" />
+
+        <Button android:id="@+id/button_ol"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|left"
+                android:text="@string/icon_ol"
+                android:onClick="setTextStyle"
+                style="@style/SphinxUnicodeToolButton" />
+
+        <Button android:id="@+id/button_ul"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|left"
+                android:text="@string/icon_ul"
+                android:onClick="setTextStyle"
+                style="@style/SphinxUnicodeToolButton" />
+      </LinearLayout>
+
+      <EditText android:id="@+id/edit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                style="@style/SphinxEditText.Markdown" />
+    </LinearLayout>
+
+    <ScrollView android:id="@+id/preview_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:visibility="gone">
+
+      <TextView android:id="@+id/preview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="@style/SphinxTextView.Markdown" />
+    </ScrollView>
+  </LinearLayout>
 </LinearLayout>
 
