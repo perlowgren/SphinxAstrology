@@ -191,13 +191,14 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener, 
         String[] items = getResources().getStringArray(R.array.actionbar_graph_views);
         String[] sorted = new String[items.length];
         int[] index = new int[items.length];
-        for(int i=0; i<items.length; ++i)
-            sorted[i] = items[i];
+        int wheelIndex = 0;
+        for(int i=0; i<items.length; ++i) sorted[i] = items[i];
         Arrays.sort(sorted);
         for(int i=0; i<items.length; ++i)
             for(int j=0; j<sorted.length; ++j)
                 if(items[i].equals(sorted[j])) {
                     index[j] = i;
+                    if(i==0) wheelIndex = j;
                     break;
                 }
 
@@ -211,8 +212,7 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener, 
             @Override
             public void onItemSelected(AdapterView<?> parent,View view,int pos,long id) {
                 int y = 0;
-                int i = index[pos];
-                switch(i) {
+                switch(index[pos]) {
                     case 0:
                         y = wheelGraph.getTop();
                         break;
@@ -241,9 +241,11 @@ public class HoroscopeActivity extends AstroActivity implements SymbolListener, 
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                int y = wheelGraph.getTop();
+                scroll.scrollTo(0,y);
             }
         });
+        toolbarSpinner.setSelection(wheelIndex);
 
         menuEdit = menu.findItem(R.id.menu_edit);
         menuNew = menu.findItem(R.id.menu_new);
