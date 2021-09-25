@@ -686,6 +686,18 @@ public class Horoscope implements Parcelable {
 
     public double moonPhaseDegreeDays() { return mphased; }
 
+    public int isInAspectPattern(int... p) {
+        int n = 0;
+        for(AspectPattern ap : aspectPatterns) {
+            int m = 0;
+            for(int i : ap.planets)
+                for(int j : p)
+                    if(j==i) ++m;
+            if(m==p.length) ++n;
+        }
+        return n;
+    }
+
     @Override
     public String toString() {
         String text = "";

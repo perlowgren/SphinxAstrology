@@ -380,26 +380,26 @@ public class WheelGraphView extends HoroscopeView {
             float f1 = margin*gs.scale;
             paint.setStyle(Paint.Style.STROKE);
             paint.setAntiAlias(true);
-            paint.setStrokeWidth(strokeWidth);
             int p = h.planets();
             float r3 = r-f1;
             for(int x = 0; x<p; ++x) {
                 int i = h.planetId(x);
-                if(i==ASTRO_ASCENDANT || i==ASTRO_MC) continue;
                 for(int y = x+1; y<p; ++y) {
                     int j = h.planetId(y);
-                    if(j==ASTRO_ASCENDANT || j==ASTRO_MC) continue;
                     int k = h.aspect(x,y);
-//Log.d(APP,"k: "+k+", l: "+l+", a: "+a);
-                    if(k>=CONJUNCTION && k<=OPPOSITION && aspectShow[k&0xffff]
-//									&& (!aspectShow[13] || horoscope.findPattern(x,y))
-                    ) {
+                    if(k>=CONJUNCTION && k<=OPPOSITION && aspectShow[k&0xffff]) {
+                        int inAspectPattern = h.isInAspectPattern(i,j);
+                        if((i==ASTRO_ASCENDANT || i==ASTRO_MC ||
+                            j==ASTRO_ASCENDANT || j==ASTRO_MC) && inAspectPattern==0) continue;
                         double d = DTR*((double)angle+h.planetAbsoluteLongitude(x));
                         double d2 = DTR*((double)angle+h.planetAbsoluteLongitude(y));
                         float x1 = gs.centerX-(float)Math.cos(-d)*r3;
                         float y1 = gs.centerY-(float)Math.sin(-d)*r3;
                         float x2 = gs.centerX-(float)Math.cos(-d2)*r3;
                         float y2 = gs.centerY-(float)Math.sin(-d2)*r3;
+                        float strokeMod = 1.0f;
+                        if(inAspectPattern>0) strokeMod += 0.7f+(float)inAspectPattern*0.3f;
+                        paint.setStrokeWidth(strokeWidth*strokeMod);
                         paint.setColor(gs.aspectColors[k&0xffff]);
                         canvas.drawLine(x1,y1,x2,y2,paint);
                     }
